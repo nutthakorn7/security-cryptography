@@ -133,6 +133,23 @@ The captured flag + the specific `(r, s)` you started from and the twin `(r, n �
 (with both txids), + a short note on why the two share a `(message, pubkey)` yet the vulnerable
 bank saw them as two transactions, and why low-S closes the gap. Full tasks: `worksheet.md`.
 
+## Known dependency risk (accepted, not fixed)
+This lab's `ecdsa` dependency carries **CVE-2024-23342 / GHSA-wj6h-64fc-37mp** (a "Minerva" timing
+attack that can leak the signing nonce via response-time measurements) — **there is no patched
+version**; the `python-ecdsa` maintainers have stated side-channel resistance is out of scope for
+the project and no fix is planned. Every other Dependabot finding on this repo (`flask`,
+`cryptography`, `requests`) was fixed by bumping to a patched release; this one can't be.
+
+**Accepted here, not overlooked, because:** the keypair is generated fresh in-memory at container
+startup and discarded on teardown (never reused, never of value beyond the lab run), the container
+is an ephemeral local sandbox, not an internet-facing service, and this week's actual lesson
+(nonce-reuse malleability) is a *separate, deliberate, far easier* attack than a timing
+side-channel would be. If this lab is ever deployed somewhere timing measurements from an
+untrusted network are realistic (e.g. exposed on a shared CTFd host to many students
+simultaneously), reconsider migrating to `cryptography`'s own EC signing (`ec.generate_private_key`
++ `utils.decode_dss_signature` to get raw `(r, s)`) — not done here as it would require rewriting
+and re-verifying `vulnerable_app.py`/`fixed_app.py`/`exploit.py`, a larger change than a version bump.
+
 ## References
 - Boneh & Shoup, *A Graduate Course in Applied Cryptography*, ch. 8 (digital signatures) & the
   Schnorr / Fiat–Shamir treatment — free online.
