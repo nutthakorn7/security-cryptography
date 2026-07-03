@@ -21,19 +21,31 @@ authorized-use policy, [`ETHICS.md`](ETHICS.md).
 
 ## Weekly LAB — how to do & submit
 
-**Do it:**
-1. In your fork, create a branch `wk<NN>` (e.g. `wk04`).
-2. Stand up the week's target: `docker compose up` (or the command in that lab's README).
-3. Work through the **worksheet** (`labs/week<NN>…/worksheet.md`): for each task record the
-   **payload/command**, a **screenshot** of the result, and a **2–3 sentence mitigation**.
-4. For the **Defend / fix** task: edit the code, **commit to your `wk<NN>` branch**, and note the
-   **commit hash** in the worksheet.
+**Read this before assuming "edit the code, commit a fix" — most weeks in this course don't work
+that way.** Unlike `software-security` (which ships a `solution_skeleton.py` per week for you to
+complete), this course's `fixed_app.py`/reference-fixed mode is **already fully built** for every
+week except one. Most weeks you *confirm* the fix works and *explain why* — you don't write it.
 
-**Submit (two parts):**
-| Part | Where | What |
-|------|-------|------|
-| Worksheet | **Google Classroom** | the completed worksheet exported to **PDF** (screenshots embedded) |
-| Code fix | **GitHub** | push branch `wk<NN>`, open a PR (or paste the commit link in the worksheet + Classroom) |
+**Do it (most weeks):**
+1. Stand up the week's target: `docker compose up` (or the command in that lab's README).
+2. Work through the **worksheet** (`labs/week<NN>…/worksheet.md`): for each task record the
+   **payload/command**, a **screenshot** of the result, and the requested explanation. The
+   "Audit the AI" section does require you to **rewrite a flawed snippet** — but that rewrite goes
+   *in the worksheet itself*, not as a code commit.
+
+**Do it (Week 12 only — the one week with a real code-writing task):** in addition to the above,
+`alice_student.py` ships with its one fix function stubbed as `raise NotImplementedError`. Write
+the real implementation yourself (see that lab's worksheet Part 2a step 5 and the file's own
+docstring), verify it against `docker-compose.student-task.yml`, then:
+1. In your fork, create a branch `wk12`.
+2. Commit your completed `alice_student.py` to that branch and note the **commit hash** in the
+   worksheet, alongside your explanation of what each line does.
+
+**Submit:**
+| Part | Where | What | Weeks |
+|------|-------|------|------|
+| Worksheet | **Google Classroom** | the completed worksheet exported to **PDF** (screenshots embedded) | all |
+| Code fix | **GitHub** | push branch `wk12`, open a PR (or paste the commit link in the worksheet + Classroom) | Wk12 only |
 
 **File name:** `Wk<NN>_<StudentID>.pdf`  (e.g. `Wk04_65123456.pdf`)
 **Deadline:** before the next class session (unless told otherwise).

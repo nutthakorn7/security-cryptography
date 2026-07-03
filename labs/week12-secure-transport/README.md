@@ -131,6 +131,14 @@ No environment variables need to be set by hand — which compose file you point
 diff them and the only behavioral difference is that one line). Use `down -v` to also drop the
 shared `certs` volume so the next run regenerates fresh certs.
 
+Write-it-yourself mode — after completing `alice_student.py` (worksheet Part 2a, step 5):
+```bash
+docker compose -f docker-compose.student-task.yml up --build
+```
+Same expected output as fixed mode above. This is the one lab in the course where you write the
+fix instead of just confirming a pre-built one — see the worksheet and `alice_student.py`'s
+docstring for exactly what's required.
+
 ## Verified
 
 Both modes were Docker-tested against the actual files in this directory, run fresh from a

@@ -94,9 +94,23 @@ directly — that is the premise: an active attacker controls the network path.
    ```
    and record that it prints `0`.
 4. Tear down: `Ctrl-C`, then `docker compose -f docker-compose.fixed.yml down -v`.
+5. **Write the fix yourself.** Every other task this week (and most weeks in this course) has you
+   confirm a pre-built fix, not write one — this is the exception. Open `alice_student.py`: it is
+   identical to `alice.py` except `build_client_context()` is a stub that raises
+   `NotImplementedError`. Replace the stub with real code that trusts only the demo CA, verifies
+   the chain, and verifies the hostname (see the file's docstring for the exact requirements — you
+   do not need to hand-roll chain/hostname validation, one standard-library call does both
+   correctly). Then:
+   ```bash
+   docker compose -f docker-compose.student-task.yml up --build
+   ```
+   You're done when you see `CERT VERIFICATION FAILED - ABORTING` (not a Python traceback, and not
+   `TLS handshake succeeded`). Tear down: `docker compose -f docker-compose.student-task.yml down -v`.
 
-**Submit:** both captured logs (with identity proof visible), your one-line note from step 1, and
-the `grep -c` output from step 3.
+**Submit:** both captured logs from steps 1 and 3 (with identity proof visible), your one-line note
+from step 1, the `grep -c` output from step 3, **and your completed `alice_student.py`** (paste the
+diff or the full `build_client_context()` function) with a 2–3 sentence explanation of what each
+line does and why it's necessary — you may be asked to explain it live in the viva.
 
 ### Part 2b — 🤖 Audit the AI (required)
 
