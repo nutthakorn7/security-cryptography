@@ -38,6 +38,9 @@ hashing:
 | `vulnerable_app.py` | `:8094` | unsalted **MD5** (`users_vulnerable.csv`) | **Yes** — milliseconds |
 | `fixed_app.py` | `:8095` | **bcrypt**, per-user salt + cost (`users_fixed.csv`) | **No** (to this technique) |
 
+**Why it's exciting:** instant feedback — the password either cracks or it doesn't — then you
+watch the exact same attack bounce harmlessly off bcrypt.
+
 Both apps expose the same endpoints:
 - `POST /login {username, password}` → if the password's hash matches the stored hash, the
   server marks your **session** logged-in as that user.

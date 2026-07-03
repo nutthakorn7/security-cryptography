@@ -32,6 +32,9 @@ Two Flask targets, same endpoints, different signature scheme:
 | `vulnerable_app.py` | `:8092` | `sig = SHA256(MAC_SECRET + data)` (secret-prefix hash) | **Yes** |
 | `fixed_app.py` | `:8093` | `sig = HMAC-SHA256(MAC_SECRET, data)` | **No** |
 
+**Why it's exciting:** forging your way into someone else's cookie with pure math, no password
+needed, feels like a magic trick — until HMAC slams the door shut.
+
 Both issue a cookie at `GET /login?user=<name>` encoding `data="user=<name>&admin=false"` plus a
 signature. `GET /admin` recomputes the signature and, if it matches **and** `data` contains
 `admin=true`, returns the flag.

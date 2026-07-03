@@ -48,6 +48,9 @@ Two Flask targets, same endpoints, different acceptance rule:
 | `vulnerable_app.py` | `:8102` | `txid = sha256(str(r)+str(s))`; accepts any valid `(r,s)` | **Yes** |
 | `fixed_app.py` | `:8103` | rejects `s > n//2` first (**low-S / BIP-62**), then dedups | **No** |
 
+**Why it's exciting:** the same signature, mathematically mutated, buys a second withdrawal —
+real exchanges have lost real money to exactly this trick.
+
 Each bank holds its **own** SECP256k1 keypair, **generated fresh at container startup** (repo
 policy: no private key is ever committed). `GET /sign` is a lab convenience — it signs the one
 fixed message `"withdraw 100 to attacker"` with that bank's key so you can obtain a starting

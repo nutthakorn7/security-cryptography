@@ -39,6 +39,17 @@ Cryptographic Storage Cheat Sheet · CWE-320 (Key Management Errors) · CWE-330
   mathematically sound primitive and shows a specific, real way it fails when misused —
   followed by the correct construction.
 
+## 🐍 Signature game — "Snake Oil Bingo"
+Everyone gets a bingo card of common crypto myths ("military-grade encryption," "unbreakable
+256-bit security," "quantum-proof because the key is long enough"). As the week's AI-generated
+exhibit is read aloud and picked apart, mark a square the moment its myth surfaces — but a square
+only counts once your table can give the one-line *technical* reason it's wrong. First verified
+BINGO wins.
+
+**Why it's exciting:** spotting a plausible-sounding lie is oddly addictive, and "textbook-secure
+primitive, real-system failure" is the one lens that transfers to literally every other week this
+term.
+
 ## Why no lab target this week
 
 There is nothing to exploit yet — no primitive has been introduced, so there is no misuse to

@@ -42,6 +42,9 @@ Two Flask targets, same Lamport one-time signature scheme, one difference:
 | `vulnerable_app.py` | `:8100` | **REUSES** one keypair on every `/sign` | **Yes** |
 | `fixed_app.py` | `:8101` | Signs **at most once**; 2nd `/sign` → `403` | **No** |
 
+**Why it's exciting:** a keypair meant to sign exactly once, signed twice — and the private key
+just falls out of the math, no brute force required.
+
 Both hold ONE fixed Lamport keypair over a **32-bit** message that is signed **directly** (no
 pre-hash — so every message bit is attacker-controllable). Endpoints on both:
 

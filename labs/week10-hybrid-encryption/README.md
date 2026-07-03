@@ -29,6 +29,16 @@ Storage Cheat Sheet
 - Audit an AI-generated cryptographic implementation for a subtle-but-catastrophic correctness
   bug that a surface-level review would miss.
 
+## 🔬 Signature game — "Nonce Detective"
+You're handed a hybrid-encryption implementation that looks textbook-correct — proper RSA-OAEP,
+proper AES-GCM, nothing obviously wrong at a skim. Find the one planted bug, then prove it's real
+by actually recovering leaked plaintext from two intercepted messages, not just pointing at a
+line of code.
+
+**Why it's exciting:** the code passes every "did they use the right primitives" checklist — the
+only way to catch it is to actually think like an attacker, and the payoff is a genuine "aha"
+the moment the recovered plaintext prints.
+
 ## Why no lab target this week
 
 Nothing here is a "break into a running service" exploit — it's protocol design and

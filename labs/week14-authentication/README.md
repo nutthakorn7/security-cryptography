@@ -37,6 +37,16 @@ of Sensitive Information into Log File)
 - **Understand the honest limits of this demo** (see the box below): the fixed side proves only
   *"password never transmitted."* It is **not** a full PAKE.
 
+## 🗝️ Signature game — "Never Say the Password"
+Play server operator and catch your own login system handing you the plaintext password on a
+silver platter, sitting right there in your logs. Then flip on challenge-response and log in
+successfully **without the password ever crossing the wire at all** — prove it by grepping your
+own logs for it and finding nothing.
+
+**Why it's exciting:** proving you know a secret without ever saying it out loud feels like a
+magic trick the first time it clicks — and it's the same trick every "Sign in with..." button
+quietly relies on.
+
 ## How this maps to the concept
 
 Two services, one network:

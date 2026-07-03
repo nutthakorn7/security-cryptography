@@ -34,9 +34,29 @@ approach as `software-security` — no full VM required.
 
 ## Course at a glance
 
-See [course-plan-19weeks.md](course-plan-19weeks.md) for the full 13-topic mapping, including
-which weeks are runnable labs vs. conceptual-only, and current build/verification status for
-each.
+| Wk | Topic | 🎮 Signature game |
+|----|-------|------------|
+| 1  | Intro & threat-modeling a crypto system | 🐍 "Snake Oil Bingo" |
+| 2  | Hash functions | 🔓 "Crack the Leaked DB" |
+| 3  | MACs | 🍪 "Forge the Admin Cookie" |
+| 4  | AES / block-cipher modes | 🎯 "Flip Your Way to Admin" |
+| 5  | Key Exchanges | 🕵️ "The Silent Third Wheel" |
+| 6  | Authenticated Encryption (AEAD) | 🔮 "Read the Secret Without the Key" |
+| **7**  | **🔁 Reflection & Review (pre-midterm)** | 🏆 "Jeopardy" recap |
+| **8–9** | **📝 Midterm** (Wk8 written · Wk9 CTF practical) | — |
+| 10 | Asymmetric & Hybrid Encryption | 🔬 "Nonce Detective" |
+| 11 | Signatures & Zero-Knowledge Proofs | 💰 "Double-Spend the Bank" |
+| 12 | Secure Transport (TLS) | 🎭 "The Impostor's Certificate" |
+| 13 | End-to-End Encryption | 👀 "Who's Reading Your Mail?" |
+| 14 | User Authentication | 🗝️ "Never Say the Password" |
+| 15 | Post-Quantum Cryptography | 🔑 "Forge the Admin Signature" |
+| 16 | Capstone studio (CryptoVault WIP) | 🏗️ Build & peer review |
+| **17** | **🔁 Reflection & Review (pre-final)** | 🏆 "Jeopardy: Champions Edition" |
+| **18–19** | **📝 Final** (Wk18 written · Wk19 CTF practical) | — |
+
+Full details, technical rationale, and each game's "why it's exciting" hook:
+[course-plan-19weeks.md](course-plan-19weeks.md). Build/verification status per week is tracked
+there too.
 
 ## Repository layout
 

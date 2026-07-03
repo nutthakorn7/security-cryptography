@@ -37,6 +37,15 @@ Sensitive Data), CWE-319 (Cleartext Transmission of Sensitive Information — he
   really Bob's?), why PGP failed to reach mass adoption, and how Signal (TOFU, X3DH, Double
   Ratchet) improves on it.
 
+## 👀 Signature game — "Who's Reading Your Mail?"
+Play the messaging provider: `tail` your own server's log while a "private" message passes
+through, and watch it sitting there in plaintext, sender's name and all. Then flip the client
+to encrypt client-side before it ever reaches you, and watch your own server log turn into
+unreadable ciphertext while the recipient still decrypts it perfectly.
+
+**Why it's exciting:** watching your own "private" message sit in cleartext in a log file you
+control is the moment end-to-end encryption stops being an abstract slide and becomes personal.
+
 ## How this maps to the E2EE concept
 
 One server, two client roles, one shared secret to protect (`meet at pier 39 at midnight`):

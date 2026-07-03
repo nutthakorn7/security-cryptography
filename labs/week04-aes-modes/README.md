@@ -38,6 +38,9 @@ Two Flask targets, same endpoints, different token scheme:
 | `vulnerable_app.py` | `:8096` | `base64(IV ‖ AES-256-**CBC**(plaintext))` — **no MAC/tag** | **Yes** — CBC bit-flip |
 | `fixed_app.py` | `:8097` | `base64(nonce ‖ AES-256-**GCM**(plaintext) ‖ tag)` — AEAD | **No** — tag check rejects |
 
+**Why it's exciting:** flipping bytes you can't even read to seize admin is the closest thing to
+"hacking in a movie" this course gets.
+
 Both issue a session token at `GET /login` encoding a **fixed server-side plaintext** whose role
 field is `guest`. `GET /whoami` decrypts and reports the parsed role. `GET /admin` returns the
 flag **iff** the parsed role is `admin`.

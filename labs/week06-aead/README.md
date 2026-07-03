@@ -45,6 +45,9 @@ Two Flask targets, same endpoints, different cipher:
 | `vulnerable_app.py` | `:8098` | AES-256-**CBC**, unauthenticated, `/decrypt` leaks padding validity | **Yes** |
 | `fixed_app.py` | `:8099` | AES-256-**GCM** (AEAD), `/decrypt` returns a **uniform** error | **No** |
 
+**Why it's exciting:** a padding oracle turns a plain 403 error into a skeleton key, recovering a
+whole secret one byte at a time from nothing but yes/no answers.
+
 Both serve the *same* secret message (which **contains the flag**) at `GET /secret` as
 base64. Both expose `POST /decrypt {"ciphertext": "<base64>"}`. The difference is the *decrypt
 response*:

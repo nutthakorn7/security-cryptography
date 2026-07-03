@@ -34,6 +34,15 @@ Validation), CWE-300 (Channel Accessible by Non-Endpoint)
   `CERT_NONE` / `InsecureSkipVerify` copy-pasted from a "just make it work" answer (the planted
   flaw you audit in Part 2b).
 
+## 🎭 Signature game — "The Impostor's Certificate"
+Stand in for the server with nothing but a self-signed certificate you generated yourself, and
+watch a careless client hand you its secret anyway, "encrypted" the whole time. Then flip on
+real certificate validation and watch the exact same impostor cert get rejected before a single
+byte of the secret is sent.
+
+**Why it's exciting:** your forgery sails through TLS's lock icon and green padlock — until one
+line of validation code slams the door in your face.
+
 ## How this maps to the TLS certificate-validation concept
 
 Four services on one Docker network. `gen_certs` runs first (an init step), then the three roles:

@@ -33,6 +33,15 @@ Entity Authentication), CWE-300 (Channel Accessible by Non-Endpoint)
   reason about: weak/non-standard groups, missing public-key validation, and small-subgroup
   confinement.
 
+## 🕵️ Signature game — "The Silent Third Wheel"
+Be the eavesdropper who becomes an active puppet-master: sit silently between Alice and Bob,
+run your own DH handshake with each of them, and read their "secure" channel in the clear —
+they never notice. Then watch a single HMAC tag over the public key shut you out completely,
+with no other code change.
+
+**Why it's exciting:** it's the one week where you get to be the invisible third wheel in
+someone else's "private" conversation — and then feel exactly how thin that privacy was.
+
 ## How this maps to the DH / MITM concept
 
 Three services, three roles, one shared 2048-bit MODP group (RFC3526 Group 14):
