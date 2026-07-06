@@ -8,10 +8,12 @@ deployment.
 
 > ⚠️ **Status: DRAFT.** 12 of 13 teaching weeks are built (Weeks 1–6, 10–15 — Labs, Hybrids, and
 > Conceptual weeks; see [course-plan-19weeks.md](course-plan-19weeks.md) for which is which),
-> plus both review weeks (7, 17) and both exam blocks (8–9, 18–19). Remaining: Week 16 (capstone
-> studio — covered by `project/README.md`, no separate lab dir by design) and this course's own
-> `seed_flags.py` + CTFd wiring — the labs are Docker-verified standalone but not yet live in a
-> CTFd deployment. Do not use this for a live course yet.
+> plus both review weeks (7, 17) and both exam blocks (8–9, 18–19). This course's own
+> `seed_flags.py` + `check_flag_keys.py` + flag-bridge wiring are built and verified
+> (`instructor/platform-build/`). Remaining: Week 16 (capstone studio — covered by
+> `project/README.md`, no separate lab dir by design) and the deployment catalog
+> (`challenges-import.csv` / `ctfd/challenges.yml`) — the labs are Docker-verified standalone but
+> not yet live in a CTFd deployment. Do not use this for a live course yet.
 
 > ⚠️ **Ethics first.** All offensive techniques are taught for **defensive and authorized testing
 > only**. Attack only the provided sandbox targets. See [`ETHICS.md`](ETHICS.md) for this

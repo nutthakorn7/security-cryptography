@@ -2,10 +2,12 @@
 
 > **Status: DRAFT — checkpoint before going live.** 12 of 13 teaching weeks (Wk1–6, 10–15) are built
 > and verified below — Labs, Hybrids, and Conceptual weeks — plus both review weeks (7, 17) and both
-> exam blocks (8–9, 18–19). Remaining: Wk16 (capstone studio — see `project/README.md`, no separate
-> lab dir by design), and this course's own `seed_flags.py` + CTFd wiring (labs are Docker-verified
-> standalone but not yet live in a CTFd deployment). See [OPEN DECISIONS](#open-decisions) before
-> treating this as final.
+> exam blocks (8–9, 18–19). This course's own `seed_flags.py` + `check_flag_keys.py` +
+> flag-bridge wiring are built and verified (`instructor/platform-build/`). Remaining: Wk16
+> (capstone studio — see `project/README.md`, no separate lab dir by design), and the deployment
+> catalog (`challenges-import.csv` / `ctfd/challenges.yml`) — labs are Docker-verified standalone
+> but not yet live in a CTFd deployment. See [OPEN DECISIONS](#open-decisions) before treating this
+> as final.
 
 This course reuses the same 19-week skeleton as [`software-security`](../KOSEN69%20-%20software-security/course-plan-19weeks.md):
 **13 teaching weeks (1–6, 10–16) · 2 review weeks (7, 17) · 2 exam blocks (8–9, 18–19)**, and is a
@@ -249,10 +251,17 @@ it: AEAD) → **Wk10** (how AEAD *still* fails if you reuse a nonce).
   key — not overclaimed as SRP/OPAQUE-equivalent.
 
 - **Built: Wk1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15** (12 of 13 teaching weeks), both review
-  weeks (7, 17), and both exam blocks (8–9 midterm; 18–19 final — `instructor/exams/`).
+  weeks (7, 17), and both exam blocks (8–9 midterm; 18–19 final — `instructor/exams/`). Also
+  built: this course's own `seed_flags.py` + `check_flag_keys.py` + flag-bridge deployment wiring
+  (open item #5's flag mechanism — done; the live CTFd instance itself is a separate, still-open
+  deployment task), and the crypto-specific research instruments
+  (`instructor/research/pre-post-test.md` + `planted-error-bank.md`, H3/H2 for this replication
+  arm of the same study).
+  Also built: the exam-rotation `instructor/exams/item-bank.md` (midterm/final pools across
+  Concepts/Spot-the-flaw/Applied/Defense-design, plus a CTF pool reusing this course's own
+  `hash/macs/aes/aead/sig/pqc` flag keys — mirrors `software-security`'s own item-bank.md).
   **Remaining: Wk16 (capstone)** — no separate lab dir by design, covered by
-  `project/README.md` — plus the 60-Q final-exam item-bank port, the crypto-specific research
-  instruments (pre/post test + planted-error bank — this course is a replication arm of the same
-  study, not a standalone course), and this course's own `seed_flags.py` + CTFd wiring (open item
-  #5). `ETHICS.md`, `SUBMISSION.md`, `AGENDA.md`, and `readings.md` have all been adapted into
+  `project/README.md` — plus the deployment catalog (`challenges-import.csv` /
+  `ctfd/challenges.yml`) needed for an actual live CTFd instance.
+  `ETHICS.md`, `SUBMISSION.md`, `AGENDA.md`, and `readings.md` have all been adapted into
   this repo (own policy/pattern, own repo/Docker sandbox, not shared with `software-security`).
