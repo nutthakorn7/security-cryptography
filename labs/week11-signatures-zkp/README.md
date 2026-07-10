@@ -143,7 +143,7 @@ the project and no fix is planned. Every other Dependabot finding on this repo (
 **Accepted here, not overlooked, because:** the keypair is generated fresh in-memory at container
 startup and discarded on teardown (never reused, never of value beyond the lab run), the container
 is an ephemeral local sandbox, not an internet-facing service, and this week's actual lesson
-(nonce-reuse malleability) is a *separate, deliberate, far easier* attack than a timing
+(signature malleability, `(r,s)` → `(r,n-s)` — not nonce reuse) is a *separate, deliberate, far easier* attack than a timing
 side-channel would be. If this lab is ever deployed somewhere timing measurements from an
 untrusted network are realistic (e.g. exposed on a shared CTFd host to many students
 simultaneously), reconsider migrating to `cryptography`'s own EC signing (`ec.generate_private_key`
