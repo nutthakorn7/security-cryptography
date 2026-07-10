@@ -44,7 +44,23 @@ By the end of the course, students will be able to:
    (nonce reuse, missing authentication, wrong mode) that a plausible-looking answer can hide.
 6. **Communicate cryptographic risk** to both technical and non-technical audiences.
 
-## 3. Assessment taxonomy (AIR-Sec, shared with `software-security`)
+## 3. Assessment
+
+Same weighting structure as `software-security` (both courses share one preregistered study
+design, so component weights are kept aligned):
+
+| Component | Weight | Graded |
+|---|---|---|
+| Weekly lab worksheets — 12 graded (Weeks 1–6, 10–15) | 30% | **Individual** |
+| Midterm — Week 8 (written) + Week 9 (CTF practical) | 20% | **Individual** |
+| Final — Week 18 written *(individual)* + Week 19 capstone CTF *(team)* | 25% | Mixed |
+| Term project — CryptoVault (see `project/README.md`) | 15% | **Team of 2–3** |
+| Weekly quizzes (drop lowest 1–2) + participation / **Houses** leaderboard | 10% | Individual + Houses |
+
+> **Individual vs team.** Your grade is dominated by **individual mastery** (worksheets,
+> quizzes, exams ≈ 75%). **Team** work is bounded (project 15% + the Week 19 capstone CTF).
+
+### Assessment taxonomy (AIR-Sec)
 
 Every teaching week carries **both** an AIR-Sec assessment and a Conventional (essay/discussion)
 assessment, per the preregistered crossover design — see `course-plan-19weeks.md`'s "dual-arm
@@ -61,9 +77,6 @@ week:
 up to 3 days; not accepted after day 3 without an approved extension. Weekly/in-class quizzes have
 no late window (an absence is covered by the drop-lowest-1–2 rule instead). Documented emergencies
 get a case-by-case extension at the instructor's discretion.
-
-> **Component weight table not yet finalized.** `project/README.md` and `SUBMISSION.md` both
-> point here for the exact weighting of worksheets/quizzes/midterm/final/project — pending.
 
 ## 4. Structure
 

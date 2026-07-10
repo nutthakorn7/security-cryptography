@@ -1,7 +1,6 @@
 # Term Project — CryptoVault
 
-**Teams of 2–3 (nested in your House). Graded team component — see `syllabus.md` for the exact
-weight once finalized.**
+**Teams of 2–3 (nested in your House). 15% of the final grade.**
 
 This is a **"build it right," not "find the bug"** project — the inverse of the weekly labs. Every
 week from Wk2–Wk15 hands you a *broken* construction and asks you to break it, then fix it.
