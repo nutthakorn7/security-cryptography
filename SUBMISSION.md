@@ -114,7 +114,7 @@ once `FLAG_*` values are personalized and this note will be removed.
 ## Rules for every submission
 - **Name + Student ID** on every file; teamwork only where stated (labs/quizzes/exams are individual; CryptoVault is team-graded with peer-contribution scaling — see `project/README.md`).
 - **AI-tool disclosure:** state how you used any AI tool (search, code, translate) — a section is built into the worksheet/report.
-- **Late:** score deduction per the syllabus; submit what you have.
+- **Late:** −10%/day, up to 3 days (see `syllabus.md` §3); submit what you have.
 
 ---
 

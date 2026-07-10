@@ -57,6 +57,14 @@ week:
   flag, a seeded bug instance, or a per-student parameter) plus Audit-the-AI / EiPE / Prompt
   Problem as fits the content, and viva spot-checks.
 
+**Late submissions.** Same policy as `software-security`: −10% of that item's score per day late,
+up to 3 days; not accepted after day 3 without an approved extension. Weekly/in-class quizzes have
+no late window (an absence is covered by the drop-lowest-1–2 rule instead). Documented emergencies
+get a case-by-case extension at the instructor's discretion.
+
+> **Component weight table not yet finalized.** `project/README.md` and `SUBMISSION.md` both
+> point here for the exact weighting of worksheets/quizzes/midterm/final/project — pending.
+
 ## 4. Structure
 
 Same skeleton as `software-security`: **13 teaching weeks (1–6, 10–16), 2 review weeks (7, 17),
