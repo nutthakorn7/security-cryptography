@@ -6,12 +6,12 @@ misused, and how to use them correctly. Companion course to
 AIR-Sec pedagogy, same preregistered study, different subject matter and a separate repo/CTFd
 deployment.
 
-> ⚠️ **Status: DRAFT.** 12 of 13 teaching weeks are built (Weeks 1–6, 10–15 — Labs, Hybrids, and
+> ⚠️ **Status: DRAFT.** All 12 teaching weeks are built (Weeks 1–6, 10–15 — Labs, Hybrids, and
 > Conceptual weeks; see [course-plan-19weeks.md](course-plan-19weeks.md) for which is which),
-> plus both review weeks (7, 17) and both exam blocks (8–9, 18–19). This course's own
-> `seed_flags.py` + `check_flag_keys.py` + flag-bridge wiring are built and verified
-> (`instructor/platform-build/`). Remaining: Week 16 (capstone studio — covered by
-> `project/README.md`, no separate lab dir by design) and the deployment catalog
+> plus the capstone (Week 16 — a studio day, not a lecture; covered by `project/README.md`, no
+> vulnerable-target lab by design), both review weeks (7, 17), and both exam blocks (8–9, 18–19).
+> This course's own `seed_flags.py` + `check_flag_keys.py` + flag-bridge wiring are built and
+> verified (`instructor/platform-build/`). Remaining: the deployment catalog
 > (`challenges-import.csv` / `ctfd/challenges.yml`) — the labs are Docker-verified standalone but
 > not yet live in a CTFd deployment. Do not use this for a live course yet.
 
@@ -90,7 +90,7 @@ security-cryptography/
 
 ## Relationship to `software-security`
 
-- Same 19-week skeleton (13 teaching + 2 review + 2×2 exam), same AIR-Sec assessment taxonomy
+- Same 19-week skeleton (12 teaching + 1 capstone + 2 review + 2×2 exam), same AIR-Sec assessment taxonomy
   (Audit-the-AI, EiPE, Prompt Problem, viva, per-student attributable artifacts).
 - **Separate** `seed_flags.py` / CHALLENGES namespace, separate CTFd deployment, separate
   `RESEARCH_SALT` and pseudonymization run — no shared identifiers between the two courses'

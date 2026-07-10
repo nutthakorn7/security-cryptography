@@ -80,8 +80,8 @@ get a case-by-case extension at the instructor's discretion.
 
 ## 4. Structure
 
-Same skeleton as `software-security`: **13 teaching weeks (1–6, 10–16), 2 review weeks (7, 17),
-2 exam blocks (8–9 midterm, 18–19 final)**. Full week-by-week table:
+Same skeleton as `software-security`: **12 teaching weeks (1–6, 10–15), 1 capstone week (16),
+2 review weeks (7, 17), 2 exam blocks (8–9 midterm, 18–19 final)**. Full week-by-week table:
 [course-plan-19weeks.md](course-plan-19weeks.md).
 
 ## 5. References

@@ -1,16 +1,16 @@
 # Security & Cryptography — 19-Week Course Plan (KOSEN69)
 
-> **Status: DRAFT — checkpoint before going live.** 12 of 13 teaching weeks (Wk1–6, 10–15) are built
-> and verified below — Labs, Hybrids, and Conceptual weeks — plus both review weeks (7, 17) and both
-> exam blocks (8–9, 18–19). This course's own `seed_flags.py` + `check_flag_keys.py` +
-> flag-bridge wiring are built and verified (`instructor/platform-build/`). Remaining: Wk16
-> (capstone studio — see `project/README.md`, no separate lab dir by design), and the deployment
-> catalog (`challenges-import.csv` / `ctfd/challenges.yml`) — labs are Docker-verified standalone
-> but not yet live in a CTFd deployment. See [OPEN DECISIONS](#open-decisions) before treating this
-> as final.
+> **Status: DRAFT — checkpoint before going live.** All 12 teaching weeks (Wk1–6, 10–15) are built
+> and verified below — Labs, Hybrids, and Conceptual weeks — plus the capstone (Wk16 — a studio
+> day, not a lecture; see `project/README.md`, no vulnerable-target lab by design), both review
+> weeks (7, 17), and both exam blocks (8–9, 18–19). This course's own `seed_flags.py` +
+> `check_flag_keys.py` + flag-bridge wiring are built and verified (`instructor/platform-build/`).
+> Remaining: the deployment catalog (`challenges-import.csv` / `ctfd/challenges.yml`) — labs are
+> Docker-verified standalone but not yet live in a CTFd deployment. See
+> [OPEN DECISIONS](#open-decisions) before treating this as final.
 
 This course reuses the same 19-week skeleton as [`software-security`](../KOSEN69%20-%20software-security/course-plan-19weeks.md):
-**13 teaching weeks (1–6, 10–16) · 2 review weeks (7, 17) · 2 exam blocks (8–9, 18–19)**, and is a
+**12 teaching weeks (1–6, 10–15) · 1 capstone week (16) · 2 review weeks (7, 17) · 2 exam blocks (8–9, 18–19)**, and is a
 second arm of the same preregistered multi-course study (`software-security/instructor/research/preregistration.md`
 §3 — this course is named there as "Security & Cryptography").
 
@@ -250,7 +250,7 @@ it: AEAD) → **Wk10** (how AEAD *still* fails if you reuse a nonce).
   resistance + mutual auth)" caveat is present in the code comments, README, worksheet, and answer
   key — not overclaimed as SRP/OPAQUE-equivalent.
 
-- **Built: Wk1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15** (12 of 13 teaching weeks), both review
+- **Built: Wk1, 2, 3, 4, 5, 6, 10, 11, 12, 13, 14, 15** (all 12 teaching weeks) plus Wk16's capstone (`project/README.md`), both review
   weeks (7, 17), and both exam blocks (8–9 midterm; 18–19 final — `instructor/exams/`). Also
   built: this course's own `seed_flags.py` + `check_flag_keys.py` + flag-bridge deployment wiring
   (open item #5's flag mechanism — done; the live CTFd instance itself is a separate, still-open
