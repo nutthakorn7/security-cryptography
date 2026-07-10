@@ -95,7 +95,7 @@ once `FLAG_*` values are personalized and this note will be removed.
 |------|--------|---------------|
 | W8 Midterm written | Wk1–6 (Intro → AEAD) | on paper / Google Form in class (120 min) |
 | W9 Midterm practical CTF | Wk1–6 | submit **flags/evidence + payload + mitigation** via the CTF Form/Classroom (150 min) |
-| W18 Final written | cumulative, emphasis Wk10–16 (Hybrid-Encryption → Capstone) | on paper / Google Form (150 min) |
+| W18 Final written | cumulative, emphasis Wk10–16 (Hybrid-Encryption → Capstone) | on paper / Google Form (90 min) |
 | W19 Final CTF + capstone demo | cumulative, emphasis Wk10–16 | flags/evidence via Form; live CryptoVault project demo (graded by rubric) |
 
 ## TERM PROJECT — CryptoVault

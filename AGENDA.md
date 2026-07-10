@@ -186,7 +186,7 @@ instead of exploitation.
 | 15 | Lab — Post-Quantum Cryptography (Lamport OTS key reuse) | 120 | 180 | 10† | — | 300 |
 | 16 | Capstone Studio (CryptoVault project) | — | 300 | — | — | 300 |
 | 17 | 🔁 Review (pre-final) | — | — | 25‡ | — | 300 |
-| 18 | 📝 Final — Written | — | — | — | 150 | 150 |
+| 18 | 📝 Final — Written | — | — | — | 90 | 90 |
 | 19 | 📝 Final — CTF + Demos (cumulative, emphasis Wk10–16) | — | — | — | 240 | 240 |
 
 *W1 lab includes term-wide environment setup (~30–40 min) — onboarding block is longer; see the
@@ -208,7 +208,7 @@ CONCEPTUAL-week template note above.
 | 4:30–5:00 | Debrief: common mistakes + exam logistics |
 
 ### Week 8 / 18 — Written exam
-- Single block: **120 min (midterm) / 150 min (final)**. No lab.
+- Single block: **120 min (midterm) / 90 min (final)**. No lab.
 
 ### Week 9 — Midterm CTF practical (150 min)
 - 0:00–0:10 rules + target check · 0:10–2:30 solve challenges · submit flags (Wk2–4, 6 style) and
