@@ -6,6 +6,11 @@ hash-based signatures · **Kind:** LAB
 keys, hash-based signatures (SPHINCS+/XMSS) · **Analogous CWE:** CWE-323 (Reusing a Nonce/Key
 Pair in Encryption), CWE-347 (Improper Verification of Cryptographic Signature)
 
+> **Companion confidentiality lab:** [`hndl/`](hndl/) — "Harvest Now, Decrypt Later" + hybrid KEM.
+> This directory is the *signature* half of PQC; `hndl/` is the *key-exchange/confidentiality* half
+> (harvest a session, break its classical KEM later, decrypt it; watch a hybrid classical+ML-KEM
+> channel resist the same attack). Run either or both.
+
 ## ✅ This week — what to do
 1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security`);
    skim the earlier signature weeks (Week 3 MACs, Week 5 key exchange) — this week is where the
