@@ -66,9 +66,10 @@ table above:
   (cert-bypass MITM), `labs/week13-e2e-encryption` (TLS-vs-E2EE server-log evidence),
   `labs/week14-authentication` (password-over-the-wire vs. challenge-response),
   `labs/week15-pqc` (Lamport key-reuse forgery) — plus a callback item from Wk2–6.
-- **Not built yet:** a dedicated `mock-ctf.md` walkthrough (with hints, self-check scripts) —
-  build it alongside the Wk18/19 exam materials, mirroring `software-security/labs/
-  week17-review-final-prep/mock-ctf.md`'s table format (challenge / topic / hint / self-check).
+- **Walkthrough:** a dedicated [`mock-ctf.md`](mock-ctf.md) (with hints + self-check pointers,
+  no flags) mirrors `software-security/labs/week17-review-final-prep/mock-ctf.md`'s table format
+  (challenge / topic / hint / self-check): six post-midterm challenges (Wk10–15) plus a first-half
+  callback round (Wk2–6).
 
 ## Exam-prep note
 

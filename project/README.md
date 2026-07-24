@@ -115,11 +115,12 @@ separately.
 
 ## Report
 
-Write up the self-audit and design doc as a short report — a fill-in report template
-(`REPORT-TEMPLATE.md`) mirroring `software-security/project/REPORT-TEMPLATE.md`'s
-section-by-section rubric mapping is not yet built for this course; until then, structure your
-write-up around the deliverables list above (design doc → self-audit, one section per primitive →
-crypto-agility note → conclusion) and include an AI-tool usage disclosure.
+Write up the self-audit and design doc using the fill-in report template
+[`REPORT-TEMPLATE.md`](REPORT-TEMPLATE.md) — it mirrors `software-security/project/REPORT-TEMPLATE.md`'s
+section-by-section rubric mapping, adapted for CryptoVault: one section per core primitive (design doc
+→ KDF → AEAD → key exchange → signatures → transport → end-to-end composition → crypto-agility note →
+conclusion), each mapped to its rubric points and the weekly failure mode it must avoid, plus an
+AI-tool usage disclosure and the peer-contribution ratings.
 
 All work stays within this course's ethics policy — see [`../ETHICS.md`](../ETHICS.md) (authorized
 targets only; here, that means your own team's app and your own test accounts, never another
