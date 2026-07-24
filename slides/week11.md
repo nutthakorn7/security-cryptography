@@ -69,7 +69,7 @@ Victor is convinced Peggy knows `x` — but learns nothing about `x` itself, and
 - Fiat–Shamir trick: replace Victor's random challenge with `hash(commitment, message)`
 - Now Peggy can compute the whole proof **alone**, offline, and attach it to a message
 
-**Result: a digital signature *is* a non-interactive zero-knowledge proof of knowledge of the private key.** ECDSA and EdDSA are both built this way.
+**Result: a digital signature *is* a non-interactive zero-knowledge proof of knowledge of the private key.** EdDSA (Ed25519) is literally this — a Fiat–Shamir transform of Schnorr. ECDSA (DSA family) is *also* a NIZK proof of knowledge of the private key, but **not** a literal Fiat–Shamir/Schnorr construction (its hash covers only the message, not the commitment).
 
 <!-- Worksheet Q2(b)(c). The "aha": hashing removes the live verifier because a hash is unpredictable *and* bound to the message — nobody can pre-compute a fake response before knowing what they're "committing" to. This is the conceptual bridge from ZKP theory to the ECDSA math on the next two slides. ~5 min. -->
 

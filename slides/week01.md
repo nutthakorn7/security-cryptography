@@ -51,7 +51,7 @@ and shows **one specific, real way it fails when misused**:
 | 11 | ECDSA signatures | Nonce reuse algebraically recovers the private key |
 | 12 | TLS / certificates | Sound crypto, client skips hostname validation — MITM anyway |
 
-*(Full 12-row table is in this week's README — you'll hypothesize about two
+*(Full 11-row table is in this week's README — you'll hypothesize about two
 unseen rows in the worksheet.)*
 
 <!-- Don't over-explain each row yet — these are previews, not lessons. Point out the shape: primitive column never says "broken," failure column always names a missing check or a violated assumption. Ask: "what do all five failure descriptions have in common?" ~6 min. -->

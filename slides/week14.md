@@ -84,7 +84,7 @@ week14-client  | LOGIN OK
 - Server independently recomputes the same proof from its stored `v` and the nonce it issued, and **compares**
 - Match → `LOGIN OK`. The password never crossed the network, so there was nothing to log
 
-<!-- Walk the symmetry: both sides end up computing the same HMAC, but only the client ever touches the raw password. The server's "knowledge" is entirely mediated through v. Ask: "if an attacker steals the server's database and gets v, can they log in as alice directly?" (Not trivially — they'd still need to produce a valid proof for a *fresh* nonce; foreshadow next slide's honest limits.) ~6 min. -->
+<!-- Walk the symmetry: both sides end up computing the same HMAC, but only the client ever touches the raw password. The server's "knowledge" is entirely mediated through v. Ask: "if an attacker steals the server's database and gets v, can they log in as alice directly?" (YES, trivially — in THIS demo v is password-equivalent: the thief just requests a fresh nonce and computes HMAC(v, nonce), authenticating without ever cracking the password. The fresh nonce only stops replay by someone who does NOT hold v. Verifier-theft resistance is exactly what a real PAKE — SRP/OPAQUE — adds and this demo deliberately lacks; foreshadow next slide's honest limits.) ~6 min. -->
 
 ---
 
@@ -221,4 +221,4 @@ log.warning("login FAILED for %s (pw=%s)", body["username"],
 # Questions?
 Next week: Post-Quantum Cryptography
 
-<!-- Cliffhanger: "everything we've built all semester — RSA, Diffie-Hellman, the verifiers today — assumes a certain kind of math is hard. Next week we ask what happens when a quantum computer makes that assumption false." Remind: Docker stacks ready for both compose files before lab starts. -->
+<!-- Cliffhanger: "the public-key math we've leaned on all semester — RSA, Diffie-Hellman — assumes a certain kind of problem is hard. Next week we ask what happens when a quantum computer makes that assumption false. (Note: our hash-based verifiers today SURVIVE — Grover only halves symmetric/hash strength; it's the public-key primitives that break.)" Remind: Docker stacks ready for both compose files before lab starts. -->

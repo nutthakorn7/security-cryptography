@@ -149,7 +149,7 @@ python exploit.py             # PASS :8096 (flag), PASS :8097 (rejected)
 - **CBC, reused IV** — reveals whether two messages share a prefix (Q2)
 - **GCM, reused nonce** — catastrophic: keystream *and* auth key both reused → plaintext XOR leaks *and* tags become forgeable (Q5/Q6)
 - **Disk encryption (LUKS/BitLocker)** uses **AES-XTS**, not GCM — no room for a per-sector nonce+tag, so it trades away authentication for a tweakable cipher (Q8)
-- **Mobile/IoT**: AES-GCM where HW AES-NI exists; ChaCha20-Poly1305 otherwise — avoids timing side channels without hardware accel (Q7)
+- **Mobile/IoT**: AES-GCM where **hardware AES acceleration** exists (x86 AES-NI, ARMv8 crypto ext.); ChaCha20-Poly1305 otherwise — avoids timing side channels without hardware accel (Q7)
 
 <!-- Zoom out from this week's one exploit to the whole family — the lab only shows malleability, but the worksheet's Q5–Q8 cover the rest. Nonce reuse in GCM is worse than people expect: it doesn't just leak, it can let an attacker forge future tags. Don't derive the math live — point them to the worksheet. ~8 min. -->
 
