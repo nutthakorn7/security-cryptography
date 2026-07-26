@@ -106,7 +106,7 @@ your notes from that week, and recapture the flag/evidence artifact solo:
 | # | Challenge | Topic | Target |
 |---|-----------|-------|--------|
 | 1 | Crack the admin password from a leaked unsalted-MD5 store | Hashing (W2) | `labs/week02-hash` (`docker compose up`, ports 8094/8095) |
-| 2 | Forge an admin cookie via HMAC length-extension | MACs (W3) | `labs/week03-macs` |
+| 2 | Forge an admin cookie via length-extension against `SHA256(secret‖data)` | MACs (W3) | `labs/week03-macs` |
 | 3 | Bit-flip a CBC session token from `role=guest` to `role=admin` | AES modes (W4) | `labs/week04-aes-modes` (ports 8096/8097) |
 | 4 | MITM an unauthenticated DH handshake and recover the relayed secret | Key exchange (W5) | `labs/week05-key-exchanges` (`docker compose -f docker-compose.vulnerable.yml up`) |
 | 5 | Run a padding-oracle attack to decrypt a ciphertext byte-by-byte | AEAD (W6) | `labs/week06-aead` (ports 8098/8099) |
