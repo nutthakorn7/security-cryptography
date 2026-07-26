@@ -60,7 +60,10 @@ the constraint is on the cryptographic composition, not the framework.
 4. **Crypto-agility note** *(stretch)* — the PQC note described in item 6 above.
 5. **Demo** — a short live walkthrough: create a vault entry → share it with another user →
    recipient verifies and decrypts, narrating which primitive is doing what at each step (WIP demo
-   in the **Week 16** capstone studio; graded final demo in **Week 19**).
+   in the **Week 16** capstone studio; graded final demo in **Week 19**). The Week 19 demo is
+   **submitted as a pre-recorded video before the session** and graded from the recording; the
+   in-class block is a **3-minute live Q&A** on your own build (see `AGENDA.md`'s Week 19 note —
+   a live demo per team does not fit the cohort size).
 
 ## Suggested timeline
 
