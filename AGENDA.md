@@ -1,9 +1,14 @@
 # Weekly Agenda & Time Plan (DRAFT for review)
 
 **Standard contact time:** 5 hrs/week = **120 min lecture + 180 min lab** (per syllabus: 2 lecture + 3 lab hrs).
-**Quizzes:** a short **weekly quiz (~10 min) at the start of every teaching week** (retrieval
-practice, low-stakes, drop lowest 1–2). Two **cumulative review quizzes** (25 pts) run in the
-review weeks (W7 pre-midterm, W17 pre-final).
+**Quizzes:** a short **weekly quiz (~10 min)**, low-stakes, lowest 1–2 dropped. It is *retrieval*
+practice, so **it tests the previous teaching week's material, not the one about to be taught**:
+`quizzes/weekly/weekNN.md` is the bank for week NN's content and is administered at the start of the
+*following* teaching session — week 01's quiz opens week 02, week 06's opens the week-07 review,
+week 15's opens the week-16 capstone studio. Several items ask students to reason about a lab they
+have already run; that is what makes the retrieval genuine, and what breaks if a quiz is moved ahead
+of its own week. To run them instead as pre-lecture primers, score that sitting as diagnostic only.
+Two **cumulative review quizzes** (25 pts) run in the review weeks (W7 pre-midterm, W17 pre-final).
 
 This is the agenda for **Security & Cryptography**, a companion course to `software-security`
 with its own Google Classroom instance and its own GitHub repo/CTFd deployment (see this
