@@ -86,13 +86,20 @@ the load-bearing gap is the exercise.
   with neither a fork nor Docker Desktop because they read the README's line literally.
 
 **Instructor, before class**
-- **Produce the Snake Oil Bingo cards.** The README says *"Everyone gets a bingo card of common
-  crypto myths"*; no card artefact exists anywhere in the repository. The only myth strings the
-  repo states are "military-grade encryption," "unbreakable 256-bit security," and "quantum-proof
-  because the key is long enough" — everything else on the card is your authorship. Cards: ⬚.
-- **Decide the 0:00–0:10 quiz slot.** `quizzes/weekly/` contains only `week07-review-quiz.md` and
-  `week17-review-quiz.md`; there is no Week 1 instrument, and the deck's own note says *"No recap
-  today — this is Week 1."* Week 1 quiz item: ⬚.
+- **Collect the Snake Oil Bingo cards.** They now exist:
+  `labs/week01-intro/snake-oil-bingo.md` ships a 24-myth pool and six differently arranged 5×5
+  cards (A–F); the one-line technical reason for every myth is in
+  `instructor/week01-snake-oil-bingo-key.md` (instructor-only). Hand out all six letters so
+  neighbouring tables cannot copy a line, and read the key's §6 accept/reject boundaries before
+  play — the quantum square in particular has an answer that sounds right and is wrong.
+- **Timing caution, measured from the shipped cards.** The Exhibit alone puts only about four
+  squares in play, and no card can complete a line on four. Either hand the cards out at the start
+  of the lecture — the trust-boundary, Debian and PS3 slides put roughly seven squares up before
+  1:35 — or announce a reduced win condition *before* play begins, never after a table claims a line.
+- **Week 1 has no quiz to give.** `quizzes/weekly/week01.md`–`week15.md` now exist, but per
+  AGENDA.md a week's quiz runs at the start of the *following* teaching session: `week01.md` opens
+  Week 2, and Week 1 itself opens with no quiz. The deck already says *"No recap today — this is
+  Week 1."*, so the 0:00–0:10 slot is recap-and-agenda only.
 - **Decide the studio timing question in §5** and write the decision into §9 afterwards.
 - **Decide the per-student variant question in §6** *before* marking begins, not during.
 - Have `instructor/week01-intro-answer-key.md` open for the Part 3 rubric bands and the viva
@@ -237,7 +244,8 @@ one preregistered study.
 - Lab: `labs/week01-intro/` — `README.md`, `worksheet.md`. **That is the whole folder** — no code,
   no `docker-compose.yml`, no flag (by design).
 - Slides: `slides/week01.md`
-- Snake Oil Bingo cards: ⬚ (not in the repository — see §3)
+- Snake Oil Bingo cards: `labs/week01-intro/snake-oil-bingo.md` (six cards, A–F) · marking key: `instructor/week01-snake-oil-bingo-key.md` (instructor-only)
+- **Timing caution from the key's own measurement:** the Exhibit alone puts only about four squares in play, and no card can complete a line on four. Either hand the cards out at the start of the lecture (the trust-boundary, Debian and PS3 slides put ~7 squares up before 1:35) or announce a reduced win condition *before* play starts — not after someone claims a line.
 - Week 1 quiz: ⬚ (not in the repository — `quizzes/weekly/` holds the two review quizzes only)
 - Reading ([readings.md](../../readings.md), W1): ⭐ Moxie Marlinspike, *The Cryptographic Doom
   Principle* · "Crypto Fails" writeups · NIST Cryptographic Standards and Guidelines overview ·
