@@ -12,10 +12,21 @@ authorized-use policy, [`ETHICS.md`](ETHICS.md).
 ---
 
 ## One-time setup (Week 1)
-1. Create a GitHub account; **fork** this course's repo (`security-cryptography`) to your account.
-2. `git clone` your fork; stand up the environment (Docker) per Week 1.
-3. Join this course's Google Classroom (code given in class — a different code/instance than any
-   other course you're taking).
+**Every lab starts with `cd labs/weekNN-…`, so you need the repository on your own
+machine before Week 1. Nothing on the website will work without this step.**
+
+1. Create a GitHub account, then **fork** this course's repo:
+   <https://github.com/nutthakorn7/security-cryptography>
+2. Clone your fork and check it out:
+   ```bash
+   git clone https://github.com/<your-github-username>/security-cryptography.git
+   cd security-cryptography
+   ```
+   Then stand up the environment (Docker) per Week 1.
+3. Read the material at **`learn.zcr.ai/learn/cryptography/`** — no sign-in needed.
+4. Join this course's Google Classroom (code given in class — a different code/instance than any
+   other course you're taking). **Hand-in for this course still goes through Classroom;**
+   the weekly reading and the simulations are on the platform above.
 
 ---
 
