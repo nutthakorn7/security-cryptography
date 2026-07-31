@@ -11,7 +11,7 @@ of its own week. To run them instead as pre-lecture primers, score that sitting 
 Two **cumulative review quizzes** (25 pts) run in the review weeks (W7 pre-midterm, W17 pre-final).
 
 This is the agenda for **Security & Cryptography**, a companion course to `software-security`
-with its own Google Classroom instance and its own GitHub repo/CTFd deployment (see this
+with its own GitHub repo/CTFd deployment and its own course scope on the platform (see this
 repo's README.md, "Relationship to `software-security`"). Nothing here is shared live with the
 sibling course — no joint roster, no joint scoreboard.
 
@@ -90,7 +90,7 @@ week is one of:
 | 1:45–2:25 | Defend / fix task (apply the secure version, prove exploit fails) |
 | 2:25–2:45 | **AI-resilient tasks:** Audit-the-AI + EiPE + Prompt Problem (start in class, finish as homework) |
 | 2:45–2:55 | **Rotating micro-demo:** 2–3 students give a 2–3 min "show your exploit/fix" (different students each week → everyone presents ~1–2× per term) |
-| 2:55–3:00 | Submit worksheet (PDF → this course's Classroom) + push fix (this course's GitHub) + wrap-up |
+| 2:55–3:00 | Submit worksheet (PDF → `learn.zcr.ai/submit`) + push fix (this course's GitHub) + wrap-up |
 
 ## Standard teaching-week template — HYBRID weeks (5, 11, 12, 13, 14)
 
@@ -120,7 +120,7 @@ when running Wk11.
 | 1:45–2:25 | Conceptual extension: EiPE/worksheet questions on the part of the topic that has no demo (e.g. Schnorr/ZKP theory in Wk11, FIDO2/SSO/TOTP comparison in Wk14) |
 | 2:25–2:45 | **AI-resilient tasks:** Audit-the-AI + EiPE + Prompt Problem (start in class, finish as homework) |
 | 2:45–2:55 | **Rotating micro-demo:** 2–3 students give a 2–3 min "show your before/after log lines" |
-| 2:55–3:00 | Submit worksheet (PDF → this course's Classroom) + push fix (this course's GitHub) + wrap-up |
+| 2:55–3:00 | Submit worksheet (PDF → `learn.zcr.ai/submit`) + push fix (this course's GitHub) + wrap-up |
 
 ## CONCEPTUAL-week template (Weeks 1, 10)
 
@@ -145,7 +145,7 @@ instead of exploitation.
 | 1:45–2:25 | Structured peer critique of another team's design/analysis |
 | 2:25–2:45 | **AI-resilient tasks:** Audit-the-AI + EiPE + Prompt Problem (start in class, finish as homework) |
 | 2:45–2:55 | **Rotating micro-demo:** 2–3 students walk through their design/critique |
-| 2:55–3:00 | Submit worksheet (PDF → this course's Classroom) + wrap-up (no fix to push — no code this week) |
+| 2:55–3:00 | Submit worksheet (PDF → `learn.zcr.ai/submit`) + wrap-up (no fix to push — no code this week) |
 
 > **Week 1 exception:** Week 1's lab also carries **term-wide environment setup** (Docker
 > Desktop install/verify, repo clone, first `docker compose up` on a throwaway container) since
@@ -247,7 +247,7 @@ CryptoVault project (see `project/README.md` for the full brief/rubric).
 
 ## Open items carried from `course-plan-19weeks.md`
 
-This course's own CTFd deployment, `instructor/seed_flags.py`, and Classroom roster are not yet
+This course's own CTFd deployment, `instructor/seed_flags.py`, and platform roster are not yet
 live (see README.md status note) — the timings above are the *intended* live-course agenda, not
 yet exercised end-to-end with real students. Confirm actual worksheet task counts fill the
 180-min lab block per week (this course's worksheets are newly built, not ported verbatim from
