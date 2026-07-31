@@ -159,8 +159,12 @@ are in place; assume your submission is checked.
   is not yet technically enforced end-to-end — it is the target state and will be announced when
   live. Treat it as already in force for behavior: do not share or reuse another student's
   evidence in the meantime.)*
-- **Your screenshots must show you.** Evidence must include your **terminal `whoami` / login
-  email / student ID** and a **timestamp**. Generic or borrowed screenshots are not accepted.
+- **Your screenshots must show you.** Evidence must include a terminal running `printf '%s | %s | ' "$(whoami)" '<YOUR-STUDENT-ID>'; date '+%F %T %Z'` **in
+  the same image as the evidence**. When the evidence is a browser page, a DevTools panel or a
+  rendered response, put that terminal **beside the browser and capture the whole screen** — a
+  cropped window carries nothing that identifies you, and the lab's own output is
+  byte-identical for the whole cohort *by design*, so the stamp is the only thing that makes
+  the shot yours. Generic or borrowed screenshots are not accepted.
 - **Your code is attributable.** Work in **your own GitHub fork** with your own commits.
   Submissions are run through **code-similarity tools (MOSS/JPlag)** against classmates and
   previous cohorts. A single "paste-everything" commit with no history is a red flag.
