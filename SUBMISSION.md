@@ -1,10 +1,22 @@
 # How to Do & Submit Work
 
-**Platforms:** **Google Classroom** (worksheets, reports, grades) + **GitHub** (your code fixes).
-This course has its **own** Google Classroom instance and its **own** GitHub repo — separate
-from the companion `software-security` course's Classroom and repo, even though the two courses
-share the same 19-week skeleton and pedagogy. Join *this* course's Classroom and fork *this*
-course's repo; submissions to the wrong course's platform cannot be graded here.
+**Platforms:** the **course platform** (material, quizzes, hand-in) + **GitHub** (your code fixes).
+
+| What | Where |
+|---|---|
+| Course material — worksheets, lab guides | **`learn.zcr.ai/learn/cryptography`** — no sign-in needed |
+| Weekly quiz | **`learn.zcr.ai/quiz`** — the one-time code on your slip |
+| Worksheet PDFs, project report | **`learn.zcr.ai/submit`** — the submission code on your slip |
+| Code fixes (Wk12) | **GitHub** — your own fork of this course's repo |
+
+> **No Google.** Material, quizzes and worksheet hand-in all run on the course
+> platform. There is no Google Classroom and no Google Form for this course.
+
+This course has its **own** GitHub repo, separate from the companion
+`software-security` course's, even though the two share the same 19-week skeleton and pedagogy.
+Fork *this* course's repo; work submitted against the wrong course cannot be graded here. The
+platform files every quiz and every hand-in under the course it belongs to, so the code on your
+slip is what puts your work in *this* class.
 
 All offensive work is on the provided sandbox targets only — see this course's own ethics &
 authorized-use policy, [`ETHICS.md`](ETHICS.md).
@@ -24,9 +36,9 @@ machine before Week 1. Nothing on the website will work without this step.**
    ```
    Then stand up the environment (Docker) per Week 1.
 3. Read the material at **`learn.zcr.ai/learn/cryptography/`** — no sign-in needed.
-4. Join this course's Google Classroom (code given in class — a different code/instance than any
-   other course you're taking). **Hand-in for this course still goes through Classroom;**
-   the weekly reading and the simulations are on the platform above.
+4. Keep the **slip you are given in class**. It carries your quiz code and your submission code;
+   those two codes are the only credential you need, and they are what files your work under
+   *this* course. There is no account to create and no password to remember.
 
 ---
 
@@ -55,8 +67,8 @@ docstring), verify it against `docker-compose.student-task.yml`, then:
 **Submit:**
 | Part | Where | What | Weeks |
 |------|-------|------|------|
-| Worksheet | **Google Classroom** | the completed worksheet exported to **PDF** (screenshots embedded) | all |
-| Code fix | **GitHub** | push branch `wk12`, open a PR (or paste the commit link in the worksheet + Classroom) | Wk12 only |
+| Worksheet | **`learn.zcr.ai/submit`** | the completed worksheet exported to **PDF** (screenshots embedded). You can replace it any time before the deadline. | all |
+| Code fix | **GitHub** | push branch `wk12`, open a PR (or paste the commit link in the worksheet) | Wk12 only |
 
 **File name:** `Wk<NN>_<StudentID>.pdf`  (e.g. `Wk04_65123456.pdf`)
 **Deadline:** before the next class session (unless told otherwise).
@@ -88,33 +100,39 @@ still the same placeholder value for everyone, *not* personalized or checked aga
 Submit your worksheet evidence (command + screenshot + flag/log line) as instructed regardless —
 the anti-cheating controls in the section below (screenshot identity-stamping, code-similarity
 checks, viva spot-checks) apply and are
-enforced manually until the personalized-flag pipeline is live; you'll be told in class/Classroom
-once `FLAG_*` values are personalized and this note will be removed.
+enforced manually until the personalized-flag pipeline is live; you'll be told in class once
+`FLAG_*` values are personalized and this note will be removed.
+
+**Where the flag goes:** into your worksheet PDF, alongside the command and the screenshot, and
+that PDF goes to `learn.zcr.ai/submit`. This course has no scoreboard of its own to paste a flag
+into — that is what the status note above is about.
 
 ---
 
 ## QUIZ — how it works
-- **Online via Google Form** (link posted in this course's Classroom at quiz time).
+- **On the course platform:** go to **`learn.zcr.ai/quiz`** and enter the **one-time code** on
+  your slip. The code is yours alone and works once.
 - **Weekly quiz:** a short **~10-min quiz at the start of every teaching week** (6 Q: 5 MCQ + 1 short, **individual**). Low-stakes — the **lowest 1–2 are dropped**.
 - **Cumulative review quizzes:** two bigger 25-pt quizzes in the **review weeks** (W7 pre-midterm, W17 pre-final).
-- No separate file to submit — the Form **is** the submission.
+- No separate file to submit — the quiz **is** the submission. Questions come one at a time and
+  the quiz only moves forward, so answer each one before you continue.
 
 ---
 
 ## EXAMS
 | Exam | Covers | How submitted |
 |------|--------|---------------|
-| W8 Midterm written | Wk1–6 (Intro → AEAD) | on paper / Google Form in class (120 min) |
-| W9 Midterm practical CTF | Wk1–6 | submit **flags/evidence + payload + mitigation** via the CTF Form/Classroom (150 min) |
-| W18 Final written | cumulative, emphasis Wk10–16 (Hybrid-Encryption → Capstone) | on paper / Google Form (90 min) |
-| W19 Final CTF + capstone demo | cumulative, emphasis Wk10–16 | flags/evidence via Form; live CryptoVault project demo (graded by rubric) |
+| W8 Midterm written | Wk1–6 (Intro → AEAD) | on paper in class, or **`learn.zcr.ai/quiz`** with the code on your slip (120 min) |
+| W9 Midterm practical CTF | Wk1–6 | **flags/evidence + payload + mitigation** in one PDF via **`learn.zcr.ai/submit`** (150 min) |
+| W18 Final written | cumulative, emphasis Wk10–16 (Hybrid-Encryption → Capstone) | on paper in class, or **`learn.zcr.ai/quiz`** (90 min) |
+| W19 Final CTF + capstone demo | cumulative, emphasis Wk10–16 | flags/evidence via **`learn.zcr.ai/submit`**; live CryptoVault project demo (graded by rubric) |
 
 ## TERM PROJECT — CryptoVault
 - Report: a fill-in report template mirroring `software-security/project/REPORT-TEMPLATE.md`'s
   section-by-section rubric mapping is **not yet built** for this course (see `project/README.md`);
   until it exists, structure your write-up around that README's deliverables list (design doc →
   self-audit, one section per primitive → crypto-agility note → conclusion), export to PDF, and
-  submit via **Google Classroom**.
+  submit via **`learn.zcr.ai/submit`**.
 - Code + design doc + self-audit: in the team's **GitHub** repo (link in the report).
 - Milestones per [project/README.md](project/README.md) (design doc Wk4 → KDF+AEAD-at-rest Wk7 →
   sharing flow draft Wk11 → transport + self-audit Wk14 → capstone-studio WIP demo Wk16 → graded

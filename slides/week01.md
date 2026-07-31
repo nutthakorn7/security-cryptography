@@ -215,7 +215,7 @@ Lightweight process, applied to a system that handles cryptographic keys:
 - Part 4 — Explain-in-Plain-English + a Prompt Problem
 - Part 5 — Viva spot-check, live, no notes
 
-<!-- Walk the deliverable structure before they start. Point out Part 3 is the heaviest (35/100 points) — it's graded on specificity of the gap, not agreement/disagreement. Remind: disclose any AI assistance used anywhere in the worksheet (Part 1). Submit as PDF to Classroom; quiz score goes to the Google Form. -->
+<!-- Walk the deliverable structure before they start. Point out Part 3 is the heaviest (35/100 points) — it's graded on specificity of the gap, not agreement/disagreement. Remind: disclose any AI assistance used anywhere in the worksheet (Part 1). Submit as PDF to learn.zcr.ai/submit; the weekly quiz is at learn.zcr.ai/quiz (one-time code on their slip). -->
 
 ---
 
