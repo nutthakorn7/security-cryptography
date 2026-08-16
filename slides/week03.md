@@ -89,6 +89,8 @@ sig = SHA256(MAC_SECRET + data)
 - Appends **glue padding** (the `0x80` + zero bytes + 8-byte bit-length SHA-256 always adds) then their own extra bytes (`&admin=true`)
 - Result: a valid `SHA256(secret ‖ data ‖ glue ‖ extra)` — computed with **zero knowledge of `secret`**
 
+![Two block chains sharing one starting point. Top: the server's real MAC computation feeds a locked secret block and a data block through the hash's compression function to produce a digest. Bottom: the attacker never sees the secret, but takes that same digest as their own starting state and feeds it, left to right, through glue-padding then extension blocks through the identical compression function, producing a forged digest the server accepts as valid.](img/length-extension.svg)
+
 <!-- The attack itself. Emphasize: the secret's LENGTH must be known/guessable (16 bytes here, a realistic assumption per the README), but its VALUE never is. Worksheet Task 2 has them hand-compute the glue length: len(secret)+len(data) = 16+22 = 38 bytes, using SHA-256's own padding rule. Run the sim below live before Task 2 — sliding the length guess to a wrong value and watching Verifier A reject it is a faster way to land "length must be right, not just guessed" than the board math alone. ~6 min. -->
 
 ```sim
