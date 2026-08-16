@@ -89,7 +89,13 @@ sig = SHA256(MAC_SECRET + data)
 - Appends **glue padding** (the `0x80` + zero bytes + 8-byte bit-length SHA-256 always adds) then their own extra bytes (`&admin=true`)
 - Result: a valid `SHA256(secret ‖ data ‖ glue ‖ extra)` — computed with **zero knowledge of `secret`**
 
-<!-- The attack itself. Emphasize: the secret's LENGTH must be known/guessable (16 bytes here, a realistic assumption per the README), but its VALUE never is. Worksheet Task 2 has them hand-compute the glue length: len(secret)+len(data) = 16+22 = 38 bytes, using SHA-256's own padding rule. ~6 min. -->
+<!-- The attack itself. Emphasize: the secret's LENGTH must be known/guessable (16 bytes here, a realistic assumption per the README), but its VALUE never is. Worksheet Task 2 has them hand-compute the glue length: len(secret)+len(data) = 16+22 = 38 bytes, using SHA-256's own padding rule. Run the sim below live before Task 2 — sliding the length guess to a wrong value and watching Verifier A reject it is a faster way to land "length must be right, not just guessed" than the board math alone. ~6 min. -->
+
+```sim
+mac-extend
+```
+
+<!-- The sim uses a toy hash, not real SHA-256 — same Merkle-Damgard shape (padding leaks length, digest IS the resumable state), small enough to read the whole compression step on screen. Point that out explicitly so nobody walks away thinking SHA-256 itself is "toy". Verifier B in the sim previews next week's fix (nested hash / HMAC) — don't over-explain it here, just let them see it hold. ~4 min. -->
 
 ---
 
