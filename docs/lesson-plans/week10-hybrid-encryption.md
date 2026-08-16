@@ -27,10 +27,11 @@ and `audit_the_ai/README.md`. By the end of this week a student can:
 **Knowledge (K)**
 - K1 — Explain why asymmetric encryption alone is unsuitable for bulk data — **both** the
   performance cost and the message-size ceiling — and why hybrid encryption exists to solve that.
-  The deck states the concrete figure: RSA-4096-OAEP has *"roughly a **470-byte plaintext
-  ceiling**"*, and the fix *"isn't 'use a bigger RSA key'"*. **That figure is wrong — see
-  *Escalations* #13** — the true ceiling for the OAEP-SHA256 this lab actually uses is 446 bytes;
-  teach the *shape* of the limit (bulk data doesn't fit), not the specific byte count on the slide.
+  The deck states the concrete figure: RSA-4096-OAEP has *"roughly a **446-byte plaintext
+  ceiling**"*, and the fix *"isn't 'use a bigger RSA key'"*. **Fixed — see *Escalations* #13
+  (resolved)** — 446 bytes is the correct ceiling for the OAEP-SHA256 this lab actually uses;
+  teach the *shape* of the limit (bulk data doesn't fit), and the figure on the slide is now
+  accurate too.
 - K2 — Trace the complete hybrid-encryption flow end to end: key generation, key wrapping,
   symmetric encryption, transmission, unwrapping, decryption — Bob's side, the wire, Alice's side.
 - K3 — Explain how a published public key lets **anyone** encrypt to a recipient, while only the
@@ -147,7 +148,7 @@ Row boundaries are AGENDA.md's **CONCEPTUAL-week** lecture template; the content
 | Time | Block | Content (slides) | Method |
 |---|---|---|---|
 | 0:00–0:10 | Weekly quiz + recap | Quiz instrument: ⬚ (none exists for Week 10). Opening hook — *"if RSA can encrypt anything, why does every real system — TLS, Signal, age, PGP — bolt AES onto it instead of just using RSA?"* [~2] · "Today" roadmap, including "no Docker target this week" [~1] · "Recap — Week 6": AEAD closed the padding-oracle hole; today AES-GCM returns, *"genuinely correct, and still breakable"* [~3] | Hook question, hold the answer; cold-call the recap |
-| 0:10–0:55 | Core concepts | "Why not just use RSA for everything?" — speed, the ~470-byte RSA-4096-OAEP ceiling *(deck figure — do not present as verified; see Escalations #13)*, OAEP overhead [~6] · "Hybrid encryption: wrap once, encrypt many" — the five-step flow [~8] · "Public-key encryption in one slide" [~6] · "Asymmetric key exchange" — ECDH, discrete-log hardness [~8] · "ECIES: hybrid encryption on ECDH" [~8] | Lecture + board work: draw the flow as a numbered diagram (Bob's side / the wire / Alice's side) and connect it to the TLS handshake. **On the RSA-ceiling slide, say the number is approximate rather than affirming 470** (see Escalations #13) |
+| 0:10–0:55 | Core concepts | "Why not just use RSA for everything?" — speed, the ~446-byte RSA-4096-OAEP ceiling *(deck figure — verified correct; see Escalations #13, resolved)*, OAEP overhead [~6] · "Hybrid encryption: wrap once, encrypt many" — the five-step flow [~8] · "Public-key encryption in one slide" [~6] · "Asymmetric key exchange" — ECDH, discrete-log hardness [~8] · "ECIES: hybrid encryption on ECDH" [~8] | Lecture + board work: draw the flow as a numbered diagram (Bob's side / the wire / Alice's side) and connect it to the TLS handshake. |
 | 0:55–1:05 | Break | | |
 | 1:05–1:35 | Worked analysis (whiteboard, not Docker) | "A shallow review would stop here" — the four checks a rushed reviewer makes, all genuinely passing [~5] · "The failure mode: nonce reuse under GCM" — SP 800-38D §8.2, CWE-323, the *shape* of the bug [~6] · "The break: what a passive eavesdropper gets" — derive `C1 ⊕ C2 = P1 ⊕ P2` [~8] | Set the trap explicitly, then walk the algebra slowly on the board — this is the "aha" the studio is built around |
 | 1:35–1:55 | Design trade-offs / where real systems get this wrong | "Worse: it's not just confidentiality" — active oracle (Wk 6) vs. passive eavesdropper; Joux 2006, the forbidden attack [~6] · "The fix — general principle": random-per-message **or** counter, pick one, don't mix; the nonce is not secret and travels in the clear; RSA/OAEP untouched [~6] | Lecture + contrast of attacker models; ask *"why doesn't this fix touch the RSA/OAEP code at all?"* and get it said out loud before the studio |
@@ -425,14 +426,14 @@ parity-gated against the curriculum monorepo, and mirrored by an instructor answ
     README's *"standard library + `cryptography` (already used in earlier weeks)"* is true of the
     earlier weeks' **images**, not of a student's host machine, where the package may never have
     been installed.
-13. `slides/week10.md` states *"RSA-4096-OAEP: roughly a **470-byte plaintext ceiling**"*. That
-    figure is wrong for the padding this course actually uses. RSA-OAEP's maximum plaintext is
-    `k − 2·hLen − 2` bytes (`k` = modulus size in bytes, `hLen` = hash output size); the lab's own
-    `audit_the_ai/broken_hybrid_encrypt.py` builds OAEP with `hashes.SHA256()` for both the OAEP
-    hash and the MGF1 hash (`hLen = 32`), and generates a 4096-bit key (`k = 512`), giving
-    `512 − 64 − 2 = 446` bytes — confirmed empirically (`cryptography`'s RSA-OAEP encrypt succeeds
-    at 446 bytes and raises at 447). 470 bytes is only correct for OAEP with SHA-1
-    (`512 − 40 − 2 = 470`), which nothing in this course's code or worksheet uses. Correct
-    `slides/week10.md` line 41 to *"roughly a 446-byte plaintext ceiling"* before the deck is
-    reused; until then, teach the *shape* of the limit in the 0:10–0:55 block rather than affirming
-    470 as verified (§1 K1, §4 lecture table).
+13. **RESOLVED.** `slides/week10.md` used to state *"RSA-4096-OAEP: roughly a **470-byte
+    plaintext ceiling**"*, which was wrong for the padding this course actually uses.
+    RSA-OAEP's maximum plaintext is `k − 2·hLen − 2` bytes (`k` = modulus size in bytes,
+    `hLen` = hash output size); the lab's own `audit_the_ai/broken_hybrid_encrypt.py` builds
+    OAEP with `hashes.SHA256()` for both the OAEP hash and the MGF1 hash (`hLen = 32`), and
+    generates a 4096-bit key (`k = 512`), giving `512 − 64 − 2 = 446` bytes — confirmed
+    empirically (`cryptography`'s RSA-OAEP encrypt succeeds at 446 bytes and raises at 447).
+    470 bytes is only correct for OAEP with SHA-1 (`512 − 40 − 2 = 470`), which nothing in
+    this course's code or worksheet uses. `slides/week10.md` line 41 now reads *"roughly a
+    446-byte plaintext ceiling"* — the §1 K1 and §4 lecture-table notes above have been
+    updated to match, and the number can be taught as verified.

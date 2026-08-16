@@ -177,7 +177,7 @@ if sig != expected:      # plain string comparison — in BOTH apps
 
 ## Lab today
 
-> 📋 **Worksheet 3** — `labs/week03-macs/worksheet.md` · **kickoff:** `docker compose up -d` then `python exploit.py`
+> 📋 **Worksheet 3** — `labs/week03-macs/worksheet.md` · **kickoff:** `docker compose up -d` then `python exploit.py` (host needs Python 3 + `requests`)
 
 - Tasks 0–5: read the vulnerable construction, capture a cookie, hand-compute the glue padding, forge it, cash in the flag, confirm HMAC rejects it
 - **+ Audit the AI** — critique an AI's flawed Q6 cookie-design answer (replay claim + `==` comparison)

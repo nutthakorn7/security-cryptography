@@ -163,7 +163,8 @@ Two identical services, same users/passwords, different hashing:
 
 ```bash
 docker compose up -d      # vulnerable_app.py :8094, fixed_app.py :8095
-python exploit.py         # PASS :8094 (flag) · PASS :8095 (0 bcrypt matches)
+python exploit.py         # needs Python 3 + `requests` on the host
+                           # PASS :8094 (flag) · PASS :8095 (0 bcrypt matches)
 ```
 
 <!-- Explain before lab: instant feedback both directions — it cracks in ms, or it visibly doesn't. exploit.py needs only `requests` on the host — no bcrypt required to *run* the attack, only inside the fixed container. Point out the session-cookie step: login and /admin must share one `requests.Session()`, and a fresh request without the cookie jar gets 403. ~4 min. -->

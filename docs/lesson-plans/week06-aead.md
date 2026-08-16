@@ -9,7 +9,7 @@
 | **Lab folder** | `labs/week06-aead` |
 | **Slides** | `slides/week06.md` |
 | **Signature game** | 🔮 "Read the Secret Without the Key" |
-| **Standards** | Analogous CWE (per lab README): CWE-347 (Improper Verification of Cryptographic Signature) · CWE-757 (Selection of Less-Secure Algorithm) · CWE-208 (Observable Timing/Response Discrepancy — the side channel) |
+| **Standards** | Analogous CWE (per lab README): CWE-347 (Improper Verification of Cryptographic Signature) · CWE-757 (Selection of Less-Secure Algorithm) · CWE-204 (Observable Response Discrepancy — the side channel) |
 | **CLOs addressed** | **CLO1** select & justify the primitive · **CLO2** break the misuse · **CLO3** rebuild it correctly (schedule table, spec §6) — plus **CLO5** (Audit the AI, EiPE, Prompt Problem) and **CLO6** (Evidence & Integrity) via the recurring worksheet parts (spec §4) |
 
 ---

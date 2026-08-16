@@ -8,7 +8,7 @@
 | **Lab folder** | `labs/week07-review` — **`README.md` only**. No worksheet, no code, no `mock-ctf.md` (Week 17's folder has one; Week 7's mock is carried inline in its README) |
 | **Slides** | ⬚ — there is no `slides/week07.md` in the repository (decks exist for Weeks 01–06 and 10–15) |
 | **Type** | Review — **no new content**. Consolidates Weeks 1–6 |
-| **Standards consolidated** | The "Analogous CWE" lines of the six weeks under review: CWE-320, CWE-330 (Wk1) · CWE-916, CWE-327, CWE-759/760 (Wk2) · CWE-347, CWE-290 (Wk3) · CWE-353, CWE-649, CWE-347 (Wk4) · CWE-322, CWE-300 (Wk5) · CWE-347, CWE-757, CWE-208 (Wk6) |
+| **Standards consolidated** | The "Analogous CWE" lines of the six weeks under review: CWE-320, CWE-330 (Wk1) · CWE-916, CWE-327, CWE-759/760 (Wk2) · CWE-347, CWE-290 (Wk3) · CWE-353, CWE-649, CWE-347 (Wk4) · CWE-322, CWE-300 (Wk5) · CWE-347, CWE-757, CWE-204 (Wk6) |
 | **CLOs addressed** | **CLO1–CLO4** (course specification §6, week 7 row) |
 
 ---

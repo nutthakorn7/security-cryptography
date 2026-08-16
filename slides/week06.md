@@ -159,7 +159,7 @@ return jsonify({"status": "ok"}), 200
 
 ## Lab today
 
-> 📋 **Worksheet 6** — `labs/week06-aead/worksheet.md` · **kickoff:** `docker compose up -d` (`:8098` CBC, `:8099` GCM) → `python exploit.py`
+> 📋 **Worksheet 6** — `labs/week06-aead/worksheet.md` · **kickoff:** `docker compose up -d` (`:8098` CBC, `:8099` GCM) → `python exploit.py` (host needs Python 3 + `requests`)
 
 - Tasks 0–5: read the oracle branch, capture ciphertext, derive `D(C_t)[15] = guess ⊕ 0x01`, recover the flag, confirm GCM gets no signal
 - **Deliverable:** recovered flag + which byte you forced to `0x01`/`0x02 0x02` and why

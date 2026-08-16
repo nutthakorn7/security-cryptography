@@ -110,7 +110,8 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 
 ```bash
 docker compose up -d          # vulnerable_app.py :8096, fixed_app.py :8097
-python exploit.py             # PASS :8096 (flag), PASS :8097 (rejected)
+python exploit.py             # needs Python 3 + `requests` on the host
+                               # PASS :8096 (flag), PASS :8097 (rejected)
 ```
 
 - No AES library needed for the attack itself — pure byte math (XOR)

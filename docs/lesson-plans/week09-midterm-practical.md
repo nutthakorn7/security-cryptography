@@ -8,7 +8,7 @@
 | **Contact time** | 150 min single block (AGENDA.md "Week 9 — Midterm CTF practical (150 min)" / per-week table Wk9 Exam = 150, Total = 150). The standard 300-min lecture+lab split does **not** apply to exam weeks. |
 | **Lab folder** | `⬚ (instructor-held)` — course-spec §6, Wk9 row. There is **no** `labs/week09-midterm-practical/` directory in the repo; the exam re-uses the already-built Wk2/3/4/6 lab targets (see §1). |
 | **Slides** | ⬚ (no `slides/week09.md`; exam week has no deck) |
-| **Standards** | Analogous CWEs named in each station's public lab README — CWE-916 / CWE-327 / CWE-759 / CWE-760 (Wk2 hash), CWE-347 / CWE-290 (Wk3 MAC), CWE-353 / CWE-649 / CWE-347 (Wk4 AES-CBC), CWE-347 / CWE-757 / CWE-208 (Wk6 AEAD). This is a crypto-misuse course — the READMEs give no OWASP category mapping and none is invented here. |
+| **Standards** | Analogous CWEs named in each station's public lab README — CWE-916 / CWE-327 / CWE-759 / CWE-760 (Wk2 hash), CWE-347 / CWE-290 (Wk3 MAC), CWE-353 / CWE-649 / CWE-347 (Wk4 AES-CBC), CWE-347 / CWE-757 / CWE-204 (Wk6 AEAD). This is a crypto-misuse course — the READMEs give no OWASP category mapping and none is invented here. |
 | **CLOs addressed** | **CLO2** break · **CLO3** rebuild · **CLO6** ethics & evidence — from the course-spec §6 schedule row for Week 9 (not the §4 "W8 written + W9 practical" combined row, which spans 1–4, 6 because it also covers the Week 8 written half). |
 
 > **What this plan may and may not contain.** The exam questions, flag values, payloads,

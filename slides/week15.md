@@ -145,7 +145,8 @@ forged = [sig0[i] if bit(admin_msg, i) == 0 else sig1[i] for i in range(32)]
 
 ```bash
 docker compose up -d
-python exploit.py   # PASS on :8100 (flag captured), PASS on :8101 (attack defeated)
+python exploit.py   # needs Python 3 + `requests` on the host
+                    # PASS on :8100 (flag captured), PASS on :8101 (attack defeated)
 ```
 
 <!-- Explain before lab -- this isn't just "get the flag." The win condition requires proving the fix actually holds, mirroring a real bug-bounty proof-of-fix submission. ~3 min. -->
