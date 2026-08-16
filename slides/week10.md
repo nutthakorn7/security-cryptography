@@ -38,7 +38,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 ## Why not just use RSA for everything?
 
 - RSA operations are orders of magnitude slower than AES for bulk data
-- RSA-4096-OAEP: roughly a **470-byte plaintext ceiling** — can't fit a photo, let alone a video
+- RSA-4096-OAEP: roughly a **446-byte plaintext ceiling** — can't fit a photo, let alone a video
 - OAEP padding eats further into the usable message size
 - **The fix isn't "use a bigger RSA key"** — it's "use RSA for something small"
 
@@ -99,7 +99,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 A teammate's AI assistant wrote a Bob-to-Alice hybrid encryption module. A quick review checks:
 
 - Real algorithm, not textbook RSA? Uses **RSA-OAEP**. ✅
-- Symmetric key strong and CSPRNG-generated? **AES-256**, `os.urandom`-backed. ✅
+- Symmetric key strong and CSPRNG-generated? **AES-256** via `AESGCM.generate_key()`. ✅
 - Authenticated, not plain CBC/ECB? **AES-GCM**. ✅
 - Tag actually checked on decrypt, not ignored? ✅
 

@@ -101,7 +101,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 3. Relay now holds two different shared secrets: one per side
 4. It decrypts Alice's AES-GCM message with the Alice-side key, logs it, re-encrypts the same plaintext under the Bob-side key, forwards it
 
-<!-- Walk relay.py's handle_mitm() step by step. Key insight for viva prep (worksheet Q1): why TWO handshakes, not one? Because relay must be a real, independent DH peer to *each* side — that's what makes both handshakes complete cleanly with no error. ~6 min. -->
+<!-- Walk relay.py's handle_mitm() step by step. Key insight for viva prep (worksheet Part 2d, viva Q1): why TWO handshakes, not one? Because relay must be a real, independent DH peer to *each* side — that's what makes both handshakes complete cleanly with no error. ~6 min. -->
 
 ---
 
@@ -127,7 +127,10 @@ week05-relay | RELAY INTERCEPTED: the launch code is 4471
 week05-bob   | BOB RECEIVED: the launch code is 4471
 ```
 
-<!-- Read the log with them line by line — this is exactly what they'll capture as lab evidence. Ask: "which two lines have to appear before RELAY INTERCEPTED, and why does relay need both first?" (It needs the Alice-side key to decrypt AND to still be mid-handshake with Bob to forward on.) ~4 min. -->
+- Container log interleaving varies run to run — the first two lines can swap; `RELAY INTERCEPTED` always follows both `RELAY: completed...` lines (same-container stdout order, can't invert) and held before `BOB RECEIVED` in every run observed, though that pair spans two containers
+- Real terminal output also interleaves `CryptographyDeprecationWarning` (FFDH) lines from the `cryptography` library — expected noise, not a sign anything broke
+
+<!-- Read the log with them line by line — this is exactly what they'll capture as lab evidence. Ask: "which two lines have to appear before RELAY INTERCEPTED, and why does relay need both first?" (It needs the Alice-side key to decrypt AND to still be mid-handshake with Bob to forward on.) Verified by running the stack repeatedly: the first two lines (RELAY completed w/ Alice, ALICE sent) occasionally swap order — container log interleaving, not a bug. RELAY INTERCEPTED reliably follows both RELAY: completed lines because those three come from relay's own sequential stdout; RELAY INTERCEPTED → BOB RECEIVED is a cross-container pair that held in every run tested but isn't structurally guaranteed the way the same-container ordering is. Don't let a swapped top pair read as "something's wrong." ~4 min. -->
 
 ---
 
@@ -149,7 +152,7 @@ week05-bob   | BOB RECEIVED: the launch code is 4471
 - The fix authenticates the exchange — it does **not** replace it
 - Real systems (TLS, SSH) authenticate DH with signatures/certificates, not a shared MAC — same principle: *authenticate the exchange, don't just run it*
 
-<!-- Critical nuance students miss: why not just use AUTH_KEY as the encryption key and skip DH entirely (worksheet Q3c / viva Q3)? Answer: you'd lose forward secrecy — a single leaked AUTH_KEY would retroactively break every past session. HMAC-signing the DH public key gets you authentication AND keeps ephemeral secrecy. ~5 min. -->
+<!-- Critical nuance students miss: why not just use AUTH_KEY as the encryption key and skip DH entirely (worksheet Part 2d, viva Q3)? Answer: you'd lose forward secrecy — a single leaked AUTH_KEY would retroactively break every past session. HMAC-signing the DH public key gets you authentication AND keeps ephemeral secrecy. ~5 min. -->
 
 ---
 
@@ -162,9 +165,10 @@ week05-relay | RELAY: (fixed mode) attempted DH substitution with Bob (posing as
 week05-bob   | AUTH FAILED - ABORTING
 ```
 
-- Zero occurrences of `RELAY INTERCEPTED` — that absence *is* the evidence
+- Container log interleaving varies run to run — either line in each relay/AUTH-FAILED pair can print first
+- Zero occurrences of `RELAY INTERCEPTED` — that absence *is* the evidence, regardless of ordering
 
-<!-- Contrast directly with the vulnerable log two slides ago. Same relay.py attempt, same structure, opposite outcome. Have them run `grep -c "RELAY INTERCEPTED"` on the fixed-mode logs and confirm it prints 0 — that's their required lab evidence. ~3 min. -->
+<!-- Contrast directly with the vulnerable log two slides ago. Same relay.py attempt, same structure, opposite outcome. Have them run `grep -c "RELAY INTERCEPTED"` on the fixed-mode logs and confirm it prints 0 — that's their required lab evidence. Verified by running the stack repeatedly: unlike vulnerable mode, BOTH pairs here (relay-attempted/alice-AUTH-FAILED, and relay-attempted/bob-AUTH-FAILED) flip order between runs with no dominant sequence — it's a genuine race, not just an occasional swap. Also expect CryptographyDeprecationWarning (FFDH) lines interleaved in. Don't grade or worry about line order here; only the two AUTH FAILED lines + zero RELAY INTERCEPTED matter. ~3 min. -->
 
 ---
 

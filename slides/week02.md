@@ -195,6 +195,6 @@ python exploit.py         # PASS :8094 (flag) · PASS :8095 (0 bcrypt matches)
 ---
 
 # Questions?
-Next week: (see course roadmap)
+Next week: MACs — hash-only auth, and forging an admin cookie via length-extension
 
 <!-- Cliffhanger: "we just watched a textbook-sound hash fail because of how it was used — every week from here on, we do this again for a different primitive." Remind students: Docker containers + wordlist.txt ready before lab starts; per-student flag via FLAG_HASH — submitting another student's flag is a violation. -->

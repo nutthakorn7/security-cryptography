@@ -58,7 +58,7 @@ week14-client  | LOGIN OK
 ```
 
 - The plaintext password is now **in the server's request handler** — CWE-522 / CWE-319
-- One `log.info(...)` line away from sitting in application logs — CWE-532
+- Already sitting in the server's own log — CWE-532 — that's the `SERVER SAW PASSWORD` line above
 - Login still "works" — that's what makes this easy to ship and easy to miss
 
 <!-- This is the exact `docker-compose.vulnerable.yml` output from the lab — point at the literal log line they'll capture. Ask: "TLS was doing its job here — so why did the password still leak?" Answer: it leaked *after* TLS did its job, at the endpoint. ~5 min. -->
@@ -91,7 +91,7 @@ week14-client  | LOGIN OK
 ## Worked example: fixed mode
 
 ```
-GET /challenge -> nonce=327decae...
+GET /challenge?username=alice -> nonce=327decae..., salt=...
 POST /login {"username":"alice","nonce":"327decae...","proof":"40e70117..."}
 ```
 
@@ -119,7 +119,7 @@ A real PAKE (SRP, OPAQUE) also gives you two more:
 1. **Offline-dictionary resistance** on the stored verifier — ours is fast salted SHA-256; a DB leak lets an attacker brute-force weak passwords offline
 2. **Mutual authentication** — the client also verifies *the server*, so it can't be tricked into proving its password to an impostor
 
-<!-- Guardrail slide — do not let students walk away thinking they built SRP/OPAQUE. Tie property 1 back to Week 2 (bcrypt/argon2, high work factor) — a real system's verifier KDF must be slow, not a bare SHA-256. Property 2 previews SSO/phishing later in this deck. This is also Worksheet Q4 and Part 2b. ~4 min. -->
+<!-- Guardrail slide — do not let students walk away thinking they built SRP/OPAQUE. Tie property 1 back to Week 2 (bcrypt/argon2, high work factor) — a real system's verifier KDF must be slow, not a bare SHA-256. Property 2 previews SSO/phishing later in this deck. This is also Worksheet Q4 and Part 2c. ~4 min. -->
 
 ---
 

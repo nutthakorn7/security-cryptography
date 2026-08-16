@@ -121,7 +121,7 @@ forged = [sig0[i] if bit(admin_msg, i) == 0 else sig1[i] for i in range(32)]
 - No new math, no bigger keys — just **refuse reuse**
 - Rule is **"one signature, period"** — not "one distinct message" (a 2nd request for the *same* message is refused too)
 - A client retrying a dropped response must **cache the first signature**, never re-sign
-- **CWE-347** — Improper Verification of Cryptographic Signature (the class this closes)
+- Still **CWE-323**, not a new class — `verify()`/`/admin` are byte-identical to the vulnerable app; only `sign_endpoint`'s one-time guard changed
 
 <!-- The punchline of the week. Ask: "why refuse even a duplicate of the exact same message, not just a different one?" (the rule must be trivial to enforce correctly -- no edge cases). Ties to Worksheet Q6 / Task 5b: "scheme being secure" vs. "scheme being used securely." ~6 min. -->
 

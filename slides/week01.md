@@ -200,7 +200,7 @@ Lightweight process, applied to a system that handles cryptographic keys:
   reason it's wrong
 - First verified BINGO wins
 
-<!-- Run this live during/after the Exhibit read-aloud slide. Model one square yourself first: "military-grade encryption" → not a real technical term, no standard defines "military-grade." Circulate to verify squares — a table must give the real reason, not just "that sounds fake." ~8 min. -->
+<!-- Hand the cards out at the START of the lecture, not at this slide. Verified against the shipped cards (instructor/week01-snake-oil-bingo-key.md §3): the Exhibit read-aloud plus the square you model yourself puts only 3 squares up on any card — one line short of the 4 non-FREE squares any BINGO line needs, so a win is impossible on all six cards if cards come out only now. The trust-boundary, Debian RNG and PS3 slides earlier in this same lecture put the count to ~11 by 1:35, which makes a line arithmetically reachable on 2 of 6 cards — still tight, so budget the prompt bank in the instructor key. If you forgot to hand cards out early, pre-announce a reduced win condition (e.g. any 4 verified squares, not necessarily in a line) before play starts — never after a table is one square away. Model one square yourself first: "military-grade encryption" → not a real technical term, no standard defines "military-grade." Circulate to verify squares — a table must give the real reason, not just "that sounds fake." ~8 min. -->
 
 ---
 
@@ -210,8 +210,8 @@ Lightweight process, applied to a system that handles cryptographic keys:
 > **No Docker, no flag** — conceptual week, rubric-graded
 
 - Part 2 — 6 short-answer questions (CIA, trust boundaries, the throughline)
-- Part 3 — **Audit-the-AI** (required): name the Exhibit's gap + 2 examples
-  + rewrite its summary paragraph
+- Part 3 — **Audit-the-AI** (required): what the Exhibit gets right + the
+  gap + an example per missing category + rewrite its summary paragraph
 - Part 4 — Explain-in-Plain-English + a Prompt Problem
 - Part 5 — Viva spot-check, live, no notes
 
