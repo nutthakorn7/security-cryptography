@@ -145,6 +145,26 @@ environments, no rotation or revocation path.
 
 ---
 
+## Watch the entropy collapse — live
+
+- The Debian bug above isn't special-cased math — it's a **keyspace** failure
+- Shrink the seed source to ~32,768 possible values and the strongest algorithm
+  downstream can't save you
+- Same shape as Snake Oil squares #4 and #9 — "seeded from the clock," "our session
+  tokens are randomly generated, so they can't be guessed"
+- This is what square **#23** ("we follow current NIST key-length guidance, so our use
+  of cryptography is fine") leaves out — and it's the Exhibit's exact thesis in Part 3
+
+![Two zones sharing one comparison point. Top: the intended design expands a seed assumed to be one of 2^128 possible values into a private key, then publishes a one-way commitment to it -- safe only if that assumption holds. Bottom: in the real deployment the seed actually comes from a narrow, guessable source such as a process ID, so an attacker who only ever sees the published commitment runs every one of the roughly 32,768 real candidates through the identical expand and commit functions, compares each result against that published commitment, and recovers the exact private key in under a second.](img/entropy-collapse.svg)
+
+```sim
+seed-crack
+```
+
+<!-- expand()/commit() in the sim are toy mixers, not real HKDF/SHA-256 — say so explicitly, same disclaimer as Week 3's toy hash. What's real: the brute-force loop actually runs in the browser, and Verifier B's "years needed" figure is computed live from the exact candidates/sec that loop just measured, not quoted from a table. To make the search-range slider fail, don't nudge it just below the real range — TRUE_SEED is uniform in that range, so near the boundary a "wrong" guess still succeeds most of the time (a genuine coin flip right at the edge, worth naming out loud). Drag it down to roughly a quarter of the real range instead, run it (misses), then push it back to the real range or above (recovers the exact key in well under a second) — that flip is this slide's version of "textbook-secure primitive, real-system failure": expand()/commit() are never the problem, the seed is. Close the loop explicitly to Part 3: the sim is a live refutation of square #23 in the one failure category (randomness/entropy) the Exhibit never names. ~5 min. -->
+
+---
+
 ## This week's break: an AI that's never technically wrong
 
 - No primitive has been taught yet — nothing to exploit in code

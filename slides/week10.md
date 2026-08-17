@@ -134,7 +134,15 @@ ciphertext = aesgcm.encrypt(nonce, plaintext, aad)
 - No key needed, no interaction with Bob or Alice — just two intercepted ciphertexts, XORed
 - Any crib — a known word, a predictable header, language redundancy — peels apart both plaintexts
 
+![Two zones, top to bottom. Top: Bob's session takes one AES key and one nonce, mixes them into a keystream, and reuses that identical keystream to XOR message one into ciphertext one and message two into ciphertext two — the bug already exists here, before any attacker is involved. Bottom: an eavesdropper who only ever sees ciphertext one and ciphertext two, never the key, XORs the two together to recover message one exclusive-or message two for free, then XORs that against a guessed fragment of message one to reveal the matching real bytes of message two.](img/gcm-nonce-reuse.svg)
+
 <!-- Walk the algebra on the board slowly — this is the "aha" the lab is built around. Ask: "does the attacker need to break RSA to do this?" (no — RSA-OAEP is never touched; the break is entirely downstream of the key). ~8 min. -->
+
+```sim
+nonce-reuse
+```
+
+<!-- The sim's XOR is genuinely computed live — same toy keystream trick as mac-extend's toy hash: not real AES-GCM (no S-box, no GHASH), but the exact structural property that matters, that the keystream depends only on (key, nonce) and never on the plaintext. One honest gap: real AESGCM.encrypt() appends a 16-byte tag the sim's ciphertext omits, so the panel says so — Part 3's proof script against the real file has to slice that off first. Run it live right here: default crib/offset succeeds against broken_hybrid_encrypt.py and fails against fixed_hybrid_encrypt.py without changing anything else, which previews the whole Audit-the-AI task before they touch it. ~5 min. -->
 
 ---
 

@@ -98,6 +98,14 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 
 <!-- The "aha" slide — the whole week's lesson in one line. Ask: "why the complement specifically, not any second message?" (guarantees every bit differs, so nothing is wasted — one signature per bit-value learned). This is exactly Worksheet Task 2. ~6 min. -->
 
+![Two zones, top to bottom. Top: the server holds one Lamport keypair — for a representative bit position, two locked secret preimages are each hashed into a published public-key pair, repeated identically for all thirty-two bit positions; the sign endpoint refuses only the one reserved target message directly. Middle: the same reused key answers two sign requests, message zero and its bitwise complement all-ones, revealing every zero-preimage and every one-preimage with nothing refused. Bottom: the attacker, now holding the complete private key, picks the matching preimage for each bit of the target message it was never allowed to sign, assembles a forged signature, and submits it to the admin endpoint, which accepts it because verification only checks the signature against the published public key, never who asked for it.](img/lamport-key-reuse.svg)
+
+```sim
+lamport-reuse
+```
+
+<!-- Run this live right here, before the worked-example code walkthrough. Everything computed on the page is real: genuinely random 32-byte preimages, a real SHA-256 implemented in the sim's own JS (byte-identical to hashlib.sha256 — same verification method as the mac-extend sim from Week 3), and the exact sign/verify/one-time-guard logic from vulnerable_app.py and fixed_app.py. Nothing is scripted to a preset outcome. Preset 1's target is literally ADMIN_MESSAGE (0xA5A5C3C3) from the lab; presets 2 and 3 are the identical bug wearing a different label, which is the point — click "Run the whole attack" for the fast pass, or step through ①②③ to mirror Tasks 1-3 bit by bit. The bit-recovery grid is Verifier A's key only; Verifier B's card is a genuinely separate computation (an independent keypair, a refused second /sign), not a narrated assumption. ~5 min. -->
+
 ---
 
 ## Worked example: forging the admin signature

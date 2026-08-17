@@ -123,6 +123,14 @@ ALICE: (reason: self-signed certificate)
 
 <!-- Emphasize what changed and what didn't — nothing about the attacker changed, only Alice's validation (this is Part 2e Q2). Tie back to the hostname slide: since the impostor's SAN is correct, only a real chain-of-trust check catches it — this is CWE-295, fixed by turning validation back on. ~6 min. -->
 
+![A single impostor certificate presented by whoever answers on the network, self-signed and claiming CN=bob, SAN=DNS:bob, forks into two client paths. In the top lane, a validating client checks the hostname, which matches, then checks the certificate's signature against a trusted certificate authority it already holds, finds no chain from the self-signed certificate to that authority, and aborts the handshake before any secret is sent. In the bottom lane, a client with certificate validation turned off skips both checks entirely, accepts the same certificate unconditionally, and sends its secret straight to the impostor, which logs it as intercepted.](img/cert-validation-bypass.svg)
+
+```sim
+cert-bypass
+```
+
+<!-- The sim runs real modular exponentiation (textbook RSA, small numbers on purpose) on three scenarios, not just Alice/Bob/mitm — same underlying CWE-295 bug in an internal-API client and a banking login, tying straight into Part 2b's Audit-the-AI. What's real: the signature check (sig^e mod n, computed live, genuinely mismatches for a self-signed cert) and the key-exchange round-trip (also real — it always succeeds for BOTH clients, because the impostor genuinely holds the private key it's presenting, which is exactly why Alice's log says "handshake succeeded"). What's illustrative: no actual X.509 DER encoding, no real TLS 1.3 key schedule — the point is the trapdoor shape, not the algorithm. Run it live right after this slide: click through the default (self-signed) case first so they watch Client B reject on the chain check alone, hostname already having passed — then flip the "compromised CA" toggle and watch even Client B accept, as a concrete preview of Part 1 Q5 / the EiPE task. Say explicitly that toggle models a scenario this week's running lab never produces. ~5 min. -->
+
 ---
 
 ## The real-world version of this bug

@@ -104,6 +104,14 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 
 <!-- The "aha" slide. Derive it live: P1 = D(C1) XOR C0, so if you XOR a delta d into C0, the new P1 becomes (old P1) XOR d. Pick d = guest XOR admin and the guest bytes become admin bytes. Ask: "what happens to block 0's plaintext when we edit C0?" (It becomes garbage — that's fine, only block 1 matters.) ~8 min. -->
 
+![Two decrypt chains that share the same C1 and the same decrypt function, arranged top to bottom. Top: the server's real decrypt path takes the token's actual ciphertext block C0, decrypts C1 with the secret key, XORs in C0, and produces the plaintext role=guest, exactly as it does for every request. Bottom: the attacker's version reuses that identical decrypt code and the same C1, but XORs a five-byte delta into C0 first, producing C0-prime, without ever touching the key; because CBC XORs that block straight into the output, the plaintext flips byte-for-byte into role=admin, which the admin check accepts and returns the flag.](img/cbc-bitflip.svg)
+
+```sim
+cbc-bitflip
+```
+
+<!-- The sim uses a toy 16-byte block cipher, not real AES — same CBC chaining shape (P1 = D(C1) XOR C0), small enough to read the whole XOR delta on screen. Say that explicitly so nobody walks away thinking AES itself is "toy". The default preset already matches this slide's exact numbers (guest -> admin, offset 5) — drag the offset slider to a wrong value first and let Verifier A's rejection land "the RIGHT offset, not just any offset" faster than the board math alone. Verifier B (an AEAD/GCM stand-in) previews the fix two slides from now — don't over-explain it, just let them see it hold. ~5 min. -->
+
 ---
 
 ## Cashing in the flip

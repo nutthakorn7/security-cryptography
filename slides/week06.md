@@ -101,7 +101,15 @@ Attacker submits a **forged previous block** + the real last block as a fake `IV
 - Repeat forcing `…0x02 0x02`, `…0x03 0x03 0x03`, … → recover the whole block
 - False-positive case (`P` ends `…0x02 0x02` by accident) → re-query a neighbour byte to disambiguate
 
+![Two zones, top to bottom, left to right. Top: the server decrypts an attacker-forged blob by computing D of the ciphertext block XORed with the attacker's forged previous block to get a candidate plaintext, then checks only whether its PKCS-7 padding is valid, returning 200 for valid or 403 for invalid. Bottom: the attacker, who never sees the key or the decrypted plaintext, tries all 256 values for one byte of the forged previous block, finds the single value the server accepts as 200, and from that single accepted guess derives one real byte of the intermediate decrypted value and hence one real byte of the actual plaintext, repeating this to recover the entire secret without ever learning the encryption key.](img/padding-oracle.svg)
+
 <!-- The core mechanic — Worksheet Task 2 walks this exact derivation. Write the formula on the board: D(C_t)[15] = winning_guess XOR 0x01. Stress: the attacker NEVER learns the AES key or D(C_t) directly for other purposes — only enough per-block algebra to peel off one plaintext byte per ~256 queries, with zero crypto library needed on the attacker side (exploit.py only uses `requests`). ~12 min. -->
+
+```sim
+padding-oracle
+```
+
+<!-- The sim uses a toy block cipher, not real AES — two rounds of substitute/reverse/substitute, not 14 rounds of SubBytes/ShiftRows/MixColumns — but the SAME CBC relation (P_i = D(C_i) XOR C_{i-1}) and the SAME PKCS#7 check `vulnerable_app.py` runs, so the byte-by-byte recovery is the real algorithm, not a scripted result. Point that out explicitly so nobody walks away thinking real AES is "toy". Oracle B previews today's fix (tag checked before any padding logic exists) — run both live: drag the slider once to land the first byte, then click "Run the full byte-by-byte recovery" and watch Oracle A produce the whole secret while Oracle B stalls at zero bytes recovered. ~4 min. -->
 
 ---
 

@@ -127,6 +127,24 @@ week13-bob     | BOB DECRYPTED: meet at pier 39 at midnight
 
 ---
 
+## See it yourself — the provider's own log, live
+
+- Same choice as the two containers you just ran: what does Alice hand the server?
+- Toy-sized RSA key-wrap + an AES-style cipher, computed for real in the browser — pick a
+  scenario, flip Vulnerable/Fixed, and read the log for yourself
+- A third toggle previews the next slide's gap: what happens if the *server* also controls
+  which public key Alice trusts
+
+![Two lanes, read top to bottom, each showing Alice on the left sending toward Bob on the right through a server box in the middle: the top lane, vulnerable mode, sends the message over TLS to the server, which decrypts, stores, and logs the plaintext in the clear before re-encrypting and forwarding it on to Bob, so the provider itself can read everything; the bottom lane, fixed mode, first has Bob publish his public key which the server relays to Alice, who trusts it blindly, then Alice encrypts the message client-side with a hybrid scheme, AES-256-GCM wrapped in RSA-OAEP, before sending, so the server now stores and logs only opaque base64 ciphertext it structurally cannot decrypt, and only Bob's device recovers the plaintext; a dashed orange warning box at the bottom of the fixed lane flags the one gap neither lane closes, that a malicious server could substitute its own key at the public-key-fetch step, read the plaintext itself, and quietly re-encrypt a working copy to the real Bob so nothing looks wrong, which is the root-of-trust problem this week's lab does not demonstrate.](img/encryption-boundary.svg)
+
+```sim
+server-can-read
+```
+
+<!-- The RSA key-wrap and AES-style cipher in this sim are REAL — a genuine ~48-bit RSA modulus (real prime search, real modular exponentiation) and a real keyed tag check, toy-sized only so every intermediate number fits on screen; no verdict is a scripted if/else on which button was clicked. Run it live in Vulnerable mode first, matching what students just watched in the container logs on the previous two slides. Leave the "malicious server substitutes its own key" checkbox OFF for most of this walkthrough — it maps to the very next slide's root-of-trust gap (Worksheet Q2), not to anything the two docker-compose files actually do, so flip it only once you're ready to preview that discussion; flipping it early tends to make students think the lab itself proved a key-substitution attack, which it does not. ~5 min. -->
+
+---
+
 ## What this lab does NOT prove — root of trust
 
 - Alice trusts whatever public key the server hands her

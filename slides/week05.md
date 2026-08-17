@@ -103,6 +103,14 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 
 <!-- Walk relay.py's handle_mitm() step by step. Key insight for viva prep (worksheet Part 2d, viva Q1): why TWO handshakes, not one? Because relay must be a real, independent DH peer to *each* side — that's what makes both handshakes complete cleanly with no error. ~6 min. -->
 
+![Two independent Diffie-Hellman handshakes run side by side at the top of the diagram: on the left, Alice exchanges public values with Relay posing as Bob and both sides honestly derive the identical shared secret K_A, while on the right, Relay posing as Alice exchanges public values with Bob and both sides honestly derive a different shared secret K_B, with nothing linking K_A to K_B and neither side ever comparing them; both secrets then feed straight down into Relay in the middle of the diagram, the only party holding both keys, which decrypts Alice's message with K_A to expose the plaintext, re-encrypts that same plaintext with K_B, and forwards it down to Bob, who decrypts it successfully and never suspects a substitution occurred.](img/dh-mitm.svg)
+
+```sim
+dh-mitm
+```
+
+<!-- The sim runs a REAL DH handshake — actual BigInt modular exponentiation over a small verified safe prime, not a scripted result — so Alice's and Relay's independently-computed shared secrets are genuinely equal, and Alice's key vs Bob's key are genuinely different, live on screen. What's illustrative: the session-key derivation, the message cipher, and the pubkey-authentication tag are toy mixing functions standing in for real SHA-256/AES-GCM/HMAC, same simplification Week 3's mac-extend sim made for its hash — say so explicitly. Run it live right after these bullets, before "Why neither side notices": the three presets are just different messages, same mechanic. The "has AUTH_KEY leaked to Relay?" checkbox previews next fix slide's Verifier B — leave it unchecked here (matches this slide's vulnerable-mode story); come back to it, checked, once you reach the HMAC fix to make the viva Q3 nuance ("the fix is only as strong as AUTH_KEY's secrecy") land visually instead of just verbally. ~5 min. -->
+
 ---
 
 ## Why neither side notices

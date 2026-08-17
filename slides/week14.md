@@ -84,7 +84,15 @@ week14-client  | LOGIN OK
 - Server independently recomputes the same proof from its stored `v` and the nonce it issued, and **compares**
 - Match → `LOGIN OK`. The password never crossed the network, so there was nothing to log
 
+![Two lanes read top to bottom, each showing a client on the left, a server in the middle, and a log reader on the right. Top lane, vulnerable mode with PAKE unset: the client sends its actual password to the server, which receives it and prints it verbatim to the server's own log, so the log reader on the right recovers the password in full and gains a standing, reusable credential. Bottom lane, fixed mode with PAKE equals 1: the server first issues the client a fresh single-use nonce, the client locally derives a verifier by hashing the salt and password together and computes a proof by keying an HMAC with that verifier over the nonce, so the password itself never leaves the client, the server then verifies and logs only the nonce and the proof, and the same log reader who succeeded in the top lane now recovers nothing usable, because the logged proof is a one-way function of a password that was never transmitted; a dashed orange warning box at the bottom flags the one gap this simplified demo does not close, that a leaked copy of the server's stored verifier would be password-equivalent here, which is exactly what a real PAKE such as SRP or OPAQUE additionally protects against.](img/log-boundary.svg)
+
 <!-- Walk the symmetry: both sides end up computing the same HMAC, but only the client ever touches the raw password. The server's "knowledge" is entirely mediated through v. Ask: "if an attacker steals the server's database and gets v, can they log in as alice directly?" (YES, trivially — in THIS demo v is password-equivalent: the thief just requests a fresh nonce and computes HMAC(v, nonce), authenticating without ever cracking the password. The fresh nonce only stops replay by someone who does NOT hold v. Verifier-theft resistance is exactly what a real PAKE — SRP/OPAQUE — adds and this demo deliberately lacks; foreshadow next slide's honest limits.) ~6 min. -->
+
+```sim
+cred-harvest
+```
+
+<!-- The sim runs REAL SHA-256 and REAL HMAC-SHA256 in the browser (verified against Node's crypto module before shipping) — not a toy hash like mac-extend.js, since this week's lab genuinely calls hashlib.sha256/hmac.new. What's illustrative: the three login scenarios and their "reused password" second accounts are invented framing, not literal lab code. Run it live right here — flip Mode from plain to challenge-response on one preset and read the log line change in real time, then click "Replay the captured request" in fixed mode to show the single-use nonce rejecting its own captured request. The offline-guess panel previews the Honest Scope slide's gap (a leaked verifier is crackable offline) without spoiling it — don't over-explain that part yet. ~4 min. -->
 
 ---
 

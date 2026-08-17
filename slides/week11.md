@@ -133,6 +133,14 @@ seen.add(txid); process(withdrawal)
 
 <!-- This is exactly `vulnerable_app.py`'s `txid_of`/`withdraw` — the line students must quote in Lab Task 0. Point out: it isn't that the signature verification is broken — every check passes. It's that `sha256(r,s)` was the WRONG thing to treat as a unique transaction identity. Ask: "what should the txid have been derived from instead?" (message + pubkey, or an app-level nonce). ~6 min. -->
 
+![One authorized withdrawal produces two valid-looking transaction ids. Top: the attacker holds a valid signature (r, s) and, using only the public curve order n, computes its twin (r, n minus s) — no private key needed, both verify true against the same message and key. Bottom: the bank computes a transaction id as a hash of the signature bytes; because (r, s) and (r, n minus s) are different bytes, they hash to two different ids, so the bank's seen-set never recognizes the second submission as a duplicate and processes the same authorized withdrawal twice.](img/signature-malleability.svg)
+
+```sim
+ecdsa-malleability
+```
+
+<!-- The sim computes n − s with real BigInt arithmetic against the real secp256k1 order and hashes both preimages with real SHA-256 — the digests match vulnerable_app.py's txid_of exactly. It also runs both spellings against a second, low-S-normalized bank live, so students see the fix (not just the break) before Task 2. Run it here, before the game — sliding between the two sample signatures is faster than the board math alone for landing "same key, same message, different bytes." ~4 min. -->
+
 ---
 
 ## Case study: MtGox

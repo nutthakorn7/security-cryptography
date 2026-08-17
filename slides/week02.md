@@ -146,6 +146,14 @@ ok = bcrypt.checkpw(password.encode(), stored)
 
 <!-- Don't let anyone leave thinking "bcrypt = solved." This is the overclaim trap the worksheet explicitly warns against (Task 5b). Ask: "so what actually stops that patient, per-hash attacker?" → answer is next slide: a strong-password policy, not the hash function alone. ~5 min. -->
 
+![Two horizontal bands sharing the same wordlist. Top: an unsalted MD5 password store — a leaked file feeds a candidate wordlist through a single real MD5 pass, compared directly against the stored hash, cracking the target instantly and, for free, any other row that happens to share the same password. Bottom: the same wordlist aimed at a per-user salted, iterated KDF store — the identical fast technique matches nothing because the stored format differs entirely, and only an attacker who adapts to redo the real salted iterations per guess still finds the password, at a cost that multiplies with the iteration count.](img/hash-crack.svg)
+
+```sim
+hash-crack
+```
+
+<!-- The sim runs a REAL MD5 (RFC 1321, byte-identical to hashlib.md5 — md5("sunshine2021") really does come out f364b087df0401706d6b1c8f68a50bf7, this week's own admin hash) against a REAL 101-word dictionary, live in the browser. The salted store is NOT bcrypt — it's a small toy KDF (a real per-user salt, real repeated hashing, a real tunable cost) that's honest about not being the Blowfish-keyed real thing, while still making salting and work-factor genuinely measurable rather than asserted. Run it live here: crack Store A instantly, watch the identical technique score 0/101 against Store B, then drag the cost slider up and re-run the adapted attack — the operation-count multiplier it reports is computed, not decorative, and it should land as "orders of magnitude more expensive," never as "bcrypt is broken." Good beat right before the game: same trap as the slide above, now literally clickable. ~5 min. -->
+
 ---
 
 ## 🔓 Game — Crack the Leaked DB

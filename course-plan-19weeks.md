@@ -149,12 +149,17 @@ doc.
 
 **Still open:**
 
-6. **An actual running CTFd instance** — the flag-generation mechanism and deployment `.env` are
-   ready, but there is no live server, no `challenges-import.csv` image/point-value catalog, and
-   no challenge host provisioned for this course yet (see `platform-build/README.md`'s "Not yet
-   built" section — these need deployment-specific decisions, e.g. point values and image tags,
-   made when a real cohort is being stood up, not guessed here). `SUBMISSION.md` states this
-   honestly to students (flags are currently a shared placeholder, not yet personalized).
+6. **An actual running CTFd instance** — stale as of this writing; corrected 2026-08-17. The flag
+   -generation mechanism, deployment `.env`, and the `challenges-import.csv` /
+   `instructor/ctfd/challenges.yml` catalog (all 6 flag-bearing labs, point values and decay
+   curves included) are **built and verified** — see `platform-build/README.md`, which documents
+   all 6 challenge images baked and spawn-tested through their real exploit paths, plus a real
+   CTFd+plugin+`airsec_flag_bridge` integration test (`demo.sh`, 3/3 pass). What's genuinely still
+   open is narrower: **no challenge host is provisioned for this course** — see
+   `platform-build/DEPLOYMENT-DECISION.md` (shared-vs-separate host, recommendation not yet
+   signed off) and `instructor/DEPLOYMENT-ROADMAP.md` for the dated plan to close this gap before
+   the Nov 2026 KOSEN-KMITL term. `SUBMISSION.md` states the current state honestly to students
+   (flags are currently a shared placeholder, not yet personalized).
 
 ## Reuse & provenance
 
