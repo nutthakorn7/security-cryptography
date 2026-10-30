@@ -5,6 +5,8 @@ paginate: true
 header: "Security & Cryptography · Week 15"
 ---
 
+<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 70 practice + 10 evidence/feedback. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+
 # Week 15
 ## Post-Quantum Cryptography (Lamport one-time signatures, key reuse)
 Security & Cryptography · Nutthakorn Chalaemwongwan
@@ -173,11 +175,14 @@ python exploit.py   # needs Python 3 + `requests` on the host
 
 ## Lab today
 
+**Shared practical/analysis core: 60 points for everyone.** Complete only your assigned **Conventional written 40** or **AIR-Sec Audit 20 + EiPE 10 + Prompt 10**. Each version totals 100; viva is formative. Full questions remain in the worksheet, with extensions outside the 100-minute class.
+
+
 > 📋 **Worksheet 15** — `labs/week15-pqc/worksheet.md` (Part 2 written + Part 3 hands-on) · kickoff: `docker compose up -d`
 
 - Recover the Lamport private key from two signatures, forge the admin signature, capture the flag
 - Confirm one-time enforcement defeats the identical attack on `:8101`
-- **+ Audit the AI** (a hashing-first Lamport signer that *still* reuses its key) **+ EiPE / Prompt Problem**
+- **Assigned AIR-Sec: Audit the AI** (a hashing-first Lamport signer that *still* reuses its key) **+ EiPE / Prompt Problem**
 
 <!-- The graded output. Point specifically at the Audit-the-AI snippet -- remind them hashing the message first does NOT fix key reuse, it only changes which bits leak, not whether reuse leaks. Point to exploit.py as the reference implementation. ~2 min. -->
 

@@ -6,18 +6,21 @@ encryption (AEAD) · **Analogous CWE:** CWE-353 (Missing Support for Integrity C
 (Reliance on Obfuscation/Encryption Without Integrity), CWE-347 (Improper Verification of a
 Cryptographic Signature)
 
-## ✅ This week — what to do
-1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security`);
-   skim last week's recap (Week 3 — MACs / length-extension). Notice the through-line: Week 3
-   showed a *keyed hash* isn't a MAC; Week 4 shows *encryption* isn't integrity.
-2. **Lecture (120 min)** — AES the block cipher vs. the *mode* that wraps it; why ECB leaks
-   patterns; CBC/IV mechanics; malleability of unauthenticated CBC; nonces in GCM and why reuse
-   is catastrophic; AEAD (GCM / ChaCha20-Poly1305) as the modern default. Slides:
-   `slides/week04.md`.
-3. **Lab (180 min)** — play the token game below, capture your flag, then complete
-   **Worksheet 4** (`worksheet.md`, Part 1 Conventional + Part 2 AIR-Sec incl. *Audit the AI* +
-   *EiPE* + *Prompt Problem* + viva). Kickoff: `docker compose up`.
-4. **Submit** — worksheet PDF + flag → see [SUBMISSION.md](../../SUBMISSION.md) · exploit code → GitHub.
+## This week — 100-minute class and assigned assessment
+
+1. **Before class** — Prepare Docker and the host tools listed in SUBMISSION.md before class; complete first downloads before the contact block. Read the relevant recap.
+2. **In class (100 minutes)** — 10 quiz/review + 10 brief + 60 shared practice/analysis +
+   15 debrief + 5 evidence capture. Week 1 starts with orientation/review, not a quiz on
+   material not yet taught. Slides: `slides/week04.md`. The full deck includes reference/deep-dive
+   material; the instructor selects the core explanation for this block.
+3. **Common work (60 points)** — Capture the token, calculate the target byte range and XOR delta, and demonstrate CBC bit-flipping. Compare with GCM rejection and explain the integrity guarantee, nonce assumptions and limits of the demonstration.
+4. **Assigned format (40 points)** — complete **either** the Conventional written questions
+   **or** AIR-Sec (Audit the AI 20 + EiPE 10 + Prompt Problem 10). Both versions total 100.
+   Viva checks support feedback/authenticity within the criteria; they add no separate marks.
+5. **After class** — finish detailed calculations, explanations and the assigned format;
+   retain all original questions as assigned work or study extensions. Submit the worksheet
+   PDF and required evidence according to [SUBMISSION.md](../../SUBMISSION.md). This week
+   has no separate code-fix/GitHub submission.
 
 ## Objectives
 - Explain why **AES itself being secure** does not make an AES-*based* scheme secure — the
@@ -77,9 +80,9 @@ cd labs/week04-aes-modes
 docker compose up -d          # vulnerable_app.py on :8096, fixed_app.py on :8097
 python exploit.py             # PASS on :8096 (flag), PASS on :8097 (correctly rejected); exit 0
 ```
-Per-student flag: `python3 ../../instructor/seed_flags.py env <STUDENT_ID> > .env` before
-`docker compose up` (once this course's `instructor/seed_flags.py` exists — see
-`course-plan-19weeks.md` open decision #4; until then `FLAG_AES` falls back to a shared placeholder that is the same for everyone).
+Flag configuration: use an instructor-supplied personalised `.env` if available. Otherwise
+record the shared demo flag with your own evidence and explanation; no automatic roster
+validation is assumed.
 
 **Verified:** `docker compose up -d` followed by `python exploit.py` was run against live
 containers on this machine; both PASS checks printed (`:8096` returned the flag to the
@@ -91,6 +94,10 @@ exploit still succeeds and returns the *new* flag — proving the attack never d
 `403`; `/admin` with a legitimate (unflipped) `role=guest` token → `403`.
 
 ## Deliverable
+
+Submit the common evidence and reasoning (60) plus only the assigned Conventional (40)
+or AIR-Sec (40) format. The details below describe the common artifact; the worksheet
+identifies the alternative sections.
 The captured flag + your tampered token (base64) + a short note stating **exactly which token
 byte range** you XOR-ed and **why editing that block** (not the role block itself) is what
 changes `guest` → `admin`, plus one sentence on why AES-GCM rejects the identical edit. Full

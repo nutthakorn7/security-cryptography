@@ -3,21 +3,36 @@
 **Topic (KOSEN68 source):** `Week10_Signatures Questions.docx` · **Kind:** HYBRID
 (lab-style flag demo + conceptual ZKP content)
 **Concepts:** digital signatures vs. MACs, ECDSA/EdDSA, signature malleability, SUF-CMA vs.
-EUF-CMA, Schnorr identification, signatures as non-interactive zero-knowledge proofs ·
+EUF-CMA, Schnorr identification, the Schnorr/Fiat–Shamir proof-of-knowledge connection ·
 **Analogous CWE:** CWE-347 (Improper Verification of Cryptographic Signature), CWE-345
 (Insufficient Verification of Data Authenticity)
+
+## 100-minute class and assigned worksheet version
+
+**In class:** 10 min retrieval quiz + 10 min brief explanation + 70 min guided practice + 10 min evidence review/exit = 100 min.
+
+**Shared core — every student:** Obtain a fresh signature in class; compute its twin and transaction identifiers; submit the original/twin to the vulnerable bank; verify a legitimate fixed-bank withdrawal succeeds and its high-S twin fails; explain the control's limits.
+
+**Preparation and extensions:** Before class, prepare images/dependencies and read the topology only. Do not collect live signatures before class or reuse signatures across a restart. Complete the long signature/ZKP analysis and the assigned version-specific work outside the core block.
+
+**70-minute practice:** fresh signature 10; twin calculation 15; two vulnerable withdrawals 15; fixed positive/negative controls 15; reasoning 15. Start the manual vulnerable withdrawals against fresh state before any automated exploit. Each bank has its own key: obtain a separate signature from the fixed bank. A restart invalidates previously captured signatures.
+
+
+**Assessment:** everyone completes the shared core (60 points) plus **one assigned version** (40 points): Conventional written analysis, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. All questions remain available; complete the assigned version's full questions, using out-of-class time for extended responses. The other version is ungraded reference practice, not an additional requirement. Viva/micro-demo questions are formative checks of the submitted explanation, with no separate points or automatic pass/fail score gate.
+
+**Evidence:** record reproducible observations or reasoning and your name/student ID. Where the local target prints a shared placeholder flag, record it as observed; a personalized flag or live CTFd account is not a prerequisite. Follow SUBMISSION.md for the announced hand-in channel.
 
 ## ✅ This week — what to do
 1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security`);
    skim last week's recap (Week 10 — hybrid encryption).
-2. **Lecture (120 min)** — signatures vs. MACs; RSA/ECDSA/EdDSA; the Schnorr identification
+2. **Concept preparation and brief explanation (within the 100-minute plan)** — signatures vs. MACs; RSA/ECDSA/EdDSA; the Schnorr identification
    protocol and the Fiat–Shamir transform (challenge → hash) that turns a zero-knowledge *proof
    of knowledge* into a *signature*; why an ECDSA signature `(r, s)` has a valid twin `(r, n−s)`
    (malleability). Slides: `slides/week11.md`.
-3. **Lab (180 min)** — play the signature game below, capture your flag, then complete
-   **Worksheet 11** (`worksheet.md`, Part 1 conventional essays + Part 2 AIR-Sec arm). Kickoff:
+3. **Practice and assigned-version work (core in class; extensions outside class)** — play the signature game below, capture your flag, then complete
+   **Worksheet 11** (`worksheet.md`, shared practical plus the assigned Conventional essays or AIR-Sec tasks). Kickoff:
    `docker compose up`.
-4. **Submit** — worksheet PDF + flag → see [SUBMISSION.md](../../SUBMISSION.md) · exploit code → GitHub.
+4. **Submit** — shared-core evidence/reasoning plus your assigned 40-point version in the worksheet PDF via [SUBMISSION.md](../../SUBMISSION.md). Include the observed flag/log artifact where applicable. Supplied exploit/reference code does not require an unchanged GitHub commit.
 
 ## Objectives
 - Explain the difference between a digital signature and a MAC (asymmetric vs. symmetric key,
@@ -25,17 +40,14 @@ EUF-CMA, Schnorr identification, signatures as non-interactive zero-knowledge pr
 - Define **signature malleability** and demonstrate it against ECDSA: given a valid signature
   `(r, s)`, produce the valid twin `(r, n − s)` (same message, same key, different bytes).
 - Exploit a system that deduplicates transactions **by signature hash** to process one authorized
-  withdrawal **twice** (a MtGox-style double-spend), and explain why **low-S / BIP-62**
-  normalization closes it.
-- Explain a signature as a **non-interactive zero-knowledge proof of knowledge** of the private
-  key (Schnorr + Fiat–Shamir), and why **SUF-CMA** (strong unforgeability) is a stronger goal
+  withdrawal **twice** (an illustrative bank-accounting double processing), and explain why **low-S** rejects the malleated twin while application-level transaction identity is still needed.
+- Explain the **Schnorr proof-of-knowledge / Fiat–Shamir connection** to Schnorr-type signatures, without treating every digital-signature scheme as a zero-knowledge proof, and why **SUF-CMA** (strong unforgeability) is a stronger goal
   than **EUF-CMA** when malleable signatures are used as transaction identifiers.
 
 ## How it maps to the concept
 The essays (Part 1) cover the *theory*: signatures vs. MACs (Q1), signatures as ZKPs from Schnorr
 (Q2), the RSA/ECDSA/EdDSA comparison (Q3), substitution attacks (Q4), and malleability + MtGox +
-SUF-CMA (Q5). The lab (Part 2) is the **runnable twin of Q5**: instead of *describing* how
-malleability contributed to MtGox, you *perform* it. A demo bank authorizes exactly one
+SUF-CMA (Q5). The lab (Part 2) is the **runnable twin of Q5**: instead of only *describing* how malleability can confuse transaction identifiers, you *perform* the analogous error in a toy bank. The exercise does not establish what caused MtGox's losses or demonstrate a Bitcoin consensus double-spend. A demo bank authorizes exactly one
 withdrawal with an ECDSA signature and — like the real exchange — treats a hash of the signature
 bytes as the transaction id. You submit a valid signature, then its malleated `(r, n−s)` twin, and
 because the twin hashes to a different "txid," the bank processes the same authorization twice.
@@ -114,11 +126,10 @@ Per-student flag: `python3 ../../instructor/seed_flags.py env <STUDENT_ID> > .en
 `docker compose up` (once this course's `instructor/seed_flags.py` exists — see
 `course-plan-19weeks.md` open decision #4; until then `FLAG_SIG` falls back to a shared placeholder that is the same for everyone).
 
-**Evidence artifact (HYBRID note).** This week is HYBRID in the 19-week skeleton but is delivered
+**Evidence artifact (HYBRID note).** This week is HYBRID in the 20-week course but is delivered
 with the **flag pattern** (single `docker-compose.yml`, per-student `FLAG_SIG`): the attributable
 evidence artifact is the **captured `FLAG_SIG`** returned by the *vulnerable* bank on the second
-(malleated) withdrawal. The fixed bank never emits it. Submitting another student's flag is a
-violation.
+(malleated) withdrawal. The fixed bank rejects that high-S twin without a flag; this does not prove complete idempotency against other fresh valid signatures. If the instructor has activated per-student flag seeding, submit the value issued to you; otherwise record the local shared placeholder with your own execution evidence. No live personalized-flag service is required for the worksheet.
 
 **Verified:** `docker compose up -d` was run on this machine; `exploit.py` ran from a throwaway
 container on the compose network. Real captured output:
@@ -144,13 +155,11 @@ propagate the override into the captured flag. Negative controls confirmed: a ba
 (`r=s=1`) → `403`; an **exact byte-for-byte replay** of the same `(r, s)` → `409` (the dedup set
 *does* stop identical replays — only the malleated *different-bytes* twin slips through); a wrong
 `message` → `400`. **The concrete `r`, `s`, and txids differ every run** (fresh keypair per boot +
-random ECDSA nonce `k`) — only the **flag** is stable and attributable; do not expect to
+random ECDSA nonce `k`) — only the default **flag** text is stable; attribution comes from your own recorded execution; do not expect to
 reproduce the exact numbers above.
 
 ## Deliverable
-The captured flag + the specific `(r, s)` you started from and the twin `(r, n − s)` you submitted
-(with both txids), + a short note on why the two share a `(message, pubkey)` yet the vulnerable
-bank saw them as two transactions, and why low-S closes the gap. Full tasks: `worksheet.md`.
+Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.
 
 ## Known dependency risk (accepted, not fixed)
 This lab's `ecdsa` dependency carries **CVE-2024-23342 / GHSA-wj6h-64fc-37mp** (a "Minerva" timing
@@ -174,7 +183,8 @@ and re-verifying `vulnerable_app.py`/`fixed_app.py`/`exploit.py`, a larger chang
   Schnorr / Fiat–Shamir treatment — free online.
 - Bitcoin **BIP-62** (*Dealing with malleability*) and **BIP-146** (*Dealing with signature
   encoding malleability*) — the low-S rule.
-- Wuille et al., the MtGox transaction-malleability incident write-ups (CVE-2014-* era).
+- Decker and Wattenhofer, [Bitcoin Transaction Malleability and MtGox](https://arxiv.org/abs/1403.6676) (2014): distinguish the exchange's claim from the paper's measured evidence.
+- [RFC 8235](https://www.rfc-editor.org/rfc/rfc8235.html), Schnorr NIZK proof and its assumptions.
 - NIST FIPS 186-5 — *Digital Signature Standard* (ECDSA, EdDSA).
 - RFC 8032 — *Edwards-Curve Digital Signature Algorithm (EdDSA)*.
 - `ecdsa` PyPI library docs — `sigdecode_string` / `sigencode_string` for raw `(r, s)` access.

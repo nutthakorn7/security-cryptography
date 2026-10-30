@@ -5,16 +5,21 @@
 public-key authentication, forward secrecy · **Analogous CWE:** CWE-322 (Key Exchange without
 Entity Authentication), CWE-300 (Channel Accessible by Non-Endpoint)
 
-## This week — what to do
-1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security` and
-   this course's Week 3); skim last week's recap.
-2. **Lecture (120 min)** — weekly quiz first (~10 min), then the lecture: why raw DH gives you
-   secrecy against eavesdroppers but no identity guarantee at all. Slides: `slides/week05.md`.
-3. **Lab (180 min)** — run the demo in both modes below, then complete **Worksheet 5**
-   (`worksheet.md`, Part 1 — Conventional essays; Part 2 — AIR-Sec arm: lab evidence, EiPE,
-   Prompt Problem, viva prep).
-4. **Submit** — worksheet PDF + captured log evidence → see [SUBMISSION.md](../../SUBMISSION.md) · code unchanged (this is a
-   read/run/observe lab, not an exploit-and-fix-the-code lab) → GitHub. (How: [SUBMISSION.md](../../SUBMISSION.md).)
+## This week — 100-minute class and assigned assessment
+
+1. **Before class** — Prepare Docker and the host tools listed in SUBMISSION.md before class; complete first downloads before the contact block. Read the relevant recap.
+2. **In class (100 minutes)** — 10 quiz/review + 10 brief + 60 shared practice/analysis +
+   15 debrief + 5 evidence capture. Week 1 starts with orientation/review, not a quiz on
+   material not yet taught. Slides: `slides/week05.md`. The full deck includes reference/deep-dive
+   material; the instructor selects the core explanation for this block.
+3. **Common work (60 points)** — Run both DH topologies and trace the relay's two independent handshakes and interception. Explain what HMAC authentication changes, its pre-shared-key assumption, forward secrecy and the separate input-validation limitation.
+4. **Assigned format (40 points)** — complete **either** the Conventional written questions
+   **or** AIR-Sec (Audit the AI 20 + EiPE 10 + Prompt Problem 10). Both versions total 100.
+   Viva checks support feedback/authenticity within the criteria; they add no separate marks.
+5. **After class** — finish detailed calculations, explanations and the assigned format;
+   retain all original questions as assigned work or study extensions. Submit the worksheet
+   PDF and required evidence according to [SUBMISSION.md](../../SUBMISSION.md). This week
+   has no separate code-fix/GitHub submission.
 
 ## Objectives
 - Explain why Alice and Bob need a *key exchange* rather than simply sending a symmetric key,
@@ -147,9 +152,13 @@ this directory, `down` + images removed after each mode).
   verification; nothing was left running.
 
 ## Deliverable
-Worksheet 5 (`worksheet.md`, Parts 1–2), including the captured log evidence from both modes
-(Part 2a), the EiPE explanation of small-subgroup attacks (Part 2b), the Prompt Problem critique
-(Part 2c), and viva prep (Part 2d).
+
+Submit the common evidence and reasoning (60) plus only the assigned Conventional (40)
+or AIR-Sec (40) format. The details below describe the common artifact; the worksheet
+identifies the alternative sections.
+Worksheet 5: shared log evidence and control/limitations explanation (common 60), plus
+either the Part 1 essays (Conventional 40) or the added Audit-the-AI, EiPE and Prompt
+Problem tasks (AIR-Sec 20/10/10). Part 2d viva is formative/authenticity feedback.
 
 ## References
 - RFC 3526, *More Modular Exponential (MODP) Diffie-Hellman groups for Internet Key Exchange

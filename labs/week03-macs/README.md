@@ -5,15 +5,21 @@
 length-extension, HMAC · **Analogous CWE:** CWE-347 (Improper Verification of Cryptographic
 Signature), CWE-290 (Authentication Bypass by Spoofing)
 
-## ✅ This week — what to do
-1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security`);
-   skim last week's recap (Week 2 — hash functions / password cracking).
-2. **Lecture (120 min)** — MACs vs. hashes vs. signatures; why `H(key || message)` is not a MAC;
-   HMAC's nested construction; timing attacks on tag comparison. Slides: `slides/week03.md`.
-3. **Lab (180 min)** — play the signature game below, capture your flag, then complete
-   **Worksheet 3** (`worksheet.md`, Parts 1–3 incl. *Audit the AI* + *EiPE/Prompt*; Part 5 is an
-   appendix, not assigned this week). Kickoff: `docker compose up`.
-4. **Submit** — worksheet PDF + flag → see [SUBMISSION.md](../../SUBMISSION.md) · exploit code → GitHub.
+## This week — 100-minute class and assigned assessment
+
+1. **Before class** — Prepare Docker and the host tools listed in SUBMISSION.md before class; complete first downloads before the contact block. Read the relevant recap.
+2. **In class (100 minutes)** — 10 quiz/review + 10 brief + 60 shared practice/analysis +
+   15 debrief + 5 evidence capture. Week 1 starts with orientation/review, not a quiz on
+   material not yet taught. Slides: `slides/week03.md`. The full deck includes reference/deep-dive
+   material; the instructor selects the core explanation for this block.
+3. **Common work (60 points)** — Capture a guest cookie, calculate glue padding and demonstrate the intended SHA-256 length-extension forgery. Run the same technique against HMAC; distinguish a failed forgery from unrelated timing/replay limitations.
+4. **Assigned format (40 points)** — complete **either** the Conventional written questions
+   **or** AIR-Sec (Audit the AI 20 + EiPE 10 + Prompt Problem 10). Both versions total 100.
+   Viva checks support feedback/authenticity within the criteria; they add no separate marks.
+5. **After class** — finish detailed calculations, explanations and the assigned format;
+   retain all original questions as assigned work or study extensions. Submit the worksheet
+   PDF and required evidence according to [SUBMISSION.md](../../SUBMISSION.md). This week
+   has no separate code-fix/GitHub submission.
 
 ## Objectives
 - Explain why a bare hash of `key || message` (or `message || key`) is **not** a secure MAC.
@@ -34,7 +40,10 @@ Two Flask targets, same endpoints, different signature scheme:
 **Why it's exciting:** forging your way into someone else's cookie with pure math, no password
 needed, feels like a magic trick — until HMAC slams the door shut.
 
-Both issue a cookie at `GET /login?user=<name>` encoding `data="user=<name>&admin=false"` plus a
+Both accept usernames of 1–64 ASCII letters, digits, `_`, `.` or `-`; malformed names
+return `400` before any cookie is issued. This closes an unrelated field-injection shortcut
+while preserving the intended length-extension exercise. Both issue a cookie at
+`GET /login?user=<name>` encoding `data="user=<name>&admin=false"` plus a
 signature. `GET /admin` recomputes the signature and, if it matches **and** `data` contains
 `admin=true`, returns the flag.
 
@@ -59,9 +68,9 @@ cd labs/week03-macs
 docker compose up -d          # vulnerable_app.py on :8092, fixed_app.py on :8093
 python exploit.py             # PASS on :8092 (flag), PASS on :8093 (correctly rejected); exit 0
 ```
-Per-student flag: `python3 ../../instructor/seed_flags.py env <STUDENT_ID> > .env` before
-`docker compose up` (once this course's `instructor/seed_flags.py` exists — see
-`course-plan-19weeks.md` open decision #4; until then `FLAG_MACS` falls back to a shared placeholder that is the same for everyone).
+Flag configuration: use an instructor-supplied personalised `.env` if available. Otherwise
+record the shared demo flag with your own evidence and explanation; no automatic roster
+validation is assumed.
 
 **Verified:** `docker compose up -d` followed by `python exploit.py` was run against live
 containers on this machine; both PASS checks printed and the script exited `0`. `MAC_SECRET`
@@ -70,6 +79,10 @@ signature consistently, and negative controls (`/admin` with no cookie, `/admin`
 legitimate non-admin cookie) both correctly returned `403`.
 
 ## Deliverable
+
+Submit the common evidence and reasoning (60) plus only the assigned Conventional (40)
+or AIR-Sec (40) format. The details below describe the common artifact; the worksheet
+identifies the alternative sections.
 The captured flag + your forged `(data, sig)` pair + a short note on exactly which byte range in
 `data` is the SHA-256 glue padding your forgery relied on, and why HMAC closes the gap. Full
 tasks: `worksheet.md`.

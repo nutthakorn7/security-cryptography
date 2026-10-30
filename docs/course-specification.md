@@ -1,182 +1,133 @@
-# Course Specification — Security & Cryptography
+# Course Specification — Cryptography and Network Security
 
-Outcome-based (OBE) course specification: what students are expected to be able to do (CLOs), how
-they are taught, and how each outcome is evidenced and graded. Written to satisfy the usual
-programme-review asks (AUN-QA criteria 1–5; the fields a TQF/มคอ.3-style form expects) without
-being tied to one institutional template — sections can be lifted into whichever form the faculty
-issues.
+## Course identification
 
-> **Fill before submission.** Fields marked ⬚ are institution-specific and are not recorded
-> anywhere in this repository: course code, semester/academic year, section, room, grading scale,
-> and the programme's own PLO list.
-
----
-
-## 1. Course identification
-
-| Field | Value |
+| Field | Confirmed value |
 |---|---|
-| Course title | Security & Cryptography |
-| Course code | ⬚ |
-| Credits | 3 (2 lecture hours + 3 laboratory hours per week, 19 weeks) |
-| Level | Undergraduate |
-| Delivery | On-site lecture + hands-on laboratory; all targets run locally in Docker |
+| Code / title | 02005104 — Cryptography and Network Security |
+| Level / credits | Year 4 / 1 credit |
+| Semester | Semester 2, Academic Year 2026 (2569) |
+| Programme / type | Computer / Compulsory |
 | Instructor | Nutthakorn Chalaemwongwan |
-| Semester / Year | ⬚ |
-| Programme | ⬚ |
+| Class format | Lecture, emphasizing in-class laboratory/practical analysis |
+| Contact time | 100 minutes weekly over 20 weeks; scheduled total 2,000 minutes |
 
-## 2. Course description
+The approved institutional XLSX retains its original format and full text. Room, section,
+calendar dates and any institutional grading-scale rules must come from the official timetable
+or policy; none is invented here.
 
-Cryptography as it fails in practice. Rather than deriving primitives and stopping there, each
-week pairs the mathematics with the specific way real systems misuse it: unsalted password hashes,
-authentication built on a bare hash instead of a MAC, encryption without authentication, an
-unauthenticated key exchange, a padding oracle, a reused nonce, a malleable signature, a
-certificate nobody validates, a one-time signature key used twice.
+## Description and outcomes
 
-Weeks are classified by what the topic honestly supports:
+Cryptographic systems are studied through primitive selection, controlled misuse demonstrations,
+correct composition and explicit limits. Weeks 1/10 use practical analysis; runnable weeks use
+local vulnerable/control pairs. Docker and flags are not universal assessment requirements.
 
-| Kind | Meaning |
+| CLO | Student can |
 |---|---|
-| **LAB** | a runnable vulnerable/fixed pair exists — Docker target + attributable flag |
-| **HYBRID** | a smaller demonstrable exploit alongside material that stays theoretical |
-| **CONCEPTUAL** | protocol-design or mathematical analysis with no natural exploit — no lab, no flag, rubric-graded |
+| 1 | Select a primitive for confidentiality, integrity, authenticity and freshness and justify its limits. |
+| 2 | Analyse a misuse and demonstrate a bounded attack with reproducible evidence. |
+| 3 | Correctly use a vetted construction and verify rejection of the original attack. |
+| 4 | Explain protocol trust, key authentication, compromise limits and PQC migration. |
+| 5 | Evaluate technical and AI-generated claims and communicate their reasoning. |
+| 6 | Work ethically, document sources/tools and produce their own explainable evidence. |
 
-The classification is deliberate: a CONCEPTUAL week is not a week with a missing lab, and it is
-graded as analysis rather than being forced into a capture-the-flag wrapper.
+The owner-approved programme alignment is **C(4), G(1), G(5)**; MCC links follow the actual
+weekly topics in the institutional syllabus. No placeholder PLO number is presented as an
+institutionally confirmed mapping.
 
-Every teaching week additionally carries **both** an AIR-Sec assessment and a Conventional
-(essay/discussion) assessment, per the preregistered crossover design — see
-[course-plan-19weeks.md](../course-plan-19weeks.md) for the dual-arm requirement.
+## Teaching and assessment alignment
 
-## 3. Course learning outcomes (CLOs)
+| Assessment | Weight | Mode | Outcomes |
+|---|---:|---|---|
+| 12 worksheets, Weeks 1–6/10–15 | 30% | Individual; 2.5 course points each | CLO1–6 |
+| Midterm W8 written / W9 practical | 8% / 12% | Individual | CLO1–4,6 |
+| Final W18 written / W19 practical | 10% / 15% | Individual / team | CLO1–6 |
+| CryptoVault | 15% | Teams 3 normally,2 where needed | CLO1,3–6 |
+| Quizzes / participation | 10% | Individual and class participation | CLO1,2,4–6 |
+| **Total** | **100%** | | |
 
-| # | Outcome | Bloom |
-|---|---|---|
-| **CLO1** | **Select and justify** the primitive that matches a stated security goal — confidentiality, integrity, authenticity, freshness — and state precisely what that primitive does *not* provide. | Analyse / Evaluate |
-| **CLO2** | **Break** a misused construction in a controlled lab — unsalted hashes, hash-only authentication tokens, unauthenticated block-cipher modes, an unauthenticated key exchange, a padding oracle, a reused nonce, a malleable signature, a reused one-time key — and explain the mathematics that makes the break work. | Apply / Analyse |
-| **CLO3** | **Rebuild** the construction correctly (KDF, HMAC / encrypt-then-MAC, AEAD, authenticated key exchange, validated certificates) and demonstrate empirically that the original attack now fails. | Create / Evaluate |
-| **CLO4** | **Reason about protocol-level designs** — TLS and Noise, end-to-end messaging, PAKE/FIDO2 authentication, post-quantum migration — in terms of trust model, forward secrecy, downgrade resistance and the cost of a compromise. | Analyse / Evaluate |
-| **CLO5** | **Evaluate** cryptographic claims and code produced by others, including AI-generated implementations and marketing "snake oil", and explain a finding to both a technical and a non-technical audience. | Evaluate |
-| **CLO6** | **Practise** cryptanalytic work within legal and ethical limits, and produce evidence of their own work that withstands scrutiny. | Apply / Value |
+Ability matrix remains **Basic 20 / Technical 70 / Interdisciplinary 10**:
+Basic = midterm 10 + final 5 + quiz 5; Technical = midterm 10 + final 20 + quiz 5 + lab 25 + project 10;
+Interdisciplinary = lab 5 + project 5. Written/practical splits and ability rows refer to the same
+marks, not separate totals. Instructor item blueprints allocate the ability points explicitly.
 
-## 4. CLO → assessment alignment
+All students complete the same common practical 60: core/observation 20, control or limitations 20,
+reproducible evidence/reasoning 20. The assigned form contributes 40: Conventional technical
+written questions 40, or AIR-Sec Audit 20 + Explain-in-Plain-English 10 + Prompt Problem 10.
+Weeks 1/10 use diagrams, calculations and counterexamples for common 60. Week 12 student-written
+`build_client_context()` and its tests are graded in common 60 for both forms. Each worksheet
+raw 100 converts to `score/100×2.5`; the other form is not an extra requirement or grade.
 
-Weights follow [syllabus.md](../syllabus.md) §3 and are kept aligned with the *Software Security*
-course, since both share one preregistered study design.
+Live explanations, feedback and reproduction checks happen within existing work. No extra
+viva 10, automatic AIR-only gate or blanket personal-flag prerequisite applies. Personal flags
+are used only when actually configured; ordinary name/ID, tool disclosure and integrity rules
+apply equally. This current approved teaching policy changes older essay-only Conventional
+descriptions; it does not assert that an external study registration has been updated or verified.
 
-| Assessment | Weight | Mode | CLO1 | CLO2 | CLO3 | CLO4 | CLO5 | CLO6 |
-|---|---|---|:--:|:--:|:--:|:--:|:--:|:--:|
-| Weekly lab worksheets — 12 graded (Wk 1–6, 10–15) | 30% | Individual | ● | ● | ● | ● | ● | ● |
-| Midterm — W8 written + W9 practical | 20% | Individual | ● | ● | ● | ● | | ● |
-| Final — W18 written (individual) + W19 practical (team) | 25% | Mixed | ● | ● | ● | ● | ● | ● |
-| Term project — CryptoVault (compose KDF + AEAD + key exchange + signatures + TLS correctly) | 15% | Team of 2–3 | ● | | ● | ● | ● | ● |
-| Weekly quizzes (drop lowest 1–2) + participation | 10% | Individual | ● | ● | | ● | | |
+## Weekly schedule and learning methods
 
-Recurring worksheet parts and the outcome each carries:
+Ordinary 100 minute classes = quiz/review 10 + brief 10 + practice 60 + feedback/reasoning 15 +
+checkpoint 5. Weeks 11/15 instead practice 70 and evidence/feedback 10 after quiz 10 + brief 10.
+Week 1 orientation is ungraded; the Week 1 retrieval quiz opens Week 2.
+Pre-class preparation covers images, installation and reading; full-form answers and all
+extension questions remain available for after-class work. Instructor plans name a bounded core.
 
-| Worksheet part | Assesses |
-|---|---|
-| Exploit / demonstration task (LAB, HYBRID) | CLO2 |
-| Rebuild-it-correctly task | CLO3 |
-| Conceptual analysis (CONCEPTUAL weeks, and the theoretical half of HYBRID weeks) | CLO1, CLO4 |
-| **Audit the AI** — find the planted flaw in an AI-generated implementation or claim | CLO5 |
-| **Explain-in-Plain-English + Prompt Problem** | CLO5 |
-| **Evidence & Integrity** — identity-stamped proof, per-student flags where the week has one | CLO6 |
+| Wk | Topic / activity | Principal evidence |
+|---:|---|---|
+| 1 | Security mindset / threat modelling | Threat model and primitive-selection diagram |
+| 2 | Hashes / password KDFs | Weak-hash recovery, authenticated session and KDF comparison |
+| 3 | MACs / length extension | A forged secret-prefix MAC and rejected HMAC control |
+| 4 | AES modes / CBC malleability | A same-length CBC field modification and authenticated rejection |
+| 5 | Authenticated key exchange | Unauthenticated DH interception and authenticated abort |
+| 6 | AEAD / padding oracle | Oracle-dependent plaintext recovery and GCM rejection |
+| 7 | Pre-midterm review | Quiz, selected mock and repair notes |
+| 8 | Midterm written | 90 minute written script |
+| 9 | Midterm individual practical | 80 minute individual checkpoints |
+| 10 | Asymmetric / hybrid encryption | A KEM/DEM design, nonce analysis and counterexample |
+| 11 | Signatures / ZKP / malleability | A signature twin, repeated authorization and canonicalization control |
+| 12 | TLS / Noise / client-context coding | A student-built TLS context with a successful trusted connection and MITM rejection |
+| 13 | End-to-end encryption | Server-visible plaintext versus ciphertext, with successful recipient decryption |
+| 14 | Authentication / PAKE limits | Password logging versus a fresh challenge/proof exchange |
+| 15 | PQC / one-time signatures | A forged toy Lamport signature and rejected second use of a fixed key |
+| 16 | CryptoVault studio | Build/self-audit feedback and action list |
+| 17 | Pre-final review | Quiz, selected mock and repair notes |
+| 18 | Final written | 20 MCQs in 90 writing minutes |
+| 19 | Final team practical | 80 minute team station evidence |
+| 20 | Feedback / clarification / closure | Returned-work feedback and reflection |
 
-## 5. CLO → PLO mapping
 
-⬚ Replace `PLO1…PLOn` with the programme's own outcome statements. **I** = Introduced,
-**R** = Reinforced, **M** = Mastered.
+All 20 contact slots are 100 minutes. Written exams use 90 task +10 admin minutes; practicals 80 task
++20 admin. Week 20 uses return 15 + mechanisms/control review 30 + project clarification 30 + reflection 20 + closure 5 minutes. Week 19 contains no project Q&A. Team videos are≤5 minutes and submitted before Week 19;
+project clarification uses Weeks 16/20 and the existing rubric. Cryptocurrency/UTXO/BFT legacy
+items are retained as a private bank, excluded from the current scored exam. HNDL is optional.
 
-| CLO | ⬚ PLO1 | ⬚ PLO2 | ⬚ PLO3 | ⬚ PLO4 | ⬚ PLO5 |
-|---|:--:|:--:|:--:|:--:|:--:|
-| CLO1 Primitive selection | M | R | | | |
-| CLO2 Cryptanalysis in the lab | M | R | | | |
-| CLO3 Correct reconstruction | M | M | | R | |
-| CLO4 Protocol reasoning | R | M | I | | |
-| CLO5 Evaluation & communication | | | M | | R |
-| CLO6 Ethics & evidence | | | R | | M |
+## Criteria and verification
 
-## 6. Weekly schedule
+The six approved rubric dimensions are: mechanism selection; attack analysis with evidence;
+safe implementation/composition; protocol/PQC reasoning; evaluation of technical claims; and
+communication, integrity and teamwork. VeryGood = correct, complete and evidenced; Good =
+essential reasoning correct with omissions; Fail = central reasoning incorrect or evidence
+insufficient. Apply these within the published component weights and worksheet subcriteria.
 
-5 contact hours per week (2 lecture + 3 lab). Signature games are the week's headline exercise.
+Private keys and current exam blueprints are held under `instructor/exams/`; student-facing
+guides contain scope/timing without solution payloads. Preflight target freshness, variant
+correctness and marking consistency before use. The time budgets are plans, not a completed
+human timing trial. Record actual completion times and attainment after teaching. Grade scale
+and misconduct handling follow institutional policy; do not invent thresholds here.
 
-| Wk | Topic | Kind | Lab folder | Signature game | CLOs |
-|---:|---|---|---|---|---|
-| 1 | Intro + threat-modelling a crypto system | CONCEPTUAL | `labs/week01-intro` | 🐍 "Snake Oil Bingo" | 1, 5 |
-| 2 | Hash functions | LAB | `labs/week02-hash` | 🔓 "Crack the Leaked DB" | 1, 2, 3 |
-| 3 | MACs | LAB | `labs/week03-macs` | 🍪 "Forge the Admin Cookie" | 1, 2, 3 |
-| 4 | AES and block-cipher modes | LAB | `labs/week04-aes-modes` | 🎯 "Flip Your Way to Admin" | 1, 2, 3 |
-| 5 | Key exchanges | HYBRID | `labs/week05-key-exchanges` | 🕵️ "The Silent Third Wheel" | 2, 3, 4 |
-| 6 | Authenticated encryption (AEAD) | LAB | `labs/week06-aead` | 🔮 "Read the Secret Without the Key" | 1, 2, 3 |
-| 7 | **Reflection & review** (pre-midterm) | — | `labs/week07-review` | 🏆 Jeopardy recap (Wk 1–6) | 1–4 |
-| 8 | **Midterm — written** | — | ⬚ (instructor-held paper) | — | 1–4, 6 |
-| 9 | **Midterm — practical** | — | ⬚ (instructor-held) | — | 2, 3, 6 |
-| 10 | Asymmetric & hybrid encryption | CONCEPTUAL | `labs/week10-hybrid-encryption` | 🔬 "Nonce Detective" | 1, 4, 5 |
-| 11 | Signatures & zero-knowledge proofs | HYBRID | `labs/week11-signatures-zkp` | 💰 "Double-Spend the Bank" | 2, 3, 4 |
-| 12 | Secure transport (TLS & Noise) | HYBRID | `labs/week12-secure-transport` | 🎭 "The Impostor's Certificate" | 2, 3, 4 |
-| 13 | End-to-end encryption | HYBRID | `labs/week13-e2e-encryption` | 👀 "Who's Reading Your Mail?" | 3, 4 |
-| 14 | User authentication | HYBRID | `labs/week14-authentication` | 🗝️ "Never Say the Password" | 1, 4 |
-| 15 | Post-quantum cryptography | LAB | `labs/week15-pqc` | 🔑 "Forge the Admin Signature" | 2, 3, 4 |
-| 16 | Capstone studio — CryptoVault | — | `project/` | 🏗️ CryptoVault build | 1, 3, 4, 5 |
-| 17 | **Reflection & review** (pre-final) | — | `labs/week17-review` | 🏆 Jeopardy: Champions Edition (Wk 10–16) | 1–5 |
-| 18 | **Final — written** (cumulative, emphasis Wk 10–16) | — | ⬚ (instructor-held paper) | — | 1–5 |
-| 19 | **Final — practical** (team) | — | ⬚ (instructor-held) | — | 2, 3, 5, 6 |
+## Resources and integrity
 
-Week 12 is the one week in which students **write the fix themselves** (a stubbed
-`build_client_context()` in `alice_student.py`) rather than confirm a supplied one — see
-[SUBMISSION.md](../SUBMISSION.md)'s coding-scope note.
+Local repositories provide labs, all question text, readings, slides and submission guidance.
+Use only authorized targets and course test accounts. Weeks 11/15 require fresh state; Week 11
+demonstrates signature malleability, not nonce-reuse key recovery. Week 6 attacks unauthenticated
+CBC and compares supplied GCM. Week 14's toy challenge-response is not full PAKE: OPAQUE does
+not eliminate offline guessing after server plus credential compromise; see
+[RFC 9807 § 10.11](https://www.rfc-editor.org/rfc/rfc9807.html#section-10.11).
 
-Cryptocurrency content (UTXO, BFT, Merkle proofs) has no teaching week; it is examined from the
-Week 18 written item bank, matching how the source course treated it.
+AI use requires disclosure and verification. Students are graded on their own explainable work,
+not the plausibility of a generated answer. The `ecdsa` side-channel advisory CVE-2024-23342
+remains an explicitly accepted teaching-lab dependency risk; do not use the toy bank as a real
+financial or authentication service.
 
-## 7. Teaching and learning methods
-
-- **Break-then-rebuild laboratories** on LAB and HYBRID weeks; rubric-graded analysis on
-  CONCEPTUAL weeks, where forcing a lab would misrepresent the topic.
-- **Retrieval practice** — a ~10-minute quiz opens each teaching week (lowest 1–2 dropped); two
-  cumulative review quizzes run in Weeks 7 and 17.
-- **AI-resilient tasks** — *Audit the AI*, *Explain-in-Plain-English*, *Prompt Problem*. In this
-  course the AI critique is often the headline exercise (Weeks 1 and 10), because plausible-sounding
-  cryptographic nonsense is exactly what students must learn to detect.
-- **Live accountability** — rotating micro-demos and viva spot-checks on submitted work.
-- **Per-student evidence** — flags are minted per student on LAB/HYBRID weeks; CONCEPTUAL weeks
-  use per-student planted-error variants instead.
-
-## 8. Assessment criteria and grading
-
-Individual work is ~75% of the final mark. Team-graded work is bounded: the CryptoVault project
-(15%) and the Week 19 practical, with project marks scaled by peer-contribution evaluation.
-Worksheets are graded against the rubric published in each worksheet. Grading scale: ⬚.
-
-## 9. Verification of student achievement
-
-- Each graded worksheet has an instructor-held answer key, reviewed against the published worksheet
-  whenever lab content changes.
-- Written exams exist in parallel Form A/B drawn from a maintained item bank.
-- Viva spot-checks and micro-demos sample submitted work each week.
-- Where a week issues flags, values are per-student, so duplicate submissions are detectable.
-- End-of-term attainment is reviewed by mapping assessment scores back to §4.
-
-## 10. Resources
-
-- Course repository: labs, worksheets, slides and runnable targets.
-- Docker Desktop on the student's own machine; no cloud account required.
-- Reading list: [readings.md](../readings.md) · Submission channels: [SUBMISSION.md](../SUBMISSION.md)
-- Rules of engagement: [ETHICS.md](../ETHICS.md)
-- Note: `labs/week11-signatures-zkp` depends on the `ecdsa` package, which carries an unfixable
-  advisory (CVE-2024-23342, side channels declared out of scope upstream). It is used deliberately
-  — its pure-Python implementation is what makes the nonce/malleability demonstrations legible —
-  and is documented as an accepted risk in that lab's `requirements.txt`.
-
-## 11. Academic integrity and AI policy
-
-AI assistants are permitted and are addressed head-on by the *Audit the AI*, *EiPE* and *Prompt
-Problem* tasks. What is assessed is the student's own understanding; per-student flags and
-variants, identity-stamped evidence, viva spot-checks and micro-demos exist to keep that
-assessable. Submitting an implementation or a proof a student cannot explain or reproduce is an
-academic-integrity matter under ⬚ (institutional policy).
-
----
-
-*Weekly lesson plans that instantiate this specification: [`docs/lesson-plans/`](lesson-plans/).*
+See [syllabus](../syllabus.md), [agenda](../AGENDA.md), [lesson plans](lesson-plans/),
+[project](../project/README.md), [submission](../SUBMISSION.md) and [ethics](../ETHICS.md).

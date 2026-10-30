@@ -7,16 +7,21 @@ salting, slow KDFs (bcrypt/argon2/scrypt), dictionary & rainbow-table attacks
 CWE-327 (Use of a Broken or Risky Cryptographic Algorithm), CWE-759/CWE-760 (Use of a One-Way
 Hash Without a Salt / With a Predictable Salt)
 
-## ✅ This week — what to do
-1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security`);
-   skim the course intro on what a cryptographic hash is (one-way, fixed-size digest).
-2. **Lecture (120 min)** — hash security properties (preimage / second-preimage / collision
-   resistance); why MD5 and SHA-1 are broken and where that matters; why a *fast* hash is the
-   wrong tool for passwords; salts, peppers, and slow KDFs. Slides: `slides/week02.md`.
-3. **Lab (180 min)** — play the cracking game below, capture your flag, then complete
-   **Worksheet 2** (`worksheet.md`, Part 2 Conventional essays + Part 3 AIR-Sec lab, Audit-the-AI,
-   EiPE/Prompt). Kickoff: `docker compose up`.
-4. **Submit** — worksheet PDF + flag → see [SUBMISSION.md](../../SUBMISSION.md) · exploit code → GitHub.
+## This week — 100-minute class and assigned assessment
+
+1. **Before class** — Prepare Docker and the host tools listed in SUBMISSION.md before class; complete first downloads before the contact block. Read the relevant recap.
+2. **In class (100 minutes)** — 10 quiz/review + 10 brief + 60 shared practice/analysis +
+   15 debrief + 5 evidence capture. Week 1 starts with orientation/review, not a quiz on
+   material not yet taught. Slides: `slides/week02.md`. The full deck includes reference/deep-dive
+   material; the instructor selects the core explanation for this block.
+3. **Common work (60 points)** — Recover the admin password from the supplied MD5 store and demonstrate the login/session flow. Compare the bcrypt store and verification code; explain salting, work factor and why a weak password remains guessable.
+4. **Assigned format (40 points)** — complete **either** the Conventional written questions
+   **or** AIR-Sec (Audit the AI 20 + EiPE 10 + Prompt Problem 10). Both versions total 100.
+   Viva checks support feedback/authenticity within the criteria; they add no separate marks.
+5. **After class** — finish detailed calculations, explanations and the assigned format;
+   retain all original questions as assigned work or study extensions. Submit the worksheet
+   PDF and required evidence according to [SUBMISSION.md](../../SUBMISSION.md). This week
+   has no separate code-fix/GitHub submission.
 
 ## Objectives
 - State the three hash security properties (preimage, second-preimage, collision resistance) and
@@ -73,9 +78,9 @@ python exploit.py             # PASS on :8094 (flag), PASS on :8095 (fast techni
 compare — no bcrypt needed to *run the exploit*; bcrypt is only needed inside the fixed
 container).
 
-Per-student flag: `python3 ../../instructor/seed_flags.py env <STUDENT_ID> > .env` before
-`docker compose up` (once this course's `instructor/seed_flags.py` exists — see
-`course-plan-19weeks.md` open decision #4; until then `FLAG_HASH` falls back to a shared placeholder that is the same for everyone).
+Flag configuration: use an instructor-supplied personalised `.env` if available. Otherwise
+record the shared demo flag with your own evidence and explanation; no automatic roster
+validation is assumed.
 
 **Verified:** `docker compose up -d` followed by `python exploit.py` was run against live
 containers on this machine — the admin MD5 was cracked from the 101-word wordlist in ~0.1 ms to
@@ -89,6 +94,10 @@ the flag, confirming the fixed app's endpoints work (bcrypt only *raises the cos
 it doesn't reject the correct password).
 
 ## Deliverable
+
+Submit the common evidence and reasoning (60) plus only the assigned Conventional (40)
+or AIR-Sec (40) format. The details below describe the common artifact; the worksheet
+identifies the alternative sections.
 The captured flag + the recovered admin password + a short note stating (a) exactly why the MD5
 store fell in milliseconds (fast + unsalted), and (b) which single property of the bcrypt store
 defeats the md5-precompute technique — and why bcrypt still isn't a substitute for a

@@ -1,19 +1,15 @@
 # Security & Cryptography
 
-A hands-on undergraduate course on applied cryptography: how cryptographic primitives fail when
-misused, and how to use them correctly. Companion course to
-[`software-security`](../KOSEN69%20-%20software-security/) — same 19-week skeleton, same
-AIR-Sec pedagogy, same preregistered study, different subject matter and a separate repo/CTFd
-deployment.
+**02005104 Cryptography and Network Security** — Year 4, 1 credit, Semester 2 AY2026.
+Lecture format with practical work in class: **20 weeks × 100 minutes**. The 12 teaching
+worksheets are W1–6 and W10–15; ten have runnable labs and W1/W10 use case/code analysis.
+W16 is the CryptoVault studio, W7/W17 are review, W8/W9/W18/W19 are exams, and W20 is feedback.
 
-> ⚠️ **Status: DRAFT.** All 12 teaching weeks are built (Weeks 1–6, 10–15 — Labs, Hybrids, and
-> Conceptual weeks; see [course-plan-19weeks.md](course-plan-19weeks.md) for which is which),
-> plus the capstone (Week 16 — a studio day, not a lecture; covered by `project/README.md`, no
-> vulnerable-target lab by design), both review weeks (7, 17), and both exam blocks (8–9, 18–19).
-> This course's own `seed_flags.py` + `check_flag_keys.py` + flag-bridge wiring are built and
-> verified (`instructor/platform-build/`). Remaining: the deployment catalog
-> (`challenges-import.csv` / `ctfd/challenges.yml`) — the labs are Docker-verified standalone but
-> not yet live in a CTFd deployment. Do not use this for a live course yet.
+Both worksheet formats share **practical work 60/100**. The remaining **40/100** is either
+Conventional written questions or AIR-Sec (Audit-the-AI 20, Explain-in-Plain-English 10,
+Prompt Problem 10). Each worksheet contributes **2.5 course points**, for 30 in total.
+See [syllabus.md](syllabus.md) and [SUBMISSION.md](SUBMISSION.md) for the current assessment policy.
+These local materials do not establish the deployment or personalized-flag status of a live cohort.
 
 > ⚠️ **Ethics first.** All offensive techniques are taught for **defensive and authorized testing
 > only**. Attack only the provided sandbox targets. See [`ETHICS.md`](ETHICS.md) for this
@@ -22,6 +18,8 @@ deployment.
 ---
 
 ## Quick start
+
+[คู่มือ Lab Cryptography ทั้ง 10 สัปดาห์และการส่งงาน](SUBMISSION.md) — คำสั่งรัน ผลที่ต้องตรวจ และรายการหลักฐานส่งงานสำหรับนักศึกษา
 
 ```bash
 git clone <this-repo-url>
@@ -54,18 +52,18 @@ approach as `software-security` — no full VM required.
 | 15 | Post-Quantum Cryptography | 🔑 "Forge the Admin Signature" |
 | 16 | Capstone studio (CryptoVault WIP) | 🏗️ Build & peer review |
 | **17** | **🔁 Reflection & Review (pre-final)** | 🏆 "Jeopardy: Champions Edition" |
-| **18–19** | **📝 Final** (Wk18 written · Wk19 CTF practical) | — |
+| **18–19** | **📝 Final** (Wk18 written · Wk19 team practical; 100 minutes each) | — |
+| **20** | **Feedback, reflection and project clarification** | Return results and discuss controls |
 
-Full details, technical rationale, and each game's "why it's exciting" hook:
-[course-plan-19weeks.md](course-plan-19weeks.md). Build/verification status per week is tracked
-there too.
+Full details and the current 20-week schedule: [course-plan-19weeks.md](course-plan-19weeks.md).
+The filename is retained for existing links; the plan inside covers 20 weeks.
 
 ## Repository layout
 
 ```
 security-cryptography/
 ├── README.md                  ← you are here
-├── course-plan-19weeks.md     ← full week-by-week plan, classification, open decisions
+├── course-plan-19weeks.md     ← current 20-week plan (legacy filename retained)
 ├── syllabus.md                ← outcomes, assessment, references
 ├── labs/
 │   ├── week01-intro/              ← CONCEPTUAL — threat-modeling a crypto system, Audit-the-AI (no Docker target)
@@ -81,7 +79,8 @@ security-cryptography/
 │   ├── week13-e2e-encryption/     ← HYBRID — TLS-only vs. E2E chat server (server-log evidence)
 │   ├── week14-authentication/     ← HYBRID — plaintext-password vs. challenge-response demo
 │   ├── week15-pqc/                ← LAB — Lamport OTS key-reuse private-key recovery
-│   └── week17-review/             ← pre-final review (no lab, no flag)
+│   ├── week17-review/             ← pre-final review (no lab, no flag)
+│   └── week20-feedback/           ← feedback/reflection (no additional graded lab)
 ├── quizzes/weekly/
 ├── slides/
 ├── project/
@@ -90,16 +89,13 @@ security-cryptography/
 
 ## Relationship to `software-security`
 
-- Same 19-week skeleton (12 teaching + 1 capstone + 2 review + 2×2 exam), same AIR-Sec assessment taxonomy
-  (Audit-the-AI, EiPE, Prompt Problem, viva, per-student attributable artifacts).
-- **Separate** `seed_flags.py` / CHALLENGES namespace, separate CTFd deployment, separate
-  `RESEARCH_SALT` and pseudonymization run — no shared identifiers between the two courses'
-  research data.
-- Has its own [`ETHICS.md`](ETHICS.md) (adapted from `software-security`'s policy, not a shared
-  file — this course has its own repo, Docker sandbox, and Classroom instance).
-- Has its own [`SUBMISSION.md`](SUBMISSION.md), adapted from `software-security`'s pattern for
-  this course's own Classroom/GitHub instances. Reuses `software-security`'s pseudonymization
-  tooling (`instructor/pseudonymize.py`) by reference/copy rather than reinventing it — not yet
-  copied over (tracked in `course-plan-19weeks.md`'s open decisions).
-- Content source: a prior (pre-AIR-Sec) offering of this course at KOSEN68. See
-  course-plan-19weeks.md's "Reuse & provenance" section for exactly what was and wasn't ported.
+The courses share the Conventional/AIR-Sec teaching approach, while keeping their own topics,
+repositories and grades. Both Cryptography worksheet formats include the same practical core;
+viva checks verify understanding within the existing rubric and add no separate marks or pass gate.
+Cryptography uses its own [ETHICS.md](ETHICS.md), sandbox targets and [SUBMISSION.md](SUBMISSION.md).
+Current course delivery uses the course platform and the student's GitHub fork for the W12 fix.
+Any separate research protocol, consent or external registration must be verified independently;
+this teaching plan does not claim a registered study or a live CTFd deployment.
+
+Some conceptual questions were adapted from a prior KOSEN68 offering. The current course code,
+credits, 20-week timetable and grading are those confirmed for AY2026 in the current syllabus.

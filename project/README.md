@@ -1,6 +1,6 @@
 # Term Project — CryptoVault
 
-**Teams of 2–3 (nested in your House). 15% of the final grade.**
+**Teams of 3 normally, 2 where needed for an uneven class (nested in your House). 15% of the final grade.**
 
 This is a **"build it right," not "find the bug"** project — the inverse of the weekly labs. Every
 week from Wk2–Wk15 hands you a *broken* construction and asks you to break it, then fix it.
@@ -24,17 +24,18 @@ The build must correctly use, **together**:
    automatic finding here — that's the exact failure Wk2 (hash-cracking) demonstrated.
 2. **AEAD for data at rest** — AES-GCM (or ChaCha20-Poly1305) encrypting every stored vault entry,
    with a **fresh, unique nonce per encryption** — never raw CBC, never a fixed or counter-reused
-   nonce. This is Wk4 (CBC bit-flip) and Wk6 (AEAD padding-oracle) applied constructively instead
+   nonce. This is Wk4 (CBC bit-flip) and Wk6 (CBC padding-oracle / GCM control) applied constructively instead
    of destructively.
 3. **A key-exchange or asymmetric step for sharing** — when User A shares a vault entry with User
    B, the symmetric key that protects that entry must reach B via ECDH/X25519 key agreement or
    public-key wrapping (RSA-OAEP or hybrid encryption), never transmitted or stored in the clear.
    This is the constructive counterpart to Wk5 (DH MITM) and Wk10 (hybrid encryption).
 4. **Digital signatures on shared entries** — when an entry is shared, the sender signs it (or a
-   manifest of it) so the recipient can verify authenticity and integrity, and the sender can't
-   later repudiate having sent it. This is Wk3 (MAC/length-extension) and Wk11 (ECDSA
-   malleability) applied to a real integrity guarantee — normalize signatures (low-S) and use a
-   proper signature scheme, not `hash(secret + message)`.
+   manifest of it) so the recipient can verify authenticity and integrity, and the recipient can attribute it to the verified signing key, subject to key custody and the trust model. This is Wk3 (MAC/length-extension) and Wk11 (ECDSA
+   malleability) applied to a real integrity guarantee — use a proper signature scheme, not `hash(secret + message)`. For ECDSA, low-S
+   canonicalizes only the `(r,s)`/`(r,n−s)` twin pair; fresh signatures can have other low-S
+   values. Bind replay/idempotency checks to an authenticated application transaction ID or
+   nonce and spent-state, rather than relying on signature-byte hashes.
 5. **TLS (or an equivalent authenticated transport)** for every client–server link — no
    plaintext-HTTP fallback, no client that skips certificate validation. This is Wk12 (cert-bypass
    MITM) applied correctly.
@@ -58,12 +59,12 @@ the constraint is on the cryptographic composition, not the framework.
    key-exchange method, signature scheme, transport) is correct — i.e., show you know what could
    have gone wrong (the corresponding weekly lab's failure mode) and why your build avoids it.
 4. **Crypto-agility note** *(stretch)* — the PQC note described in item 6 above.
-5. **Demo** — a short live walkthrough: create a vault entry → share it with another user →
-   recipient verifies and decrypts, narrating which primitive is doing what at each step (WIP demo
-   in the **Week 16** capstone studio; graded final demo in **Week 19**). The Week 19 demo is
-   **submitted as a pre-recorded video before the session** and graded from the recording; the
-   in-class block is a **3-minute live Q&A** on your own build (see `AGENDA.md`'s Week 19 note —
-   a live demo per team does not fit the cohort size).
+5. **Demo** — a walkthrough of create entry → share → verify/decrypt, narrating the primitive
+   at each step. Use the **Week 16** studio for work-in-progress feedback and clarification.
+   Submit the final **video no longer than 5 minutes before Week 19**, with the build and report;
+   it is graded asynchronously using the existing project rubric. Any remaining clarification
+   uses **Week 20**. The **Week 19 100 minute session is reserved for the final practical** and
+   contains no project Q&A. No particular class headcount is assumed.
 
 ## Suggested timeline
 
@@ -74,12 +75,13 @@ the constraint is on the cryptographic composition, not the framework.
 | Sharing flow — key exchange/wrapping + signatures — draft | Week 11 |
 | TLS/transport wired in + self-audit drafted | Week 14 |
 | Capstone studio — WIP demo & peer review | Week 16 |
-| Final demo, self-audit, and crypto-agility note (graded) | Week 19 |
+| Final build, report/self-audit and ≤5 minute demo video; optional crypto-agility note | Before Week 19 |
+| Remaining project clarification and feedback | Week 20 |
 
 The design doc is due early (Wk4) because every later milestone depends on the KDF/AEAD choices
 made then; the sharing flow (key exchange + signatures) is scheduled for Wk11, right after
 signatures/ZKP (Wk11) and building on key exchange (Wk5) and hybrid encryption (Wk10); the
-crypto-agility note is scheduled after PQC (Wk15), landing in the Wk16–19 window.
+optional crypto-agility note is scheduled after PQC (Wk15), landing before the final submission.
 
 ## Rubric (100 pts)
 

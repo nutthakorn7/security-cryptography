@@ -5,6 +5,8 @@ paginate: true
 header: "Security & Cryptography · Week 13"
 ---
 
+<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+
 # Week 13
 ## End-to-End Encryption (TLS is not enough; the server still reads your messages)
 Security & Cryptography · Nutthakorn Chalaemwongwan
@@ -105,7 +107,7 @@ week13-server  | SERVER SAW: meet at pier 39 at midnight
 week13-bob     | BOB RECEIVED: meet at pier 39 at midnight
 ```
 
-The `SERVER SAW: ...` line is your **personalized evidence artifact** for this HYBRID week — pair it with your identity proof.
+The `SERVER SAW: ...` line is your **observed evidence artifact** for this HYBRID week — attribute the capture/transcript to your own run.
 
 <!-- Run this live: `docker compose -f docker-compose.vulnerable.yml up --build`. Let students spot the `SERVER SAW` line themselves before you point at it — that's the punchline. Note: no literal TLS cert exists in this lab; vulnerable mode *models* "HTTPS in transit, plaintext stored at the server." ~6 min. -->
 
@@ -188,14 +190,17 @@ server-can-read
 
 ## Lab today — Worksheet 13
 
+**Shared practical/analysis core: 60 points for everyone.** Complete only your assigned **Conventional written 40** or **AIR-Sec Audit 20 + EiPE 10 + Prompt 10**. Each version totals 100; viva is formative. Full questions remain in the worksheet, with extensions outside the 100-minute class.
+
+
 > 📋 **Worksheet 13** — `labs/week13-e2e-encryption/worksheet.md` · kickoff: `docker compose -f docker-compose.vulnerable.yml up --build`, then the `.fixed.yml` file
 
 - **Part 1 (essays):** TLS vs. E2EE, the root-of-trust problem, why PGP failed, Signal vs. PGP, open problems in E2EE
 - **Part 2a (lab):** capture both modes' logs — plaintext `SERVER SAW` vs. base64 `SERVER SAW`, `BOB DECRYPTED`, and the `grep -c` showing `0`
-- **🤖 Audit the AI:** critique an AI-written "secure chat backend" that calls itself end-to-end encrypted because it uses HTTPS — same flaw as vulnerable mode, dressed up in reassuring language
-- **🧠 EiPE + Prompt Problem:** explain WhatsApp's "lock icon" to a non-technical friend; probe an AI on TLS vs. E2EE and check it for hallucinated claims
+- **Assigned AIR-Sec Audit the AI:** critique an AI-written "secure chat backend" that calls itself end-to-end encrypted because it uses HTTPS — same flaw as vulnerable mode, dressed up in reassuring language
+- **Assigned AIR-Sec EiPE + Prompt Problem:** explain WhatsApp's "lock icon" to a non-technical friend; probe an AI on TLS vs. E2EE and check it for hallucinated claims
 
-<!-- Mirror W11's lab slide structure. Stress: no host port published, read the container logs, this isn't a browser demo. Audit-the-AI is 15 of 100 points and is NOT optional — it's this lecture's exact bug wearing confident prose. Remind: code is unchanged this week, it's a read/run/observe lab, not exploit-and-fix. ~3 min. -->
+<!-- Mirror W11's lab slide structure. Stress: no host port published, read the container logs, this isn't a browser demo. Audit-the-AI is 20 points for the assigned AIR-Sec version; Conventional students complete their written 40 instead — it's this lecture's exact bug wearing confident prose. Remind: code is unchanged this week, it's a read/run/observe lab, not exploit-and-fix. ~3 min. -->
 
 ---
 
@@ -205,11 +210,11 @@ server-can-read
 - **Textbook-secure primitive, real-system failure:** TLS wasn't broken — it was trusted for something it never promised
 - E2EE closes the gap with hybrid encryption (AES-256-GCM + RSA-OAEP) moved to the **endpoints** — but it still doesn't solve *whose key you're actually encrypting to* (root of trust)
 
-<!-- Recap, 3 lines — say the spine phrase out loud, it threads every week. Cold-call: "name one concrete thing a provider can no longer do once messages are truly E2EE" (hand over readable messages on subpoena, scan them for ads, leak them in a breach). ~2 min. -->
+<!-- Recap, 3 lines — say the spine phrase out loud, it threads the course. Cold-call: "name one concrete thing a provider can no longer do once messages are truly E2EE" (hand over readable messages on subpoena, scan them for ads, leak them in a breach). ~2 min. -->
 
 ---
 
 # Questions?
 Next week: (see course roadmap)
 
-<!-- Close by previewing the root-of-trust / Key Transparency open problem (Q5c) as a hook for later PKI-at-scale material. Remind students the identity-proof + timestamp requirement applies to their captured log evidence, same as every other week. ~2 min. -->
+<!-- Close by previewing the root-of-trust / Key Transparency open problem (Q5c) as a hook for later PKI-at-scale material. Remind students their name/student ID and reproducible attribution apply to the submitted evidence; terminal stamping is optional, same as every other week. ~2 min. -->

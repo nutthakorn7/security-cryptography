@@ -5,6 +5,8 @@ paginate: true
 header: "Security & Cryptography · Week 12"
 ---
 
+<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+
 # Week 12
 ## Secure Transport / TLS (certificate-validation-bypass MITM)
 Security & Cryptography · Nutthakorn Chalaemwongwan
@@ -168,14 +170,17 @@ cert-bypass
 
 ## Lab today — Worksheet 12
 
+**Shared practical/analysis core: 60 points for everyone.** Complete only your assigned **Conventional written 40** or **AIR-Sec Audit 20 + EiPE 10 + Prompt 10**. Each version totals 100; viva is formative. Full questions remain in the worksheet, with extensions outside the 100-minute class.
+
+
 > 📋 **Worksheet 12** — `labs/week12-secure-transport/worksheet.md` · kickoff: `docker compose -f docker-compose.vulnerable.yml up --build`
 
 - **Part 1 (essays):** SSL→TLS, handshake security roles, forward secrecy, 0-RTT, Web PKI, TLS vs Noise
 - **Part 2a:** capture vulnerable + fixed logs, then **write the fix yourself** in `alice_student.py`
-- **🤖 Audit the AI:** critique a `verify=False` "fix" that an AI assistant swears is secure
+- **Assigned AIR-Sec Audit the AI:** critique a `verify=False` "fix" that an AI assistant swears is secure
 - **EiPE + Prompt Problem + viva prep**
 
-<!-- The graded output — mirror the structure from earlier weeks. Stress Part 2a step 5: this is the ONE lab in the course where they write the validation code themselves, not just confirm a pre-built fix — one stdlib call (SSLContext + check_hostname) does chain + hostname correctly, no hand-rolling needed. Remind: identity-proof screenshot required alongside every captured log. ~3 min. -->
+<!-- The graded output — mirror the structure from earlier weeks. Stress Part 2a step 5: this is the standalone GitHub coding task; every student writes the validation code themselves, not just confirm a pre-built fix — one stdlib call (SSLContext + check_hostname) does chain + hostname correctly, no hand-rolling needed. Remind: include named, reproducible captures or annotated transcripts; terminal stamping is an optional attribution method. ~3 min. -->
 
 ---
 
@@ -192,4 +197,4 @@ cert-bypass
 # Questions?
 Next week: End-to-end encryption
 
-<!-- Close with a viva-style question as a preview of live spot-checks: "the impostor cert has the correct name — so why does the fixed client reject it, and at what point in the exchange, before or after the secret is sent?" Remind students the MITM INTERCEPTED line is their personalized evidence artifact — pair it with an identity-proof screenshot. ~2 min. -->
+<!-- Close with a viva-style question as a preview of live spot-checks: "the impostor cert has the correct name — so why does the fixed client reject it, and at what point in the exchange, before or after the secret is sent?" Remind students the MITM INTERCEPTED line is shared demo text; pair it with their own named capture/transcript and explanation. ~2 min. -->

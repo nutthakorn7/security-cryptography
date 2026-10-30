@@ -1,255 +1,125 @@
-# Weekly Agenda & Time Plan (DRAFT for review)
+# Weekly Agenda — Cryptography and Network Security
 
-**Standard contact time:** 5 hrs/week = **120 min lecture + 180 min lab** (per syllabus: 2 lecture + 3 lab hrs).
-**Quizzes:** a short **weekly quiz (~10 min)**, low-stakes, lowest 1–2 dropped. It is *retrieval*
-practice, so **it tests the previous teaching week's material, not the one about to be taught**:
-`quizzes/weekly/weekNN.md` is the bank for week NN's content and is administered at the start of the
-*following* teaching session — week 01's quiz opens week 02, week 06's opens the week-07 review,
-week 15's opens the week-16 capstone studio. Several items ask students to reason about a lab they
-have already run; that is what makes the retrieval genuine, and what breaks if a quiz is moved ahead
-of its own week. To run them instead as pre-lecture primers, score that sitting as diagnostic only.
-Two **cumulative review quizzes** (25 pts) run in the review weeks (W7 pre-midterm, W17 pre-final).
+**02005104 · Year 4 · 1 credit · Semester 2 AY2026 · Lecture · 100 minutes × 20 weeks.**
+The class emphasizes practical work. Preparation and full written answers extend outside class;
+the tables below specify the work that must fit inside each contact slot. This is a planned
+budget, not a claim that students have completed a timed pilot.
 
-This is the agenda for **Security & Cryptography**, a companion course to `software-security`
-with its own GitHub repo/CTFd deployment and its own course scope on the platform (see this
-repo's README.md, "Relationship to `software-security`"). Nothing here is shared live with the
-sibling course — no joint roster, no joint scoreboard.
+## Ordinary teaching weeks
 
----
+| Minutes | Activity |
+|---|---|
+| 0–10 | Retrieval quiz/review of previously taught material |
+| 10–20 | Short concept and safety briefing |
+| 20–80 | Core laboratory or practical analysis |
+| 80–95 | Control comparison, reasoning and feedback |
+| 95–100 | Save evidence and submit the in-class checkpoint |
 
-## Week types in this course
+Weeks **11 and 15** instead use 20–90 for the stateful core and 90–100 for evidence, feedback
+and checkpoint submission. Work within the slot includes before/after evidence; installation,
+image downloads, lengthy background and full-form written answers do not consume the core.
+Week 1 uses an ungraded orientation diagnostic/review in its first ten minutes. Weekly banks test that week's
+content at the next teaching session: W1 bank opens W2, W6 opens W7, W15 opens W16.
 
-Not every teaching week runs the same lab shape. Per `course-plan-19weeks.md`, each teaching
-week is one of:
+## Weekly core and artifacts
 
-- **LAB** (Wk2, 3, 4, 6, 15) — a Docker target with a real exploit and a genuine captured
-  flag (`FLAG_...`), same pattern as `software-security`.
-- **HYBRID** (Wk5, 11, 12, 13, 14) — a smaller, genuinely demonstrable exploit/demo alongside
-  content that stays conceptual. **For most of these weeks the thing students "submit" is a
-  captured evidence log line, not a CTF flag string — except Wk11, which is a hybrid week that
-  still uses a real flag** — see the callout below for exactly which is which.
-- **CONCEPTUAL** (Wk1, 10) — no exploitable Docker target; the week is protocol-design/math
-  analysis. No lab task, no flag/evidence line — graded via Audit-the-AI, EiPE, and Prompt
-  Problem only.
+| Wk | In-class core | Artifact | Total min |
+|---:|---|---|---:|
+| 1 | Threat model; choose primitives; test a changed attacker assumption | Diagram, assumptions and corrected design | 100 |
+| 2 | Weak-hash dictionary recovery; persistent-session login; KDF comparison | Recovery/session outputs and KDF limits | 100 |
+| 3 | Supplied state-resumption helper; MAC extension; HMAC rejection | Authenticated bytes, glue-length reasoning and before/after result | 100 |
+| 4 | Derive CBC same-length XOR delta; test authenticated control | Byte work and tamper accept/reject outputs | 100 |
+| 5 | Unauthenticated DH MITM versus authenticated exchange | Interception and abort traces | 100 |
+| 6 | CBC oracle; derive one byte; recover with helper; compare GCM | Oracle evidence, byte derivation and control rejection | 100 |
+| 7 | Review quiz; selected Jeopardy clues; two bounded mock checkpoints | Review answers and repair notes | 100 |
+| 8 | Written midterm: 90 writing + 10 administration | Individual script | 100 |
+| 9 | Individual practical: 80 tasks + 20 administration | Method, result and control evidence | 100 |
+| 10 | Hybrid-encryption diagram, nonce counterexample and corrected design | Diagram, calculation/proof and limitations | 100 |
+| 11 | Fresh signature; manual twin/double authorization; canonical control | (r,s)/(r,n−s), transaction IDs and control | 100 |
+| 12 | Disabled TLS validation; all students write/test client context | Code, trusted-peer success and MITM rejection | 100 |
+| 13 | Server plaintext versus client-encrypted relay | Server output, recipient success and key-trust limits | 100 |
+| 14 | Password exposure versus toy challenge/proof | Freshness and exposure comparison; PAKE limitations | 100 |
+| 15 | Fresh Lamport key; complementary signatures; forge; single-use control | Signature derivation and control rejection | 100 |
+| 16 | CryptoVault studio and scheduled clarification | WIP evidence, feedback and action list | 100 |
+| 17 | Review quiz; selected clues; bounded final rehearsal | Review and repair notes | 100 |
+| 18 | Written final: 90 writing + 10 administration | Individual script | 100 |
+| 19 | Team practical: 80 tasks + 20 administration | Team solution/evidence; no project Q&A | 100 |
+| 20 | Returned work, feedback, project clarification and closure | Reflection/action list; no new grade category | 100 |
 
-> ### ⚠️ HYBRID weeks: check which artifact type before grading — it is NOT uniform
-> "HYBRID" describes the lecture/lab content split (small demonstrable exploit + conceptual
-> remainder), not a single submission format. Verified against each week's own
-> `worksheet.md`/`README.md` in this repo:
->
-> - **Wk5 (Key Exchanges) — evidence log line, not a flag.** There is no `FLAG_{...}`. The
->   worksheet calls it a "required evidence line": the MITM's recovered/decrypted
->   `SECRET_MESSAGE`, captured from the log once the unauthenticated DH exchange is
->   intercepted, plus the abort evidence from the authenticated (fixed) run.
-> - **Wk11 (Signatures/ZKP) — a real flag, same pattern as LAB weeks.** Despite being
->   classified HYBRID, `week11-signatures-zkp` ships a genuine per-student `FLAG_SIG`
->   (`FLAG{ecdsa_malleable_double_spend}` by default, overridable via `seed_flags.py`) returned
->   by the vulnerable bank on the second (malleated) withdrawal. Do **not** describe Wk11 as a
->   log-line week — students submit the captured `FLAG_SIG` exactly as in a LAB week, plus the
->   `(r, s)`/`(r, n−s)` pair that produced it.
-> - **Wk12 (Secure Transport) — evidence log line.** `MITM INTERCEPTED: the vault code is 7731`
->   (cert-validation-bypass run, `VERIFY` unset) vs. `CERT VERIFICATION FAILED — ABORTING`
->   (fixed run, `VERIFY=1`).
-> - **Wk13 (E2E Encryption) — evidence log line.** `SERVER SAW: meet at pier 39 at midnight`
->   (server-side plaintext log, `E2E` unset) vs. the server logging only ciphertext (`E2E=1`).
-> - **Wk14 (Authentication) — evidence log line.** `SERVER SAW PASSWORD: correct-horse-battery`
->   (plaintext password over the wire) vs. `nonce=...proof=...` only (challenge-response,
->   `PAKE=1`).
->
-> For the four genuine log-line weeks (5, 12, 13, 14), students paste **both** the
-> vulnerable-run log line and the fixed-run log line into the worksheet as their personalized,
-> attributable evidence artifact — this is what viva spot-checks probe ("show me your
-> terminal, reproduce that line"). For Wk11, the attributable artifact is the captured
-> `FLAG_SIG` string, same as a LAB week. Grading rubrics, the worksheet template, and
-> instructor answer keys must reflect this per-week distinction, or Wk11 students will waste
-> lab time hunting for a log line that isn't the graded artifact (it's a flag), while Wk5/12/13/14
-> students waste time hunting for a flag string that doesn't exist.
->
-> **LAB weeks (2, 3, 4, 6, 15) are unaffected** — those five keep a real `FLAG_...` string
-> exactly like `software-security`'s pattern.
+LAB weeks 2/3/4/6/15 and HYBRID Week 11 may produce real flags. Weeks 5/12/13/14 produce
+before/after traces, not invented flags. Weeks 1/10 are shared practical analysis; they do not
+need a Docker flag. A personal flag/automatic roster check must never be assumed to be live.
 
----
+## Shared practical and worksheet forms
 
-## Standard teaching-week template — LAB weeks (2, 3, 4, 6, 15)
+Every teaching worksheet uses **common 60 + assigned-form 40**. Common 60 = core work 20 +
+control/limitations 20 + reproducible evidence/reasoning 20. Conventional uses technical written
+questions 40; AIR-Sec uses Audit-the-AI 20 + Explain-in-Plain-English 10 + Prompt Problem 10.
+The 12 worksheets contribute 2.5 course points each, totaling 30. No extra viva points or
+automatic AIR-only viva gate apply. Short explanations are feedback/authenticity checks within
+the assessed work. See [syllabus](syllabus.md) for the full 100% and ability matrices.
 
-### Lecture — 120 min
-| Time | Block |
-|------|-------|
-| 0:00–0:10 | **Weekly quiz** (retrieval) + recap + today's agenda |
-| 0:10–0:55 | Core concepts (the primitive, how it's meant to be used) |
-| 0:55–1:05 | Break |
-| 1:05–1:35 | Misuse deep-dive + real-world cases (where this primitive broke in practice) |
-| 1:35–1:55 | Correct construction / defenses |
-| 1:55–2:00 | Signature-game briefing → to lab |
+## Special weeks
 
-### Lab — 180 min
-| Time | Block |
-|------|-------|
-| 0:00–0:15 | Onboarding: stand up target (`docker compose up`), confirm it runs |
-| 0:15–1:45 | Exploitation tasks (the signature game) — ~4–5 tasks, ends with capturing `FLAG_...` |
-| 1:45–2:25 | Defend / fix task (apply the secure version, prove exploit fails) |
-| 2:25–2:45 | **AI-resilient tasks:** Audit-the-AI + EiPE + Prompt Problem (start in class, finish as homework) |
-| 2:45–2:55 | **Rotating micro-demo:** 2–3 students give a 2–3 min "show your exploit/fix" (different students each week → everyone presents ~1–2× per term) |
-| 2:55–3:00 | Submit worksheet (PDF → `learn.zcr.ai/submit`) + push fix (this course's GitHub) + wrap-up |
+### Weeks 7 and 17 — review
 
-## Standard teaching-week template — HYBRID weeks (5, 11, 12, 13, 14)
+| Minutes | Activity |
+|---|---|
+| 0–20 | Cumulative review quiz (existing 25-point quiz instrument) |
+| 20–35 | Selected Jeopardy clues targeting misconceptions |
+| 35–80 | Two selected mock checkpoints, with working targets already prepared |
+| 80–95 | Explain errors and verify a correction |
+| 95–100 | Save repair plan and read exam logistics |
 
-Same lecture shape and lab time budget as LAB weeks, with two adjustments: the lab's
-exploitation block is smaller (one demonstrable exploit/demo, not 4–5 tasks) because the rest
-of the week's content stays conceptual; and the captured artifact is, **for Wk5/12/13/14, the
-evidence log line** described above — **Wk11 is the exception and captures a real
-`FLAG_SIG`** (see the callout above), so swap "log line" for "flag" in the lab blocks below
-when running Wk11.
+Full boards and mock banks remain available for further practice; they are not all compulsory
+in a 100-minute class. The rehearsal samples the upcoming exam rather than promising every
+original challenge fits in the slot.
 
-### Lecture — 120 min
-| Time | Block |
-|------|-------|
-| 0:00–0:10 | **Weekly quiz** (retrieval) + recap + today's agenda |
-| 0:10–0:55 | Core concepts (the conceptual material for the week) |
-| 0:55–1:05 | Break |
-| 1:05–1:35 | The demonstrable half: the specific failure this hybrid week exploits |
-| 1:35–1:55 | Correct construction / defenses + what stays out of scope for the demo (named explicitly, e.g. "this is not a full PAKE") |
-| 1:55–2:00 | Demo/evidence-capture briefing → to lab |
+### Weeks 8 and 18 — written exams
 
-### Lab — 180 min
-| Time | Block |
-|------|-------|
-| 0:00–0:15 | Onboarding: stand up target (`docker compose up`), confirm it runs |
-| 0:15–1:20 | Demo/exploit task — run the vulnerable configuration, capture the "before" evidence log line |
-| 1:20–1:45 | Fix task — flip the flag/env var to the secure configuration, capture the "after" evidence log line, confirm the attack no longer works |
-| 1:45–2:25 | Conceptual extension: EiPE/worksheet questions on the part of the topic that has no demo (e.g. Schnorr/ZKP theory in Wk11, FIDO2/SSO/TOTP comparison in Wk14) |
-| 2:25–2:45 | **AI-resilient tasks:** Audit-the-AI + EiPE + Prompt Problem (start in class, finish as homework) |
-| 2:45–2:55 | **Rotating micro-demo:** 2–3 students give a 2–3 min "show your before/after log lines" |
-| 2:55–3:00 | Submit worksheet (PDF → `learn.zcr.ai/submit`) + push fix (this course's GitHub) + wrap-up |
+0–5 administration; 5–95 **90 minutes writing**; 95–100 collection. Midterm has 10 bounded
+short/applied/design items, final has **20 taught-topic MCQs ×5 points** per form. Each paper is
+raw 100; scale to midterm 8 or final 10 course points. No additional weekly quiz or lab.
 
-## CONCEPTUAL-week template (Weeks 1, 10)
+### Weeks 9 and 19 — practical exams
 
-No Docker target, no flag, no evidence log line. The lab block becomes design/audit work
-instead of exploitation.
+0–10 rules, identity and target checks; 10–90 **80 minutes tasks**; 90–100 upload/collection.
+The midterm is individual, with four bounded checkpoints (15/20/20/25 task minutes). The final
+uses teams of **3 normally, 2 where uneven**, with three stations (25/25/30 task minutes).
+Raw 100 scales to midterm 12 or final 15 course points. Targets, variants, hints and answer keys
+remain instructor-held. Provide a tested equivalent artifact if infrastructure fails; do not
+silently reduce a student's task time or introduce an unannounced new grade component.
 
-### Lecture — 120 min
-| Time | Block |
-|------|-------|
-| 0:00–0:10 | **Weekly quiz** (retrieval) + recap + today's agenda |
-| 0:10–0:55 | Core concepts |
-| 0:55–1:05 | Break |
-| 1:05–1:35 | Worked analysis (threat-model or protocol walkthrough, on paper/whiteboard, not Docker) |
-| 1:35–1:55 | Design trade-offs / where real systems get this wrong |
-| 1:55–2:00 | Briefing → to lab |
+### Week 16 — CryptoVault studio
 
-### Lab — 180 min
-| Time | Block |
-|------|-------|
-| 0:00–0:15 | Onboarding: this week's design/audit brief (no `docker compose up`) |
-| 0:15–1:45 | Design/analysis tasks — e.g. Wk1: threat-model a small crypto system end-to-end; Wk10: work through a hybrid-encryption (KEM+DEM) design and where it can go wrong |
-| 1:45–2:25 | Structured peer critique of another team's design/analysis |
-| 2:25–2:45 | **AI-resilient tasks:** Audit-the-AI + EiPE + Prompt Problem (start in class, finish as homework) |
-| 2:45–2:55 | **Rotating micro-demo:** 2–3 students walk through their design/critique |
-| 2:55–3:00 | Submit worksheet (PDF → `learn.zcr.ai/submit`) + wrap-up (no fix to push — no code this week) |
+| Minutes | Activity |
+|---|---|
+| 0–10 | Retrieval quiz and brief |
+| 10–20 | Self-audit checklist and division of work |
+| 20–75 | Teams implement/test; instructor schedules focused clarification during the work |
+| 75–95 | Peer review and selected micro-demonstrations |
+| 95–100 | Save remaining fixes and final-deliverable plan |
 
-> **Week 1 exception:** Week 1's lab also carries **term-wide environment setup** (Docker
-> Desktop install/verify, repo clone, first `docker compose up` on a throwaway container) since
-> it is the first lab session of the term and later LAB/HYBRID weeks assume Docker already
-> works. Budget ~30–40 min of the 180-min block for this before the threat-modeling task.
+No assumed student headcount or promise of a live presentation from every team. Team videos
+are **≤5 minutes**, submitted before Week 19; final report/build/video are graded using the
+project's existing 15%. Remaining clarification happens in Week 20. It never reduces the
+Week 19 timed practical.
 
-> **No formal weekly presentation** (impossible for N≈80–120 in the time budget). Instead,
-> "explain it live" is delivered by the **rotating micro-demo** above + random **viva spot-checks**
-> (2–3 students reproduce/explain their own work — for Wk5/12/13/14 this means reproducing the
-> before/after log line; for Wk11, reproducing the captured flag) — which also double as
-> anti-AI controls. Full presentations are reserved for the **capstone** (W16 WIP + W19 demo).
->
-> **Every teaching week's worksheet** has four graded parts beyond the lab tasks:
-> **Evidence & Integrity** (identity-stamped proof — a real flag for LAB weeks and Wk11, a
-> captured log line for the other HYBRID weeks (5, 12, 13, 14), a design artifact for
-> CONCEPTUAL weeks), **Audit the AI** (critique an AI answer), **Explain-in-Plain-English** +
-> **Prompt Problem**. The live **CTFd / Houses scoreboard** for this course (once its own
-> deployment is live — see README.md status note) is shown at the start/end of class.
->
-> The **weekly quiz** is the first ~10 min of the lecture block (every teaching week) — no
-> separate session needed. The two **cumulative review quizzes** run in the review weeks (7, 17).
+### Week 20 — feedback and closure
 
----
+0–15 return work and explain criteria; 15–45 review mechanisms, common errors and control
+verification; 45–75 focused project clarification/feedback; 75–95 reflection and remaining
+questions; 95–100 closure. Use [Week 20 guide](labs/week20-feedback/README.md). No new worksheet/exam
+category or automatic grade increase is created.
 
-## Per-week time table
+## Preparation and instructor verification
 
-| Wk | Type | Lecture | Lab | Quiz | Exam | Total |
-|----|------|:---:|:---:|:---:|:---:|:---:|
-| 1 | Conceptual — Intro / Threat-Modeling a Crypto System | 120 | 180* | 10† | — | 300 |
-| 2 | Lab — Hashing (unsalted-hash password cracking) | 120 | 180 | 10† | — | 300 |
-| 3 | Lab — MACs (hash-only cookie forgery / length-extension) | 120 | 180 | 10† | — | 300 |
-| 4 | Lab — AES Modes (CBC bit-flipping / malleability) | 120 | 180 | 10† | — | 300 |
-| 5 | Hybrid — Key Exchanges (unauthenticated DH MITM) | 120 | 180 | 10† | — | 300 |
-| 6 | Lab — AEAD (CBC padding-oracle attack) | 120 | 180 | 10† | — | 300 |
-| 7 | 🔁 Review (pre-midterm) | — | — | 25‡ | — | 300 |
-| 8 | 📝 Midterm — Written | — | — | — | 120 | 120 |
-| 9 | 📝 Midterm — CTF (covers Wk1–6) | — | — | — | 150 | 150 |
-| 10 | Conceptual — Hybrid (Asymmetric+Symmetric) Encryption | 120 | 180 | 10† | — | 300 |
-| 11 | Hybrid — Signatures / Zero-Knowledge Proofs | 120 | 180 | 10† | — | 300 |
-| 12 | Hybrid — Secure Transport (cert-validation-bypass MITM) | 120 | 180 | 10† | — | 300 |
-| 13 | Hybrid — End-to-End Encryption | 120 | 180 | 10† | — | 300 |
-| 14 | Hybrid — Authentication | 120 | 180 | 10† | — | 300 |
-| 15 | Lab — Post-Quantum Cryptography (Lamport OTS key reuse) | 120 | 180 | 10† | — | 300 |
-| 16 | Capstone Studio (CryptoVault project) | — | 300 | — | — | 300 |
-| 17 | 🔁 Review (pre-final) | — | — | 25‡ | — | 300 |
-| 18 | 📝 Final — Written | — | — | — | 90 | 90 |
-| 19 | 📝 Final — CTF + Demos (cumulative, emphasis Wk10–16) | — | — | — | 240 | 240 |
+Pre-pull images and dependencies; check ports and browser/Python tools before each lab.
+Weeks 11/15 require fresh process state before each independent attempt; a fresh server may
+also mean fresh keys. Acquire signatures after the active server starts. Set aside the full
+written question bank and AI critique for completion after the core rather than dropping text.
+HNDL is optional enrichment, not an added scored prerequisite.
 
-*W1 lab includes term-wide environment setup (~30–40 min) — onboarding block is longer; see the
-CONCEPTUAL-week template note above.
-†Weekly quiz (~10 min) is the first part of the 120-min lecture block — not extra time.
-‡Cumulative review quiz (25 pts) used to prep for the exam.
-
----
-
-## Special-week agendas
-
-### Week 7 & 17 — Review (300 min)
-| Time | Block |
-|------|-------|
-| 0:00–0:30 | **Cumulative review quiz** (quiz1 / quiz2 — 25 pts) |
-| 0:30–1:45 | Crypto Jeopardy team review |
-| 1:45–2:00 | Break |
-| 2:00–4:30 | Mock CTF (exact format of the upcoming exam — LAB-week + Wk11 flags, plus Wk5/12/13/14 evidence-log-line tasks, mixed) |
-| 4:30–5:00 | Debrief: common mistakes + exam logistics |
-
-### Week 8 / 18 — Written exam
-- Single block: **120 min (midterm) / 90 min (final)**. No lab.
-
-### Week 9 — Midterm CTF practical (150 min)
-- 0:00–0:10 rules + target check · 0:10–2:30 solve challenges · submit flags (Wk2–4, 6 style) and
-  evidence log lines (Wk5 style, since Wk5 is the only hybrid week before the midterm).
-
-### Week 16 — Capstone Studio (300 min)
-CryptoVault project (see `project/README.md` for the full brief/rubric).
-
-| Time | Block |
-|------|-------|
-| 0:00–2:00 | Team WIP demos (design decision → failure mode → fix) + peer review |
-| 2:00–2:15 | Break |
-| 2:15–4:45 | Practice CTF tournament (previews Week 19) |
-| 4:45–5:00 | Feedback + finalize checklist before the final |
-
-### Week 19 — Final CTF + project demos (240 min)
-| Time | Block |
-|------|-------|
-| 0:00–2:30 | Capstone CTF tournament (whole term: LAB + Wk11 flags, plus Wk5/12/13/14 evidence lines, cumulative) |
-| 2:30–4:00 | Graded final CryptoVault project demos (pre-recorded demo submitted beforehand + **3-min live Q&A per team** — see the note below) |
-> **Demo format — read before timetabling.** 90 min ÷ (10-min demo + 5-min Q&A) is **six team
-> slots**. At N≈80–120 in teams of 2–3 that is 27–60 teams, so the live-demo-for-everyone format
-> cannot run as written. The format actually used: each team **submits a pre-recorded demo video
-> before the session** (graded asynchronously against the project rubric), and the in-class block
-> is **3 minutes of live Q&A per team** — which is what the rubric's understanding checks and the
-> anti-AI controls actually need. 90 min covers ~30 teams; above that, run two parallel rooms with
-> a second assessor, or split Q&A across the Week 16 studio and Week 19.
-
-
----
-
-## Open items carried from `course-plan-19weeks.md`
-
-This course's own CTFd deployment, `instructor/seed_flags.py`, and platform roster are not yet
-live (see README.md status note) — the timings above are the *intended* live-course agenda, not
-yet exercised end-to-end with real students. Confirm actual worksheet task counts fill the
-180-min lab block per week (this course's worksheets are newly built, not ported verbatim from
-`software-security`, so its "drift to resolve" durations note does not automatically apply here
-and has not been re-checked against this course's own worksheets yet).
+Validate each exam variant and its key before use, then record real completion times after
+teaching. The older expanded plans and unused questions are retained privately as historical
+reference; they do not define the current timetable. See individual [lesson plans](docs/lesson-plans/).

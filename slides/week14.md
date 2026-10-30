@@ -5,6 +5,8 @@ paginate: true
 header: "Security & Cryptography · Week 14"
 ---
 
+<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+
 # Week 14
 ## User Authentication (challenge-response, PAKE, MFA)
 Security & Cryptography · Nutthakorn Chalaemwongwan
@@ -84,9 +86,9 @@ week14-client  | LOGIN OK
 - Server independently recomputes the same proof from its stored `v` and the nonce it issued, and **compares**
 - Match → `LOGIN OK`. The password never crossed the network, so there was nothing to log
 
-![Two lanes read top to bottom, each showing a client on the left, a server in the middle, and a log reader on the right. Top lane, vulnerable mode with PAKE unset: the client sends its actual password to the server, which receives it and prints it verbatim to the server's own log, so the log reader on the right recovers the password in full and gains a standing, reusable credential. Bottom lane, fixed mode with PAKE equals 1: the server first issues the client a fresh single-use nonce, the client locally derives a verifier by hashing the salt and password together and computes a proof by keying an HMAC with that verifier over the nonce, so the password itself never leaves the client, the server then verifies and logs only the nonce and the proof, and the same log reader who succeeded in the top lane now recovers nothing usable, because the logged proof is a one-way function of a password that was never transmitted; a dashed orange warning box at the bottom flags the one gap this simplified demo does not close, that a leaked copy of the server's stored verifier would be password-equivalent here, which is exactly what a real PAKE such as SRP or OPAQUE additionally protects against.](img/log-boundary.svg)
+![Two lanes read top to bottom, each showing a client on the left, a server in the middle, and a log reader on the right. Top lane, vulnerable mode with PAKE unset: the client sends its actual password to the server, which receives it and prints it verbatim to the server's own log, so the log reader on the right recovers the password in full and gains a standing, reusable credential. Bottom lane, fixed mode with PAKE equals 1: the server first issues the client a fresh single-use nonce, the client locally derives a verifier by hashing the salt and password together and computes a proof by keying an HMAC with that verifier over the nonce, so the password itself never leaves the client, the server then verifies and logs only the nonce and the proof, and a captured proof cannot simply be replayed after its single-use challenge is consumed; however, a log reader who knows the salt can still test password guesses offline; a dashed orange warning box at the bottom flags the one gap this simplified demo does not close, that a leaked copy of the server's stored verifier would be password-equivalent here, while real PAKE security must distinguish transcript guessing from credential-file and full-server compromise.](img/log-boundary.svg)
 
-<!-- Walk the symmetry: both sides end up computing the same HMAC, but only the client ever touches the raw password. The server's "knowledge" is entirely mediated through v. Ask: "if an attacker steals the server's database and gets v, can they log in as alice directly?" (YES, trivially — in THIS demo v is password-equivalent: the thief just requests a fresh nonce and computes HMAC(v, nonce), authenticating without ever cracking the password. The fresh nonce only stops replay by someone who does NOT hold v. Verifier-theft resistance is exactly what a real PAKE — SRP/OPAQUE — adds and this demo deliberately lacks; foreshadow next slide's honest limits.) ~6 min. -->
+<!-- Walk the symmetry: both sides end up computing the same HMAC, but only the client ever touches the raw password. The server's "knowledge" is entirely mediated through v. Ask: "if an attacker steals the server's database and gets v, can they log in as alice directly?" (YES, trivially — in THIS demo v is password-equivalent: the thief just requests a fresh nonce and computes HMAC(v, nonce), authenticating without ever cracking the password. The fresh nonce only stops replay by someone who does NOT hold v. This is one toy-protocol limitation. Do not claim OPAQUE prevents all offline guessing after full server compromise; distinguish that event from transcript security and pre-computation resistance (RFC9807 section10.11).) ~6 min. -->
 
 ```sim
 cred-harvest
@@ -122,12 +124,11 @@ docker compose -f docker-compose.fixed.yml logs | grep -c "correct-horse-battery
 
 This demo proves exactly **one** property: *the password is never transmitted.*
 
-A real PAKE (SRP, OPAQUE) also gives you two more:
+A real PAKE adds **mutually authenticated key exchange** and resistance to **offline guessing from protocol transcripts**, under its assumptions.
 
-1. **Offline-dictionary resistance** on the stored verifier — ours is fast salted SHA-256; a DB leak lets an attacker brute-force weak passwords offline
-2. **Mutual authentication** — the client also verifies *the server*, so it can't be tricked into proving its password to an impostor
+For **OPAQUE**, full server compromise can still allow offline password guesses. Its additional guarantee is resistance to **pre-computation**; key stretching increases guess cost. Keep these threat models distinct. [RFC 9807, Sections 1 and 10.11](https://www.rfc-editor.org/rfc/rfc9807.html#section-10.11).
 
-<!-- Guardrail slide — do not let students walk away thinking they built SRP/OPAQUE. Tie property 1 back to Week 2 (bcrypt/argon2, high work factor) — a real system's verifier KDF must be slow, not a bare SHA-256. Property 2 previews SSO/phishing later in this deck. This is also Worksheet Q4 and Part 2c. ~4 min. -->
+<!-- Compare the toy protocol's password-equivalent verifier and known-salt transcript attack with PAKE transcript security. The observed absence of a plaintext password is not proof of a production authentication protocol. -->
 
 ---
 
@@ -205,12 +206,15 @@ log.warning("login FAILED for %s (pw=%s)", body["username"],
 
 ## Lab today
 
+**Shared practical/analysis core: 60 points for everyone.** Complete only your assigned **Conventional written 40** or **AIR-Sec Audit 20 + EiPE 10 + Prompt 10**. Each version totals 100; viva is formative. Full questions remain in the worksheet, with extensions outside the 100-minute class.
+
+
 > 📋 **Worksheet 14** — `labs/week14-authentication/worksheet.md` · run: `docker compose -f docker-compose.vulnerable.yml up --build --abort-on-container-exit`, then the `.fixed.yml` variant
 
 - Capture both logs: the `SERVER SAW PASSWORD` line (vuln) and its **absence** + `grep -c 0` (fixed)
-- **Audit the AI** on the planted logging flaw (Part 2b)
-- **EiPE**: explain proof-without-revealing in plain English (Part 2c)
-- **Prompt Problem** + **viva prep** (Part 2d–e) — plus 8 conventional essay questions (Part 1)
+- **Assigned AIR-Sec Audit the AI** on the planted logging flaw (Part 2b)
+- **Assigned AIR-Sec EiPE**: explain proof-without-revealing in plain English (Part 2c)
+- **Assigned AIR-Sec Prompt Problem** + formative viva prep (Part 2d–e) — or, for the assigned Conventional version, the 8 essay questions (Part 1), not both versions
 
 <!-- The graded output for this HYBRID week. Remind: this is a read/run/observe lab, not an exploit-and-fix lab — code is unchanged, evidence is captured logs + identity proof. Point to the "Honest scope" box in the README before they write Part 2c/2d so they don't overclaim PAKE properties this demo doesn't have. -->
 
