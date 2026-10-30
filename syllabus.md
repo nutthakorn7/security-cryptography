@@ -1,92 +1,130 @@
-# Security & Cryptography — Course Syllabus & Outline
+# Cryptography and Network Security — Course Syllabus
 
-**Level:** Undergraduate (3rd / 4th year)
-**Credits:** 3 (2 lecture hours + 3 lab hours per week) — matches `software-security`'s format
-**Prerequisites:** Programming (Python/C), Data Structures, basic Discrete Math/Number Theory
-**Format:** Lecture + weekly hands-on lab
-**Course code:** `21025117` — the code used in last year's exam and Google Form delivery (the
-earlier `02005104` was only the generic-template xlsx's filename; see `course-plan-19weeks.md`
-Decisions #1 for the tiebreaker). Confirm against the registrar before print if in doubt.
-**Status:** DRAFT — see [course-plan-19weeks.md](course-plan-19weeks.md) for what's built vs. scoped.
+**Course code:** 02005104 · **Level:** Year 4 · **Credits:** 1
+**Semester:** 2, Academic Year 2026 (2569) · **Programme:** Computer · **Type:** Compulsory
+**Instructor:** Nutthakorn Chalaemwongwan
+**Class format:** Lecture, with hands-on laboratory or practical analysis as the main in-class activity.
+**Contact time:** 100 minutes per week, 20 weeks (2,000 scheduled minutes).
+**Prerequisites:** Programming and basic discrete mathematics/number theory.
 
----
+## Course description
 
-## 1. Course Description
+Students select, misuse-test and correctly compose cryptographic mechanisms in controlled local
+environments: hashes and password KDFs, MACs, AES modes, authenticated key exchange, AEAD,
+hybrid encryption, signatures, secure transport, end-to-end messaging, authentication and
+post-quantum migration. Practical evidence and explanations matter together. Conceptual Weeks 1
+and 10 use diagrams, calculations and counterexamples rather than a forced Docker/flag target.
 
-This course teaches how cryptographic primitives are supposed to work, how they fail when
-misused in real systems, and how to use them correctly. It pairs each concept with a lab in which
-students either exploit a deliberately misused primitive (forge a MAC, MITM an unauthenticated
-key exchange, recover plaintext from a reused GCM nonce) or defend/build a correct implementation
-— the same break/defend rhythm as `software-security`, applied to hashes, MACs, symmetric and
-asymmetric encryption, signatures, transport security, and authentication.
+## Learning outcomes
 
-Not every topic in cryptography has a natural "break it" lab — protocol-design and mathematical
-content (zero-knowledge proofs, post-quantum lattice constructions, BFT consensus) stays
-conceptual, assessed through AI-resilient analysis tasks (Audit-the-AI, Explain-in-Plain-English,
-Prompt Problem) rather than a forced CTF wrapper. See `course-plan-19weeks.md`'s week
-classification for which weeks are which.
+1. Select and justify a primitive for confidentiality, integrity, authenticity and freshness.
+2. Analyse cryptographic misuse and demonstrate a bounded attack with reproducible evidence.
+3. Use vetted libraries and verify that a correct construction rejects the original attack.
+4. Explain protocol trust, key authentication, compromise limits and post-quantum migration.
+5. Evaluate technical claims and communicate reasoning, including checking AI-generated claims.
+6. Work ethically on authorized targets and disclose sources, tools and individual contributions.
 
-## 2. Learning Outcomes
+## Teaching and workload
 
-By the end of the course, students will be able to:
+An ordinary teaching week uses **10 minutes retrieval quiz/review + 10 minutes briefing +
+60 minutes practical work + 15 minutes feedback/reasoning + 5 minutes submission**. Weeks 11
+and 15 reserve 70 minutes for their stateful practical and 10 minutes for evidence/feedback,
+alongside the same 10-minute quiz and 10-minute briefing. Installation, image pulls and long
+readings happen before class; complete written answers and extension tasks after class. All
+original questions remain available; only the named core sequence is planned inside the slot.
+Week 1 orientation is an ungraded diagnostic; its retrieval bank is used in Week 2.
+Week 12 includes a student-written `build_client_context()` and tests in both worksheet forms.
 
-1. **Distinguish** hashing, MACs, symmetric encryption, and asymmetric encryption, and select the
-   correct primitive for a given confidentiality/integrity/authenticity requirement.
-2. **Identify and exploit** common cryptographic misuse (ECB/ CBC/ ECB pattern leakage, nonce
-   reuse, unauthenticated key exchange, non-constant-time comparison, weak hashing) in a
-   controlled environment.
-3. **Implement primitives correctly**, using vetted libraries and modes (AEAD, salted KDFs,
-   authenticated key exchange) rather than ad hoc constructions.
-4. **Reason about protocol security** — TLS/Noise handshakes, PKI trust models, digital
-   signatures, zero-knowledge proofs — at the level of "what breaks if this step is skipped,"
-   even where no runnable exploit is assigned.
-5. **Evaluate AI-generated cryptographic code and explanations** for subtle correctness bugs
-   (nonce reuse, missing authentication, wrong mode) that a plausible-looking answer can hide.
-6. **Communicate cryptographic risk** to both technical and non-technical audiences.
+## Assessment
 
-## 3. Assessment
+| Component | Weight | Mode and timing |
+|---|---:|---|
+| 12 worksheets: Weeks 1–6 and 10–15 | 30% | Individual; each worksheet contributes 2.5 course points |
+| Midterm written, Week 8 | 8% | Individual; 90 minutes writing + 10 minutes administration |
+| Midterm practical, Week 9 | 12% | Individual; 80 minutes tasks + 20 minutes administration |
+| Final written, Week 18 | 10% | Individual; 90 minutes writing + 10 minutes administration |
+| Final practical, Week 19 | 15% | Team; 80 minutes tasks + 20 minutes administration |
+| CryptoVault project | 15% | Teams of 3 normally, 2 where needed; see project brief |
+| Quizzes and participation | 10% | Retrieval quizzes and class participation |
+| **Total** | **100%** | |
 
-Same weighting structure as `software-security` (both courses share one preregistered study
-design, so component weights are kept aligned):
+### Two worksheet forms: shared 60 + assigned-form 40
 
-| Component | Weight | Graded |
-|---|---|---|
-| Weekly lab worksheets — 12 graded (Weeks 1–6, 10–15) | 30% | **Individual** |
-| Midterm — Week 8 (written) + Week 9 (CTF practical) | 20% | **Individual** |
-| Final — Week 18 written *(individual)* + Week 19 capstone CTF *(team)* | 25% | Mixed |
-| Term project — CryptoVault (see `project/README.md`) | 15% | **Team of 2–3** |
-| Weekly quizzes (drop lowest 1–2) + participation / **Houses** leaderboard | 10% | Individual + Houses |
+Every student does the same core practical work. Each worksheet is scored out of 100:
 
-> **Individual vs team.** Your grade is dominated by **individual mastery** (worksheets,
-> quizzes, exams ≈ 75%). **Team** work is bounded (project 15% + the Week 19 capstone CTF).
+| Scored part | Conventional | AIR-Sec |
+|---|---:|---:|
+| Core work / observation | 20 | 20 |
+| Control verification / limitations | 20 | 20 |
+| Reproducible evidence and reasoning | 20 | 20 |
+| Conventional technical written questions | 40 | — |
+| Audit-the-AI | — | 20 |
+| Explain-in-Plain-English | — | 10 |
+| Prompt Problem | — | 10 |
+| **Total** | **100** | **100** |
 
-### Assessment taxonomy (AIR-Sec)
+For Weeks 1 and 10, the common 60 is practical analysis, diagrams, calculations or proofs, with
+control/counterexample reasoning. No Docker flag is required. In Week 12 the code and its tests
+are part of common 60. Students complete the form assigned for that week; the other form is not
+an additional 40 points. Score to course points as `worksheet score / 100 × 2.5`.
 
-Every teaching week carries **both** an AIR-Sec assessment and a Conventional (essay/discussion)
-assessment, per the preregistered crossover design — see `course-plan-19weeks.md`'s "dual-arm
-requirement" section for why this is non-negotiable rather than a nice-to-have. In brief, per
-week:
+Feedback, reproduction checks and short oral explanations sample understanding within the
+existing work. They add no separate viva points and create no automatic AIR-only grade gate.
+Name/ID and ordinary academic integrity requirements apply equally. A personal flag is required
+only if the instructor has actually configured and issued that instance; a shared default flag
+alone proves neither identity nor understanding.
 
-- **Conventional arm** — essay/discussion questions (ported from the prior offering of this
-  course where available, written fresh otherwise), no AI-resilience layer.
-- **AIR-Sec arm** — the same concept delivered through a personalized/attributable artifact (a
-  flag, a seeded bug instance, or a per-student parameter) plus Audit-the-AI / EiPE / Prompt
-  Problem as fits the content, and viva spot-checks.
+### Ability categories
 
-**Late submissions.** Same policy as `software-security`: −10% of that item's score per day late,
-up to 3 days; not accepted after day 3 without an approved extension. Weekly/in-class quizzes have
-no late window (an absence is covered by the drop-lowest-1–2 rule instead). Documented emergencies
-get a case-by-case extension at the instructor's discretion.
+| Ability category | Lab | Midterm | Final | Project | Quiz/participation | Total |
+|---|---:|---:|---:|---:|---:|---:|
+| Basic | 0 | 10 | 5 | 0 | 5 | 20 |
+| Technical | 25 | 10 | 20 | 10 | 5 | 70 |
+| Interdisciplinary | 5 | 0 | 0 | 5 | 0 | 10 |
+| **Total** | **30** | **20** | **25** | **15** | **10** | **100** |
 
-## 4. Structure
+Written/practical subtotals and ability categories are two views of the same marks; neither is
+added twice. Item-level exam allocations are held with the instructor blueprint.
 
-Same skeleton as `software-security`: **12 teaching weeks (1–6, 10–15), 1 capstone week (16),
-2 review weeks (7, 17), 2 exam blocks (8–9 midterm, 18–19 final)**. Full week-by-week table:
-[course-plan-19weeks.md](course-plan-19weeks.md).
+The existing late-work rule remains −10% of the item's score per day for up to three days,
+unless an extension is approved. In-class quizzes have no late window; the existing lowest
+1–2 quiz drop policy applies. Documented emergencies are handled individually.
 
-## 5. References
+## Weekly outline
 
-- Boneh & Shoup, *A Graduate Course in Applied Cryptography* (free online) — primary theory
-  reference for MACs/signatures/ZKP weeks.
-- OWASP Cryptographic Storage Cheat Sheet, OWASP Transport Layer Protection Cheat Sheet.
-- NIST SP 800-38D (GCM), SP 800-56A (key establishment), FIPS 205 (SLH-DSA/PQC signatures).
+| Week | Topic / class purpose |
+|---:|---|
+| 1 | Security mindset, threat modelling and primitive selection |
+| 2 | Hash functions and password storage |
+| 3 | MACs and length extension |
+| 4 | AES modes and CBC malleability |
+| 5 | Authenticated key exchange and DH MITM |
+| 6 | AEAD and the CBC padding oracle |
+| 7 | Review and bounded mock practical |
+| 8 | Midterm written |
+| 9 | Midterm individual practical |
+| 10 | Asymmetric and hybrid encryption |
+| 11 | Signatures/ZKP; ECDSA signature malleability |
+| 12 | TLS/Noise; implement and test the client context |
+| 13 | End-to-end encryption and key trust |
+| 14 | Authentication; toy challenge-response and real PAKE limits |
+| 15 | PQC; Lamport one-time key reuse; optional HNDL extension |
+| 16 | CryptoVault studio, feedback and project clarification |
+| 17 | Review and bounded final rehearsal |
+| 18 | Final written |
+| 19 | Final team practical; no project Q&A in the timed CTF |
+| 20 | Feedback, returned work, project clarification and closure |
+
+Teams submit a **video no longer than five minutes before Week 19**, alongside the final build
+and report. Project clarification is scheduled in Weeks 16/20 and stays within the existing
+project rubric. Cryptocurrency/UTXO/BFT legacy bank items are not scored in this syllabus.
+
+See [AGENDA.md](AGENDA.md), [course specification](docs/course-specification.md),
+[project brief](project/README.md) and [submission rules](SUBMISSION.md).
+
+## References
+
+- Boneh & Shoup, *A Graduate Course in Applied Cryptography*.
+- OWASP Cryptographic Storage and Transport Layer Protection Cheat Sheets.
+- NIST SP 800-38D; SP 800-56A; FIPS 203, 204 and 205.
+- [RFC 9807: OPAQUE](https://www.rfc-editor.org/rfc/rfc9807.html), particularly § 10.11.

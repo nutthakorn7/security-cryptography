@@ -9,11 +9,20 @@ header: "Security & Cryptography · Week 2"
 ## Hash Functions (password storage / cracking)
 Security & Cryptography · Nutthakorn Chalaemwongwan
 
-<!-- Hook: put a leaked CSV of "username,md5hash" on screen and ask "how long would it take you to find the admin's password?" Answer: milliseconds, live, in front of them — that's what's coming. Today = a mathematically sound primitive (hash functions) breaking in one very specific, very common way. ~2 min. -->
+<!-- Hook: put a leaked CSV of "username,md5hash" on screen and ask "how long would it take you to find the admin's password?" Answer: milliseconds, live, in front of them — that's what's coming. Today = a mathematically sound primitive (hash functions) breaking in one very specific, very common way.  -->
 
 ---
 
 ## Today
+
+**100-minute class:** 10 quiz/review · 10 brief · 60 shared practice · 15 debrief · 5 capture.
+**Assessment:** common 60 + assigned Conventional written 40 **or** AIR-Sec 20/10/10.
+Preparation and detailed write-up are outside the contact block. Week 1 opens with orientation/review.
+
+<!-- The full deck is a teaching/reference bank, not an additional lecture block.
+Use the core explanation for the 10-minute brief and just-in-time guidance during practice;
+assign the remaining deep dives as preparation or follow-up. Viva is formative, with no
+separate points or automatic-zero rule. -->
 
 - What a cryptographic hash actually guarantees (and doesn't)
 - Why MD5/SHA-1 are "broken" — and why that barely matters *here*
@@ -21,7 +30,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 - The fix: **salting + slow KDFs** (bcrypt/argon2/scrypt)
 - 🔓 Game: **Crack the Leaked DB**
 
-<!-- Roadmap, 1 min. Flag the lab: two leaked password stores, same usernames/passwords, different hashing — one falls instantly, one doesn't. Say the spine line out loud now: "textbook-secure primitive, real-system failure" — it threads every week this semester. -->
+<!-- Roadmap,  Flag the lab: two leaked password stores, same usernames/passwords, different hashing — one falls instantly, one doesn't. Say the spine line out loud now: "textbook-secure primitive, real-system failure" — it threads every week this semester. -->
 
 ---
 
@@ -31,7 +40,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 - A system can use a perfectly sound primitive and still fail — because of *how* it's used
 - This week: the first concrete case study — a hash function, misused
 
-<!-- Bridge from W1. W1 = design-level thinking about where trust breaks down. W2 = the pattern made concrete for the first time: sound math ≠ safe system. Ask: "what's the difference between a primitive being broken and a primitive being misused?" — that's the whole lecture in one question. ~2 min. -->
+<!-- Bridge from W1. W1 = design-level thinking about where trust breaks down. W2 = the pattern made concrete for the first time: sound math ≠ safe system. Ask: "what's the difference between a primitive being broken and a primitive being misused?" — that's the whole lecture in one question.  -->
 
 ---
 
@@ -42,7 +51,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 - Small input change → unrecognizably different output (avalanche effect)
 - Used for: integrity checks, digital signatures, password storage *(if done right)*
 
-<!-- Ground the primitive before breaking it. Live demo: `echo -n "password" | sha256sum`, then flip one character and rerun — show the digest looks nothing alike. Ask: "if I hand you only this digest, can you find the input?" — sets up preimage resistance next. ~5 min. -->
+<!-- Ground the primitive before breaking it. Live demo: `echo -n "password" | sha256sum`, then flip one character and rerun — show the digest looks nothing alike. Ask: "if I hand you only this digest, can you find the input?" — sets up preimage resistance next.  -->
 
 ---
 
@@ -54,7 +63,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 | **2nd-preimage resistance** | find m₂ ≠ m₁ with H(m₂) = H(m₁), given m₁ | swapping *your* file for a same-hash fake |
 | **Collision resistance** | find *any* m₁ ≠ m₂ with H(m₁) = H(m₂) | forging two same-hash documents from scratch |
 
-<!-- Worksheet Q1 material. Walk each row with a concrete attack: preimage = "attacker has the hash, wants the password"; 2nd-preimage = "attacker has your signed contract, wants a different contract with the identical hash"; collision = attacker doesn't even need YOUR file — any two colliding files will do (e.g. a rogue CA certificate). ~6 min. -->
+<!-- Worksheet Q1 material. Walk each row with a concrete attack: preimage = "attacker has the hash, wants the password"; 2nd-preimage = "attacker has your signed contract, wants a different contract with the identical hash"; collision = attacker doesn't even need YOUR file — any two colliding files will do (e.g. a rogue CA certificate).  -->
 
 ---
 
@@ -64,7 +73,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 - Collision resistance is what **digital signatures** rely on → broken badly (attacker forges a second document with the same signature)
 - Password storage relies on something else entirely: the attacker not being able to **guess fast enough**
 
-<!-- Key nuance students miss: "broken" isn't one thing. MD5's collision break is catastrophic for signing — ask "why would a forged same-hash contract be dangerous?" — but it is NOT why MD5 is bad for passwords; that's next. This is Worksheet Q2's hinge. ~4 min. -->
+<!-- Key nuance students miss: "broken" isn't one thing. MD5's collision break is catastrophic for signing — ask "why would a forged same-hash contract be dangerous?" — but it is NOT why MD5 is bad for passwords; that's next. This is Worksheet Q2's hinge.  -->
 
 ---
 
@@ -77,7 +86,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 
 > CWE-916 — Use of Password Hash With Insufficient Computational Effort
 
-<!-- The pivot slide — this is the "real-system failure" for this week. Ask: "SHA-256 has no known collisions — so why is it still wrong for passwords?" Answer: the attacker never needed a collision, they need speed, and SHA-256 hands them speed. Directly answers Worksheet Q3/Q6. ~5 min. -->
+<!-- The pivot slide — this is the "real-system failure" for this week. Ask: "SHA-256 has no known collisions — so why is it still wrong for passwords?" Answer: the attacker never needed a collision, they need speed, and SHA-256 hands them speed. Directly answers Worksheet Q3/Q6.  -->
 
 ---
 
@@ -93,7 +102,7 @@ ok = hashlib.md5(password.encode()).hexdigest() == stored
 - One precomputed wordlist × MD5 table cracks the **whole file** at once
 - CWE-916 (fast primitive) + CWE-759 (no salt at all)
 
-<!-- This is the exact code students find in Lab Task 0. Point at the line. Ask: "why does 'no salt' matter more here than 'MD5 is old'?" — because unsalted means one attack amortizes across every row in the leak, not just one victim. ~5 min. -->
+<!-- This is the exact code students find in Lab Task 0. Point at the line. Ask: "why does 'no salt' matter more here than 'MD5 is old'?" — because unsalted means one attack amortizes across every row in the leak, not just one victim.  -->
 
 ---
 
@@ -104,7 +113,7 @@ ok = hashlib.md5(password.encode()).hexdigest() == stored
 - **Rainbow table:** precomputed hash chains — trade storage for time, invert fast unsalted hashes at internet scale
 - Verified in this lab: `admin`'s password cracked from a **101-word** list in **~0.1 ms**
 
-<!-- Make it visceral with the actual measured number. Ask: "if the wordlist were the top 10 million leaked passwords instead of 101, does the *approach* change?" (No — still milliseconds per row, just a bigger table.) This is the empirical proof behind Worksheet Q5/Q6. ~5 min. -->
+<!-- Make it visceral with the actual measured number. Ask: "if the wordlist were the top 10 million leaked passwords instead of 101, does the *approach* change?" (No — still milliseconds per row, just a bigger table.) This is the empirical proof behind Worksheet Q5/Q6.  -->
 
 ---
 
@@ -117,7 +126,7 @@ ok = hashlib.md5(password.encode()).hexdigest() == stored
 
 > CWE-759 / CWE-760 — one-way hash without a salt / with a predictable salt
 
-<!-- Worksheet Q4/Q5 material. Stress: the salt sits right next to the hash in the open — its job isn't secrecy, it's uniqueness. Ask: "why doesn't the salt need to be secret?" (the attacker who has the hash file has the salt too — it kills precomputation and cross-row shortcuts, not per-row brute force.) ~5 min. -->
+<!-- Worksheet Q4/Q5 material. Stress: the salt sits right next to the hash in the open — its job isn't secrecy, it's uniqueness. Ask: "why doesn't the salt need to be secret?" (the attacker who has the hash file has the salt too — it kills precomputation and cross-row shortcuts, not per-row brute force.)  -->
 
 ---
 
@@ -128,7 +137,7 @@ ok = hashlib.md5(password.encode()).hexdigest() == stored
 - Raising cost: the defender pays once per real login (negligible); the attacker pays **per guess, per row** — the cost compounds against them
 - bcrypt buys **work factor**, not invincibility
 
-<!-- Worksheet Q3 material — "who does raising cost hurt more?" is the crux. One login/sec is free for a real user; a billion-guesses/sec attacker now manages thousands/sec. Flag the honesty clause up front: this raises COST, it does not make a weak password unbreakable — that's the punch line of the next slide. ~5 min. -->
+<!-- Worksheet Q3 material — "who does raising cost hurt more?" is the crux. One login/sec is free for a real user; a billion-guesses/sec attacker now manages thousands/sec. Flag the honesty clause up front: this raises COST, it does not make a weak password unbreakable — that's the punch line of the next slide.  -->
 
 ---
 
@@ -144,7 +153,7 @@ ok = bcrypt.checkpw(password.encode(), stored)
 - Same md5-precompute-over-wordlist technique → **0 / 8 rows match** (verified)
 - **But:** `admin`'s real password (`sunshine2021`) *is* in the wordlist — a patient, *slow*, per-hash bcrypt dictionary attack would still find it, just at orders-of-magnitude higher cost
 
-<!-- Don't let anyone leave thinking "bcrypt = solved." This is the overclaim trap the worksheet explicitly warns against (Task 5b). Ask: "so what actually stops that patient, per-hash attacker?" → answer is next slide: a strong-password policy, not the hash function alone. ~5 min. -->
+<!-- Don't let anyone leave thinking "bcrypt = solved." This is the overclaim trap the worksheet explicitly warns against (Task 5b). Ask: "so what actually stops that patient, per-hash attacker?" → answer is next slide: a strong-password policy, not the hash function alone.  -->
 
 ![Two horizontal bands sharing the same wordlist. Top: an unsalted MD5 password store — a leaked file feeds a candidate wordlist through a single real MD5 pass, compared directly against the stored hash, cracking the target instantly and, for free, any other row that happens to share the same password. Bottom: the same wordlist aimed at a per-user salted, iterated KDF store — the identical fast technique matches nothing because the stored format differs entirely, and only an attacker who adapts to redo the real salted iterations per guess still finds the password, at a cost that multiplies with the iteration count.](img/hash-crack.svg)
 
@@ -152,7 +161,7 @@ ok = bcrypt.checkpw(password.encode(), stored)
 hash-crack
 ```
 
-<!-- The sim runs a REAL MD5 (RFC 1321, byte-identical to hashlib.md5 — md5("sunshine2021") really does come out f364b087df0401706d6b1c8f68a50bf7, this week's own admin hash) against a REAL 101-word dictionary, live in the browser. The salted store is NOT bcrypt — it's a small toy KDF (a real per-user salt, real repeated hashing, a real tunable cost) that's honest about not being the Blowfish-keyed real thing, while still making salting and work-factor genuinely measurable rather than asserted. Run it live here: crack Store A instantly, watch the identical technique score 0/101 against Store B, then drag the cost slider up and re-run the adapted attack — the operation-count multiplier it reports is computed, not decorative, and it should land as "orders of magnitude more expensive," never as "bcrypt is broken." Good beat right before the game: same trap as the slide above, now literally clickable. ~5 min. -->
+<!-- The sim runs a REAL MD5 (RFC 1321, byte-identical to hashlib.md5 — md5("sunshine2021") really does come out f364b087df0401706d6b1c8f68a50bf7, this week's own admin hash) against a REAL 101-word dictionary, live in the browser. The salted store is NOT bcrypt — it's a small toy KDF (a real per-user salt, real repeated hashing, a real tunable cost) that's honest about not being the Blowfish-keyed real thing, while still making salting and work-factor genuinely measurable rather than asserted. Run it live here: crack Store A instantly, watch the identical technique score 0/101 against Store B, then drag the cost slider up and re-run the adapted attack — the operation-count multiplier it reports is computed, not decorative, and it should land as "orders of magnitude more expensive," never as "bcrypt is broken." Good beat right before the game: same trap as the slide above, now literally clickable.  -->
 
 ---
 
@@ -175,20 +184,21 @@ python exploit.py         # needs Python 3 + `requests` on the host
                            # PASS :8094 (flag) · PASS :8095 (0 bcrypt matches)
 ```
 
-<!-- Explain before lab: instant feedback both directions — it cracks in ms, or it visibly doesn't. exploit.py needs only `requests` on the host — no bcrypt required to *run* the attack, only inside the fixed container. Point out the session-cookie step: login and /admin must share one `requests.Session()`, and a fresh request without the cookie jar gets 403. ~4 min. -->
+<!-- Explain before lab: instant feedback both directions — it cracks in ms, or it visibly doesn't. exploit.py needs only `requests` on the host — no bcrypt required to *run* the attack, only inside the fixed container. Point out the session-cookie step: login and /admin must share one `requests.Session()`, and a fresh request without the cookie jar gets 403.  -->
 
 ---
 
 ## Lab today
 
-> 📋 **Worksheet 2** — `labs/week02-hash/worksheet.md` · **kickoff:** `docker compose up -d`
+- **Common 60:** Recover the admin password from the supplied MD5 store and demonstrate the login/session flow.
+- Compare the control/fixed case, explain its limits, and capture your own evidence.
+- **Conventional 40:** the original written questions, if assigned.
+- **AIR-Sec 40:** Audit the AI 20 + EiPE 10 + Prompt Problem 10, if assigned.
+- Finish the detailed write-up after class; submit the PDF per SUBMISSION.md.
+- Viva is formative/authenticity feedback within the rubric, with no separate points.
 
-- Part 2 (Q1–Q8): properties, broken hashes, fast-vs-slow, salts, rainbow tables, pepper
-- Part 3 (Tasks 0–5): crack the MD5 store, capture the flag, confirm bcrypt resists it
-- **🤖 Audit the AI:** critique an AI's "secure" `store_password` — bare SHA-256 + a hardcoded constant `"salt"`, framed as a benefit
-- **🧠 EiPE + Prompt Problem:** explain the mechanism in plain English; stress-test an AI's password-storage advice
-
-<!-- The graded output. Flag the Audit-the-AI trap specifically: the AI's code hashes AND claims "a salt" and still fails — same fast-hash mistake (SHA-256, called a benefit because it's "efficient") plus a shared constant instead of a per-user random salt. That's this week's "looks professional, is wrong." Worth 20/100 points — not optional. ~3 min. -->
+<!-- Preserve every worksheet question; students submit the common work and only their
+assigned format. Shared demo flags are acceptable if no personal configuration is supplied. -->
 
 ---
 
@@ -199,7 +209,7 @@ python exploit.py         # needs Python 3 + `requests` on the host
 - The attacker doesn't break the math — they **guess and hash**, fast, at scale
 - Fix = **salt** (kills precomputation) + **slow KDF** (raises cost) — still pair with a strong-password policy
 
-<!-- Land the spine explicitly: "textbook-secure primitive, real-system failure" — this is the pattern for the whole course. Cold-call: "I hand you an unsalted SHA-256 password store — is SHA-256 broken? What's actually wrong?" ~3 min. -->
+<!-- Land the spine explicitly: "textbook-secure primitive, real-system failure" — this is the pattern for the whole course. Cold-call: "I hand you an unsalted SHA-256 password store — is SHA-256 broken? What's actually wrong?"  -->
 
 ---
 

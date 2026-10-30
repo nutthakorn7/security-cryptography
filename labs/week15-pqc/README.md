@@ -9,21 +9,36 @@ Pair in Encryption), CWE-347 (Improper Verification of Cryptographic Signature)
 > **Companion confidentiality lab:** [`hndl/`](hndl/) — "Harvest Now, Decrypt Later" + hybrid KEM.
 > This directory is the *signature* half of PQC; `hndl/` is the *key-exchange/confidentiality* half
 > (harvest a session, break its classical KEM later, decrypt it; watch a hybrid classical+ML-KEM
-> channel resist the same attack). Run either or both.
+> channel resist the same attack). **Lamport is the required core; HNDL is optional, adds 0 points and does not replace Lamport.**
+
+## 100-minute class and assigned worksheet version
+
+**In class:** 10 min retrieval quiz + 10 min brief explanation + 70 min guided practice + 10 min evidence review/exit = 100 min.
+
+**Shared core — every student:** Collect fresh Lamport signatures in class, assemble the forgery, test it, compare the one-time-enforcement control and explain the confidentiality/signature migration distinction.
+
+**Preparation and extensions:** Before class, prepare images/dependencies and read the construction only. Collect live key material in class after startup. Complete the longer analysis and the assigned version-specific work outside the core block. The HNDL companion is optional and adds no points.
+
+**70-minute practice:** collect fresh signatures 15; assemble/test the forgery 25; verify the one-time control 20; reasoning 10. Do not spend the fixed server's one signing opportunity during preparation; recreate its state for a new controlled run.
+
+
+**Assessment:** everyone completes the shared core (60 points) plus **one assigned version** (40 points): Conventional written analysis, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. All questions remain available; complete the assigned version's full questions, using out-of-class time for extended responses. The other version is ungraded reference practice, not an additional requirement. Viva/micro-demo questions are formative checks of the submitted explanation, with no separate points or automatic pass/fail score gate.
+
+**Evidence:** record reproducible observations or reasoning and your name/student ID. Where the local target prints a shared placeholder flag, record it as observed; a personalized flag or live CTFd account is not a prerequisite. Follow SUBMISSION.md for the announced hand-in channel.
 
 ## ✅ This week — what to do
 1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security`);
    skim the earlier signature weeks (Week 3 MACs, Week 5 key exchange) — this week is where the
    *quantum* threat to those primitives lands.
-2. **Lecture (120 min)** — why a large-scale quantum computer breaks RSA/ECC (Shor) but only
+2. **Concept preparation and brief explanation (within the 100-minute plan)** — why a large-scale quantum computer breaks RSA/ECC (Shor) but only
    dents AES/SHA (Grover); "harvest now, decrypt later"; the four PQC families; NIST's ML-KEM
    (Kyber) and ML-DSA (Dilithium); hash-based signatures and the one-time-key discipline;
    crypto-agility as the real engineering lesson. Slides: `slides/week15.md` *(see course plan)*.
-3. **Lab (180 min)** — play the signature game below, forge an admin signature by exploiting a
+3. **Practice and assigned-version work (core in class; extensions outside class)** — play the signature game below, forge an admin signature by exploiting a
    **reused Lamport one-time key**, capture your flag, then complete **Worksheet 15**
-   (`worksheet.md`, Part 2 Conventional + Part 3 AIR-Sec incl. *Audit the AI* + *EiPE/Prompt*).
+   (`worksheet.md`, shared practical plus the assigned Conventional written questions or AIR-Sec Audit-the-AI/EiPE/Prompt).
    Kickoff: `docker compose up`.
-4. **Submit** — worksheet PDF + flag → see [SUBMISSION.md](../../SUBMISSION.md) · exploit code → GitHub.
+4. **Submit** — shared-core evidence/reasoning plus your assigned 40-point version in the worksheet PDF via [SUBMISSION.md](../../SUBMISSION.md). Include the observed flag/log artifact where applicable. Supplied exploit/reference code does not require an unchanged GitHub commit.
 
 ## Objectives
 - Explain **why quantum matters for cryptography**: Shor's algorithm breaks RSA/ECC outright,
@@ -103,10 +118,8 @@ on a *non-admin* message → `403`; (d) `exploit.py` exits **nonzero** when the 
 made to reuse its key (pointing `FIXED_PORT` at `:8100`), proving the pass/fail gate is real.
 
 ## Deliverable
-The captured flag + your recovered private key (or at least: for one bit position, both
-preimages and the `SHA-256` hashes that show each matches the published public key) + a short
-note explaining, in your own words, why signing `M` and `~M` reveals the *whole* key while
-signing `M` alone reveals only *half*. Full tasks: `worksheet.md`.
+Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.
+Lamport is the required signature core. HNDL is an optional confidentiality extension, with zero additional points and no substitution for the required core.
 
 ## References
 - NIST FIPS 203 (**ML-KEM** / Kyber), FIPS 204 (**ML-DSA** / Dilithium), FIPS 205

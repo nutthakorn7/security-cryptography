@@ -3,9 +3,7 @@
 Curated, **free**, authoritative resources to read **before/after** each week. Primary sources
 (RFCs, NIST/FIPS, OWASP cheat sheets, official protocol docs) — skim the starred ⭐ one before class.
 
-This is the Security & Cryptography course's own reading list — a separate GitHub repo and
-Google Classroom instance from the companion Software Security course, even though both follow
-the same 19-week AIR-Sec skeleton.
+This is the Cryptography and Network Security course's reading list, with its own repository and course-platform hand-in. The current schedule has 20 weeks of 100 minutes. See SUBMISSION.md for the assigned Conventional/AIR-Sec format and the practical 60 + format-specific 40 assessment.
 
 ## Foundations
 - **W1 — Intro: Why Crypto Fails in Practice**

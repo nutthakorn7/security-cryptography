@@ -9,11 +9,20 @@ header: "Security & Cryptography · Week 1"
 ## Security Mindset & Threat-Modeling a Cryptographic System
 Security & Cryptography · Nutthakorn Chalaemwongwan
 
-<!-- Hook: ask the room "if I told you a system uses AES-256 and RSA-4096 — the biggest algorithms available — is it safe?" Let a few say yes. Hold the answer. That tension is this entire course. ~2 min. -->
+<!-- Hook: ask the room "if I told you a system uses AES-256 and RSA-4096 — the biggest algorithms available — is it safe?" Let a few say yes. Hold the answer. That tension is this entire course.  -->
 
 ---
 
 ## Today
+
+**100-minute class:** 10 quiz/review · 10 brief · 60 shared practice · 15 debrief · 5 capture.
+**Assessment:** common 60 + assigned Conventional written 40 **or** AIR-Sec 20/10/10.
+Preparation and detailed write-up are outside the contact block. Week 1 opens with orientation/review.
+
+<!-- The full deck is a teaching/reference bank, not an additional lecture block.
+Use the core explanation for the 10-minute brief and just-in-time guidance during practice;
+assign the remaining deep dives as preparation or follow-up. Viva is formative, with no
+separate points or automatic-zero rule. -->
 
 - The course's spine: **textbook-secure primitive, real-system failure**
 - What "cryptographically secure" promises — and doesn't
@@ -21,7 +30,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 - Trust boundaries + a lightweight threat-modeling process
 - 🐍 Game: **Snake Oil Bingo**
 
-<!-- Roadmap. No recap today — this is Week 1, so we're framing the whole 19-week course instead. Name the lab up front: Worksheet 1, no Docker, no flag — a reasoning exercise (Audit-the-AI) instead of a code exploit. ~2 min. -->
+<!-- Roadmap. No recap today — this is Week 1, so we're framing the whole 20-week course instead. Name the lab up front: Worksheet 1, no Docker, no flag — a reasoning exercise (Audit-the-AI) instead of a code exploit.  -->
 
 ---
 
@@ -37,7 +46,7 @@ and shows **one specific, real way it fails when misused**:
 - Implementation bugs, bad randomness, protocol misuse, side channels,
   key-management failure — never the math itself
 
-<!-- Write the boxed line on the board — it is the lens for all 19 weeks. Emphasize: nobody in this course is going to break AES or factor an RSA modulus. Every "break" from here on is a decision made *around* a sound primitive. ~5 min. -->
+<!-- Write the boxed line on the board — it is the lens for all 20 weeks. Emphasize: nobody in this course is going to break AES or factor an RSA modulus. Every "break" from here on is a decision made *around* a sound primitive.  -->
 
 ---
 
@@ -48,13 +57,13 @@ and shows **one specific, real way it fails when misused**:
 | 2 | Hash functions | Unsalted/unstretched password storage — GPU cracks the DB |
 | 4 | AES (block cipher) | CBC with no integrity check — ciphertext bits flip undetected |
 | 5 | Diffie–Hellman | No authentication — MITM relays two key exchanges |
-| 11 | ECDSA signatures | Nonce reuse algebraically recovers the private key |
+| 11 | ECDSA signatures | Malleable signatures and duplicate withdrawal identifiers |
 | 12 | TLS / certificates | Sound crypto, client skips hostname validation — MITM anyway |
 
 *(Full 11-row table is in this week's README — you'll hypothesize about two
 unseen rows in the worksheet.)*
 
-<!-- Don't over-explain each row yet — these are previews, not lessons. Point out the shape: primitive column never says "broken," failure column always names a missing check or a violated assumption. Ask: "what do all five failure descriptions have in common?" ~6 min. -->
+<!-- Don't over-explain each row yet — these are previews, not lessons. Point out the shape: primitive column never says "broken," failure column always names a missing check or a violated assumption. Ask: "what do all five failure descriptions have in common?"  -->
 
 ---
 
@@ -70,7 +79,7 @@ That's it. It says **nothing** about:
 - Whether keys are generated, stored, or rotated safely
 - Whether the protocol around it is composed correctly
 
-<!-- The precise definition students need to be able to state on the viva (Part 5, Q1). Contrast with the vague "it's unbreakable" framing from marketing. This is also directly the Snake Oil Bingo answer key — "military-grade encryption" fails on exactly this distinction. ~5 min. -->
+<!-- The precise definition students need to be able to state on the viva (Part 5, Q1). Contrast with the vague "it's unbreakable" framing from marketing. This is also directly the Snake Oil Bingo answer key — "military-grade encryption" fails on exactly this distinction.  -->
 
 ---
 
@@ -82,7 +91,7 @@ That's it. It says **nothing** about:
 | **Integrity/Authenticity** | MACs, signatures, AEAD — **not encryption alone** | Missing this is the #1 conflation this course fixes |
 | **Availability** | Key management (generation, backup, rotation) | Usually a key-mgmt failure, not an algorithm failure |
 
-<!-- Walk each row. Integrity row is the big one — write "encryption ≠ integrity" on the board, it recurs hard in Week 4 (CBC bit-flipping) and Week 6 (padding oracles). Ask: "if I encrypt a message with no MAC, can an attacker change it without me noticing?" (yes). ~6 min. -->
+<!-- Walk each row. Integrity row is the big one — write "encryption ≠ integrity" on the board, it recurs hard in Week 4 (CBC bit-flipping) and Week 6 (padding oracles). Ask: "if I encrypt a message with no MAC, can an attacker change it without me noticing?" (yes).  -->
 
 ---
 
@@ -96,7 +105,7 @@ That's it. It says **nothing** about:
 > Encrypt-then-MAC, or a proper AEAD mode, is what actually closes this gap
 > (Week 6). Week 4 shows exactly how the gap gets exploited.
 
-<!-- This is Worksheet Q5 — make sure they can articulate it precisely. Concrete hook: "if you flip one bit of an AES-CBC ciphertext block, what happens to the decrypted plaintext? Predictably — that's the Week 4 exploit." No need to solve it now, just plant the seed. ~5 min. -->
+<!-- This is Worksheet Q5 — make sure they can articulate it precisely. Concrete hook: "if you flip one bit of an AES-CBC ciphertext block, what happens to the decrypted plaintext? Predictably — that's the Week 4 exploit." No need to solve it now, just plant the seed.  -->
 
 ---
 
@@ -114,7 +123,7 @@ Every crossing is where key-management failures concentrate: hardcoded
 keys in source control, keys logged in plaintext, keys shared across
 environments, no rotation or revocation path.
 
-<!-- This is the practical skill for Worksheet Q3 (name 3 crossings in a web app + what goes wrong at each). Draw a simple box diagram: browser → app server → DB, mark the boundaries. Ask for volunteers to name a key-management failure at each. ~6 min. -->
+<!-- This is the practical skill for Worksheet Q3 (name 3 crossings in a web app + what goes wrong at each). Draw a simple box diagram: browser → app server → DB, mark the boundaries. Ask for volunteers to name a key-management failure at each.  -->
 
 ---
 
@@ -127,7 +136,7 @@ environments, no rotation or revocation path.
 - Result: only ~32,768 possible keys per key type, system-wide
 - **CWE-330** — Use of Insufficiently Random Values
 
-<!-- The primitive (OpenSSL's CSPRNG design) was never the problem. A single packaging change destroyed its entropy source, and every key generated on affected Debian systems for ~2 years was guessable. This is the "bad randomness" branch of the throughline table — foreshadow Week 15 (Lamport OTS: reuse breaks even a provably secure scheme). ~5 min. -->
+<!-- The primitive (OpenSSL's CSPRNG design) was never the problem. A single packaging change destroyed its entropy source, and every key generated on affected Debian systems for ~2 years was guessable. This is the "bad randomness" branch of the throughline table — foreshadow Week 15 (Lamport OTS: reuse breaks even a provably secure scheme).  -->
 
 ---
 
@@ -141,7 +150,7 @@ environments, no rotation or revocation path.
   recoverable
 - Result: anyone could sign arbitrary "official" firmware
 
-<!-- ECDSA itself is fine; nonce reuse is a protocol-misuse/key-management failure, not a math failure. This directly foreshadows Week 11 — flag it explicitly: "we will do this recovery by hand in Week 11." Ask: "was RSA or ECDSA broken here?" (no — the nonce discipline was). ~5 min. -->
+<!-- ECDSA itself is fine; nonce reuse is a protocol-misuse/key-management failure, not a math failure. Use this as background on signature misuse. The running Week 11 lab demonstrates signature malleability and duplicate withdrawal identifiers, not nonce-reuse key recovery. Ask: "was RSA or ECDSA broken here?" (no — the nonce discipline was).  -->
 
 ---
 
@@ -161,7 +170,7 @@ environments, no rotation or revocation path.
 seed-crack
 ```
 
-<!-- expand()/commit() in the sim are toy mixers, not real HKDF/SHA-256 — say so explicitly, same disclaimer as Week 3's toy hash. What's real: the brute-force loop actually runs in the browser, and Verifier B's "years needed" figure is computed live from the exact candidates/sec that loop just measured, not quoted from a table. To make the search-range slider fail, don't nudge it just below the real range — TRUE_SEED is uniform in that range, so near the boundary a "wrong" guess still succeeds most of the time (a genuine coin flip right at the edge, worth naming out loud). Drag it down to roughly a quarter of the real range instead, run it (misses), then push it back to the real range or above (recovers the exact key in well under a second) — that flip is this slide's version of "textbook-secure primitive, real-system failure": expand()/commit() are never the problem, the seed is. Close the loop explicitly to Part 3: the sim is a live refutation of square #23 in the one failure category (randomness/entropy) the Exhibit never names. ~5 min. -->
+<!-- expand()/commit() in the sim are toy mixers, not real HKDF/SHA-256 — say so explicitly, same disclaimer as Week 3's toy hash. What's real: the brute-force loop actually runs in the browser, and Verifier B's "years needed" figure is computed live from the exact candidates/sec that loop just measured, not quoted from a table. To make the search-range slider fail, don't nudge it just below the real range — TRUE_SEED is uniform in that range, so near the boundary a "wrong" guess still succeeds most of the time (a genuine coin flip right at the edge, worth naming out loud). Drag it down to roughly a quarter of the real range instead, run it (misses), then push it back to the real range or above (recovers the exact key in well under a second) — that flip is this slide's version of "textbook-secure primitive, real-system failure": expand()/commit() are never the problem, the seed is. Close the loop explicitly to Part 3: the sim is a live refutation of square #23 in the one failure category (randomness/entropy) the Exhibit never names.  -->
 
 ---
 
@@ -176,7 +185,7 @@ seed-crack
 > Finding that gap *is* this week's exploit — a reasoning exploit instead
 > of a code exploit.
 
-<!-- Set up Part 3 of the worksheet before they read the Exhibit. This is the pattern that recurs every AIR-Sec week from here: distrust confident, correct-sounding AI output; verify against primary literature. Don't reveal the gap yet — let the worksheet do that work. ~4 min. -->
+<!-- Set up Part 3 of the worksheet before they read the Exhibit. This is the pattern that recurs every AIR-Sec week from here: distrust confident, correct-sounding AI output; verify against primary literature. Don't reveal the gap yet — let the worksheet do that work.  -->
 
 ---
 
@@ -191,7 +200,7 @@ The AI's answer explains real-world crypto failure entirely in terms of:
 It's all correct. It is also **only one of several failure categories** —
 compare it against everything on this slide deck so far.
 
-<!-- Read the Exhibit aloud from the README/worksheet verbatim (or have a student read it) — this is the Snake Oil Bingo trigger moment. Do not tell them the gap categories; the worksheet task is to name them (key management, randomness/entropy, protocol/composition misuse, side channels) and give an example of each. ~6 min. -->
+<!-- Read the Exhibit aloud from the README/worksheet verbatim (or have a student read it) — this is the Snake Oil Bingo trigger moment. Do not tell them the gap categories; the worksheet task is to name them (key management, randomness/entropy, protocol/composition misuse, side channels) and give an example of each.  -->
 
 ---
 
@@ -205,7 +214,7 @@ Lightweight process, applied to a system that handles cryptographic keys:
 4. **Ask, at each primitive:** what assumption does this rely on, and does
    this system actually uphold it?
 
-<!-- This is the antidote to the Exhibit's gap and the antidote to "textbook-secure ≠ system-secure" in general. Walk a mini example on the board: a login form's password — asset, adversary (network sniffer, DB thief), boundary (browser→server, server→DB). This process is what Week 4's project design doc will require. ~7 min. -->
+<!-- This is the antidote to the Exhibit's gap and the antidote to "textbook-secure ≠ system-secure" in general. Walk a mini example on the board: a login form's password — asset, adversary (network sniffer, DB thief), boundary (browser→server, server→DB). This process is what Week 4's project design doc will require.  -->
 
 ---
 
@@ -220,22 +229,23 @@ Lightweight process, applied to a system that handles cryptographic keys:
   reason it's wrong
 - First verified BINGO wins
 
-<!-- Hand the cards out at the START of the lecture, not at this slide. Verified against the shipped cards (instructor/week01-snake-oil-bingo-key.md §3): the Exhibit read-aloud plus the square you model yourself puts only 3 squares up on any card — one line short of the 4 non-FREE squares any BINGO line needs, so a win is impossible on all six cards if cards come out only now. The trust-boundary, Debian RNG and PS3 slides earlier in this same lecture put the count to ~11 by 1:35, which makes a line arithmetically reachable on 2 of 6 cards — still tight, so budget the prompt bank in the instructor key. If you forgot to hand cards out early, pre-announce a reduced win condition (e.g. any 4 verified squares, not necessarily in a line) before play starts — never after a table is one square away. Model one square yourself first: "military-grade encryption" → not a real technical term, no standard defines "military-grade." Circulate to verify squares — a table must give the real reason, not just "that sounds fake." ~8 min. -->
+<!-- Hand the cards out at the START of the lecture, not at this slide. Verified against the shipped cards (instructor/week01-snake-oil-bingo-key.md §3): the Exhibit read-aloud plus the square you model yourself puts only 3 squares up on any card — one line short of the 4 non-FREE squares any BINGO line needs, so a win is impossible on all six cards if cards come out only now. The trust-boundary, Debian RNG and PS3 slides earlier in this same lecture put the count to ~11 after those examples, which makes a line arithmetically reachable on 2 of 6 cards — still tight, so budget the prompt bank in the instructor key. If you forgot to hand cards out early, pre-announce a reduced win condition (e.g. any 4 verified squares, not necessarily in a line) before play starts — never after a table is one square away. Model one square yourself first: "military-grade encryption" → not a real technical term, no standard defines "military-grade." Circulate to verify squares — a table must give the real reason, not just "that sounds fake."  -->
 
 ---
 
 ## Lab today — Worksheet 1
 
-> 📋 **Worksheet 1** — `labs/week01-intro/worksheet.md` · Parts 1–5 · 180 min
-> **No Docker, no flag** — conceptual week, rubric-graded
+> **100-minute class; no Docker target or flag.**
 
-- Part 2 — 6 short-answer questions (CIA, trust boundaries, the throughline)
-- Part 3 — **Audit-the-AI** (required): what the Exhibit gets right + the
-  gap + an example per missing category + rewrite its summary paragraph
-- Part 4 — Explain-in-Plain-English + a Prompt Problem
-- Part 5 — Viva spot-check, live, no notes
+- **Common 60:** analyse the supplied web-application case; draw its data/key trust boundaries,
+  compare controls and limitations, and capture the diagram/table with causal reasoning.
+- **Conventional 40:** the six original short-answer questions, if assigned.
+- **AIR-Sec 40:** Audit the AI 20 + EiPE 10 + Prompt Problem 10, if assigned.
+- Viva is formative/authenticity feedback within the criteria, with no separate points.
+- Finish detailed answers after class and submit the PDF per SUBMISSION.md.
 
-<!-- Walk the deliverable structure before they start. Point out Part 3 is the heaviest (35/100 points) — it's graded on specificity of the gap, not agreement/disagreement. Remind: disclose any AI assistance used anywhere in the worksheet (Part 1). Submit as PDF to learn.zcr.ai/submit; the weekly quiz is at learn.zcr.ai/quiz (one-time code on their slip). -->
+<!-- The original question bodies and AI exhibit remain available. Each student submits
+common work and only the assigned format. Bingo/deep dives can continue outside the contact block. -->
 
 ---
 
@@ -247,7 +257,7 @@ Lightweight process, applied to a system that handles cryptographic keys:
 - **Textbook-secure primitive, real-system failure** — this is the lens for
   every remaining week
 
-<!-- Cold-call: "if AES-256 and RSA-4096 are both unbroken and the system still gets compromised, where does security actually live?" (answer: in the decisions around the primitive — the theme of the whole course). ~3 min. -->
+<!-- Cold-call: "if AES-256 and RSA-4096 are both unbroken and the system still gets compromised, where does security actually live?" (answer: in the decisions around the primitive — the theme of the whole course).  -->
 
 ---
 

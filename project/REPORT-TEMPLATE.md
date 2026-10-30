@@ -1,7 +1,7 @@
 # Term Project Report — CryptoVault (Secure Build)
 
 > Fill in every section. Keep the headings. Total **100 pts** + up to **5 bonus** (see rubric at the end).
-> This is **team work** (2–3, nested in your House). Do not share your report or code with other teams.
+> This is **team work** (3 normally,2 where needed, nested in your House). Do not share your report or code with other teams.
 > This is a **"build it right"** project: you are graded on **correct composition of primitives**, not
 > features or polish. Each section below maps to a rubric line — for every primitive, show *where in the
 > code* it lives and *why* your choice avoids the exact failure mode its weekly lab demonstrated.
@@ -66,7 +66,8 @@
 - **Why this is correct:** how a fresh, unique nonce is guaranteed for **every** encryption, and how
   tampering is detected on decrypt (tag verification).
 - **Failure modes avoided (Wk4/Wk6):** why not raw CBC (bit-flip malleability), and why not a
-  fixed/counter-reused nonce (the catastrophic GCM nonce-reuse from the Wk6 material).
+  fixed/counter-reused nonce (GCM nonce-reuse analysis in Wk10). Wk6 itself demonstrates
+  CBC without a MAC versus the supplied GCM control.
 
 ---
 
@@ -93,10 +94,13 @@
 | What is signed | the entry, or a manifest of it |
 | Verify on receipt | `file:line` |
 
-- **Why this is correct:** the recipient verifies authenticity + integrity, and the sender can't
-  repudiate. If ECDSA, state how malleability (low-S normalization) and **nonce** handling are managed.
+- **Why this is correct:** the recipient verifies integrity and attribution to the authenticated signing key; explain the key-custody/trust assumptions. If ECDSA, state how low-S handles the twin pair, how signing nonces are generated and how
+  application transaction IDs/nonces prevent duplicate authorization. Low-S alone is not a
+  complete replay/idempotency control.
 - **Failure modes avoided (Wk3/Wk11):** why not `hash(secret + message)` (length-extension forgery,
-  Wk3), and how you avoid ECDSA nonce-reuse key recovery (Wk11).
+  Wk3), and how your design avoids duplicate authorization through signature malleability (Wk11).
+  Discuss nonce-reuse key recovery separately as a distinct ECDSA implementation risk, not the
+  attack performed by the Wk11 lab.
 
 ---
 
@@ -165,3 +169,10 @@ justification. Attach separately or here; the team mark is scaled per member by 
 **Total: 100** (+5 bonus, capped so the total cannot exceed 100).
 
 *All work stays within the [ethics policy](../ETHICS.md) — your own team's app and test accounts only.*
+
+## Final submission logistics
+
+Team of 3 normally,2 where needed. Submit final build, report and a demo video≤5 minutes before
+Week 19. Identify each member's contribution and disclose tools/sources. Clarification/feedback
+uses Weeks 16/20; no project Q&A reduces the Week 19 80 minute practical task block. The project
+remains 15% of the course, separate from the final practical 15%.

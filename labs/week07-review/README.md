@@ -10,14 +10,15 @@ No new content. Consolidate **Weeks 1–6** and prepare for the midterm (Weeks 8
 1. **Before class** — review Weeks 1–6: your worksheets (`labs/week02-hash/worksheet.md` …
    `labs/week06-aead/worksheet.md`), each week's README "Concepts"/"Analogous CWE" line, and any
    slides published so far.
-2. **In class (300 min)** — cumulative review quiz
+2. **In class (100 min)** — cumulative review quiz
    (`../../quizzes/weekly/week07-review-quiz.md`) → **Crypto Jeopardy** (below) → **mock CTF /
    mock-written dry-run** in the midterm's format → debrief on weak spots.
 3. **Prepare** — the **midterm is Weeks 8–9**: Week 8 is a written/concept exam, Week 9 is a
    hands-on practical. Both cover Weeks 1–6 only.
 
-*Time breakdown follows the same 120 min lecture / 180 min lab split as every other week, with
-the lecture slot replaced by the review game and the lab slot replaced by the mock CTF.*
+**100-minute plan:** cumulative quiz 20 + selected Jeopardy clues 15 + two bounded mock
+checkpoints 45 + explanation/correction 15 + capture/revision actions 5. The full bank below
+remains preparation/extension practice; do not attempt every question or full exploit in this slot.
 
 ---
 
@@ -27,15 +28,14 @@ the lecture slot replaced by the review game and the lab slot replaced by the mo
 |----|-------|------|
 | 1 | Intro & threat-modeling a crypto system | Textbook-secure crypto still fails in real systems when the **threat model, key management, or protocol composition** is wrong — the algorithm is rarely the weak link. |
 | 2 | Hash functions | A **fast** hash (MD5/SHA-256) is the wrong tool for passwords; only a **slow, salted KDF** (bcrypt/argon2id) resists offline dictionary/rainbow-table attacks at scale. |
-| 3 | MACs | `H(key \|\| message)` is **not** a MAC — Merkle-Damgard hashes are vulnerable to **length-extension**, letting an attacker append data and compute a valid new digest without the key; HMAC's nested construction is not. |
+| 3 | MACs | `SHA256(key \|\| message)` is an insecure secret-prefix MAC — this Merkle-Damgard construction permits **length-extension**, letting an attacker append data and compute a valid new digest without the key; HMAC's nested construction is not. |
 | 4 | AES / block-cipher modes | **Unauthenticated encryption is malleable** — CBC's `P_i = D(C_i) XOR C_{i-1}` relation lets an attacker flip chosen plaintext bits by flipping ciphertext bits, with no integrity check to catch it. |
 | 5 | Key exchanges | **Unauthenticated Diffie-Hellman gives secrecy against eavesdroppers but zero identity guarantee** — an active attacker in the middle completes two independent handshakes and relays/reads everything; authentication (signature/MAC-bound keys) is what DH itself doesn't provide. |
-| 6 | Authenticated encryption (AEAD) | Combining a MAC and a cipher the *wrong* way (MAC-then-encrypt / encrypt-and-MAC done naively) opens a **padding oracle** that decrypts ciphertext byte-by-byte with no key; **encrypt-then-MAC** or a single AEAD primitive (AES-GCM) closes it — the capstone of Wk3 (MAC) + Wk4 (cipher) combined correctly. |
+| 6 | Authenticated encryption (AEAD) | The lab's CBC **without a MAC** exposes padding validity and enables plaintext recovery; the supplied AES-GCM control rejects tampering uniformly. MtE/E&M/EtM are comparison concepts, not three implemented target modes — the capstone of Wk3 (MAC) + Wk4 (cipher) combined correctly. |
 
 **The through-line:** Wk2 is about *storage* (one-way, no key). Wk3 shows a *keyed hash isn't
 authentication*. Wk4 shows *encryption isn't integrity*. Wk5 shows *key agreement isn't identity*.
-Wk6 shows what happens when you *bolt Wk3 + Wk4 together wrong* — and how to bolt them together
-right. Every week is a variation on the same idea: **confidentiality, integrity, and
+Wk6 exposes an oracle in unauthenticated CBC and shows the supplied AEAD control. Every week is a variation on the same idea: **confidentiality, integrity, and
 authenticity are three separate properties, and a primitive that gives you one does not give you
 the others for free.**
 
@@ -73,7 +73,7 @@ Wager** round. Questions are drawn from each week's worksheet (Conventional-arm 
   plaintext is released?)*
 
 **Final Wager:** "This attacker model — the one shared by Week 5's relay and Week 6's
-`encrypt-and-MAC` mistake — sees and can modify every message in transit, not just read it." Teams
+CBC-without-MAC target — sees and can modify every message in transit, not just read it." Teams
 wager any/all of their points. *(What is: an active (on-path) attacker, as opposed to a passive
 eavesdropper?)*
 
@@ -93,8 +93,8 @@ Ungraded (participation only) — the goal is comfort with the format, not new c
 - **Section A — Concepts (MCQ/short answer):** hash properties, MAC vs. hash vs. signature,
   AEAD's three guarantees, DH vs. authenticated DH.
 - **Section B — Spot the vulnerability:** short code/protocol snippets (e.g. `H(key ||
-  message)` used as a cookie MAC, a GCM nonce reused across two calls, a naive MAC-then-encrypt
-  padding check) — name the CWE-equivalent flaw and the one-line fix.
+  message)` used as a cookie MAC, unauthenticated CBC with distinct padding-error
+  responses) — name the CWE-equivalent flaw and the one-line fix.
 - **Section C — Attack walkthrough:** given a vulnerable construction (unauthenticated CBC token,
   or a length-extension setup), walk through the attack step by step.
 - **Section D — Design:** design a secure cookie/session scheme, or justify an AEAD choice for a
@@ -119,8 +119,8 @@ of a lab already completed, not a fresh challenge.
 ## Deliverable
 Each student submits a one-page **cheat sheet** (allowed as an open-note aid in the exam, if the
 instructor permits open-note). Suggested contents: the six one-line lessons above, the
-CBC decryption relation, the length-extension idea, and the AEAD composition rule
-(encrypt-then-MAC is safe; the other two orders are not).
+CBC decryption relation, the length-extension idea, and the AEAD usage requirements
+(nonce discipline, tag verification and no unauthenticated plaintext release).
 
 ## Covers
 Weeks 1–6: [intro/threat-modeling](../week01-intro/) (Conceptual, no lab target — see note above),

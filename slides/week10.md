@@ -5,6 +5,8 @@ paginate: true
 header: "Security & Cryptography · Week 10"
 ---
 
+<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+
 # Week 10
 ## Asymmetric & Hybrid Encryption
 Security & Cryptography · Nutthakorn Chalaemwongwan
@@ -181,12 +183,15 @@ nonce-reuse
 
 ## Lab today
 
+**Shared practical/analysis core: 60 points for everyone.** Complete only your assigned **Conventional written 40** or **AIR-Sec Audit 20 + EiPE 10 + Prompt 10**. Each version totals 100; viva is formative. Full questions remain in the worksheet, with extensions outside the 100-minute class.
+
+
 > 📋 **Worksheet 10** — `labs/week10-hybrid-encryption/worksheet.md` (Parts 1–5) · start at `audit_the_ai/README.md`
 
 - Part 2 — 5 essay questions: bulk-data limits, hybrid encryption flow, public-key encryption, key exchange, ECIES
-- Part 3 (required) — **Audit-the-AI**: find the planted bug in `broken_hybrid_encrypt.py`, write a proof script recovering real leaked plaintext, explain the attack, submit `fixed_hybrid_encrypt.py`
-- Part 4 — EiPE (explain hybrid encryption, no jargon) + Prompt Problem (ask an AI to implement ECIES, critique its output against a checklist)
-- Part 5 — live viva spot-check, no notes
+- Assigned AIR-Sec Part 3 — **Audit-the-AI**: find the planted bug in `broken_hybrid_encrypt.py`, write a proof script recovering real leaked plaintext, explain the attack, attach the proof script, output and full `fixed_hybrid_encrypt.py` code in the PDF/worksheet; no separate GitHub hand-in
+- Assigned AIR-Sec Part 4 — EiPE (explain hybrid encryption, no jargon) + Prompt Problem (ask an AI to implement ECIES, critique its output against a checklist)
+- Part 5 — formative viva spot-check, no separate points
 - No Docker target, no flag — conceptual week, graded on your written reasoning and proof script
 
 <!-- Point them straight at audit_the_ai/README.md — it has the full task + hints (checks the RSA/OAEP fundamentals are fine, then says "look at the nonce"). Python-only, standard library + cryptography package, no environment setup needed. ~4 min. -->
@@ -207,4 +212,4 @@ nonce-reuse
 # Questions?
 Next week: Digital Signatures & Zero-Knowledge Proofs
 
-<!-- Cliffhanger: "next week you prove you know a secret — without ever revealing it." Remind: worksheet + audit_the_ai/ due per Classroom deadline; disclose any AI assistance on Part 1 of the worksheet. ~1 min. -->
+<!-- Cliffhanger: "next week you prove you know a secret — without ever revealing it." Remind: worksheet + audit_the_ai/ due through learn.zcr.ai/submit per the announced deadline; disclose any AI assistance on Part 1 of the worksheet. ~1 min. -->

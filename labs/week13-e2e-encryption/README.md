@@ -7,18 +7,28 @@ key-distribution problem, Signal vs. PGP · **Analogous CWE:** CWE-311 (Missing 
 Sensitive Data), CWE-319 (Cleartext Transmission of Sensitive Information — here, cleartext
 *storage on the relay* even when transit is encrypted)
 
+## 100-minute class and assigned worksheet version
+
+**In class:** 10 min retrieval quiz + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min.
+
+**Shared core — every student:** Run the provider-visible and client-encrypted scenarios; compare plaintext/ciphertext server logs and recipient output; explain that the demo does not authenticate the server-relayed recipient public key.
+
+**Preparation and extensions:** Prepare images and read the trust-boundary diagram. Complete the full protocol/ratchet essays or AIR-Sec critique/EiPE/Prompt outside the core block as needed.
+
+**Assessment:** everyone completes the shared core (60 points) plus **one assigned version** (40 points): Conventional written analysis, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. All questions remain available; complete the assigned version's full questions, using out-of-class time for extended responses. The other version is ungraded reference practice, not an additional requirement. Viva/micro-demo questions are formative checks of the submitted explanation, with no separate points or automatic pass/fail score gate.
+
+**Evidence:** record reproducible observations or reasoning and your name/student ID. Where the local target prints a shared placeholder flag, record it as observed; a personalized flag or live CTFd account is not a prerequisite. Follow SUBMISSION.md for the announced hand-in channel.
+
 ## This week — what to do
 1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security` and
    this course's earlier weeks); skim the Week 12 recap on asymmetric/hybrid encryption (Week 13
    is where it gets *deployed* into a real messaging shape).
-2. **Lecture (120 min)** — weekly quiz first (~10 min), then the lecture: why "we use HTTPS"
+2. **Concept preparation and brief explanation (within the 100-minute plan)** — weekly quiz first (~10 min), then the lecture: why "we use HTTPS"
    answers a different question than "can the provider read my messages," and how Signal-style
    E2EE closes that gap. Slides: `slides/week13.md`.
-3. **Lab (180 min)** — run the demo in both modes below, then complete **Worksheet 13**
-   (`worksheet.md`, Part 1 — Conventional essays; Part 2 — AIR-Sec arm: lab evidence,
-   Audit-the-AI, EiPE, Prompt Problem, viva prep).
-4. **Submit** — worksheet PDF + captured log evidence → see [SUBMISSION.md](../../SUBMISSION.md) · code unchanged (this is a
-   read/run/observe lab, not an exploit-and-fix-the-code lab) → GitHub. (How: [SUBMISSION.md](../../SUBMISSION.md).)
+3. **Practice and assigned-version work (core in class; extensions outside class)** — run the demo in both modes below, then complete **Worksheet 13**
+   (`worksheet.md`, shared lab evidence plus the assigned Conventional essays or AIR-Sec Audit-the-AI, EiPE and Prompt Problem).
+4. **Submit** — shared-core evidence/reasoning plus your assigned 40-point version in the worksheet PDF via [SUBMISSION.md](../../SUBMISSION.md). Include the observed flag/log artifact where applicable. Supplied exploit/reference code does not require an unchanged GitHub commit.
 
 ## Objectives
 - Explain the difference between **transport encryption** (TLS/HTTPS — protects data *in transit*
@@ -106,9 +116,9 @@ down:
 docker compose -f docker-compose.vulnerable.yml down
 ```
 The line `SERVER SAW: meet at pier 39 at midnight` is the whole point: the provider stored and
-logged your plaintext. **This captured leak line is the personalized/attributable evidence
+logged your plaintext. **This captured leak line is the attributable evidence
 artifact for this HYBRID week (in place of a CTF flag)** — see the worksheet's Evidence &
-Integrity section for how your identity proof makes it *yours*.
+Integrity section for how your attribution makes it *yours*.
 
 Fixed mode — true end-to-end encryption; the server sees only ciphertext:
 ```bash
@@ -178,11 +188,7 @@ excerpts below are the **real captured output**, not a description.
   verification; nothing was left running.
 
 ## Deliverable
-Worksheet 13 (`worksheet.md`, Parts 1–2), including the captured log evidence from both modes
-(Part 2a) — the `SERVER SAW: meet at pier 39 at midnight` leak line, the fixed-mode base64
-`SERVER SAW:` line, the `BOB DECRYPTED` line, and the `grep -c` result showing `0` in fixed mode —
-plus the Audit-the-AI critique (Part 2b), the WhatsApp EiPE (Part 2c), the Prompt Problem
-(Part 2d), and viva prep (Part 2e).
+Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.
 
 ## References
 - Signal Protocol documentation — X3DH key agreement and the Double Ratchet:

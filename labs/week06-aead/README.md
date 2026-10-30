@@ -7,24 +7,27 @@ Cryptographic Signature), CWE-757 (Selection of Less-Secure Algorithm), CWE-204
 (Observable Response Discrepancy — the side channel)
 
 This is the **capstone of the symmetric block**: Week 3 gave you a MAC (integrity), Week 4 gave
-you AES-CBC (confidentiality) and showed CBC ciphertext is *malleable*. Bolt those two together
-*wrong* and you get a **padding oracle** — an attacker decrypts your ciphertext byte-by-byte
-without ever seeing the key. Bolt them together *right* — encrypt-then-MAC, or use a single AEAD
-primitive like AES-GCM — and the attack evaporates. That "combine them correctly" primitive is
-**AEAD**.
+you AES-CBC (confidentiality) and showed CBC ciphertext is *malleable*. The running
+target here is **CBC with no MAC at all**, plus a padding-validity response: it demonstrates
+a **padding oracle**, not an implementation of MAC-then-encrypt or encrypt-and-MAC. The
+comparison target uses AES-GCM. Correct encrypt-then-MAC composition is discussed in the
+written questions; it is not the supplied fixed target.
 
-## ✅ This week — what to do
-1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security`);
-   re-skim Week 4 (AES-CBC, bit-flipping malleability) and Week 3 (MACs) — this week is those two
-   combined.
-2. **Lecture (120 min)** — what AEAD guarantees (confidentiality + integrity + authenticity in one
-   primitive); Encrypt-then-MAC vs MAC-then-Encrypt vs Encrypt-and-MAC; why unauthenticated CBC
-   leaks to a padding oracle; why AES-GCM has no padding step and checks the tag first. Slides:
-   `slides/week06.md`.
-3. **Lab (180 min)** — play the decryption game below, capture your flag, then complete
-   **Worksheet 6** (`worksheet.md`, Part 1 Conventional + Part 2 AIR-Sec incl. *Audit the AI* +
-   *EiPE* + *Prompt Problem*). Kickoff: `docker compose up`.
-4. **Submit** — worksheet PDF + flag → see [SUBMISSION.md](../../SUBMISSION.md) · exploit notes → GitHub.
+## This week — 100-minute class and assigned assessment
+
+1. **Before class** — Prepare Docker and the host tools listed in SUBMISSION.md before class; complete first downloads before the contact block. Read the relevant recap.
+2. **In class (100 minutes)** — 10 quiz/review + 10 brief + 60 shared practice/analysis +
+   15 debrief + 5 evidence capture. Week 1 starts with orientation/review, not a quiz on
+   material not yet taught. Slides: `slides/week06.md`. The full deck includes reference/deep-dive
+   material; the instructor selects the core explanation for this block.
+3. **Common work (60 points)** — Capture the ciphertext, explain one manual oracle query and run the CBC padding-oracle recovery. Compare with the GCM target, distinguish no usable padding signal from a failed setup, and state tag/nonce assumptions.
+4. **Assigned format (40 points)** — complete **either** the Conventional written questions
+   **or** AIR-Sec (Audit the AI 20 + EiPE 10 + Prompt Problem 10). Both versions total 100.
+   Viva checks support feedback/authenticity within the criteria; they add no separate marks.
+5. **After class** — finish detailed calculations, explanations and the assigned format;
+   retain all original questions as assigned work or study extensions. Submit the worksheet
+   PDF and required evidence according to [SUBMISSION.md](../../SUBMISSION.md). This week
+   has no separate code-fix/GitHub submission.
 
 ## Objectives
 - State what **AEAD** stands for and the three guarantees it delivers in one primitive.
@@ -35,7 +38,8 @@ primitive like AES-GCM — and the attack evaporates. That "combine them correct
 - Explain why **AES-GCM** (an AEAD cipher) has no padding oracle — stream mode means no padding to
   probe, and the authentication tag is verified *before* any plaintext is released — and verify
   that empirically against a fixed target that returns a uniform error for every failure.
-- Distinguish the *provably safe* generic composition (encrypt-then-MAC) from the unsafe ones.
+- Compare encrypt-then-MAC under its standard assumptions with compositions that require
+  extra care; authenticate all relevant ciphertext/IV data and withhold unauthenticated plaintext.
 
 ## 🔓 Decryption game — "Read the Secret Without the Key"
 Two Flask targets, same endpoints, different cipher:
@@ -63,8 +67,9 @@ response*:
    the full plaintext **byte-by-byte, without the AES key** (`exploit.py` implements it from
    scratch — no crypto library needed on the attacker side, only `requests`).
 3. **Read the flag:** the recovered plaintext is `msg:FLAG{...}` → that's your flag.
-4. **Confirm the fix:** run the *identical* attack against `:8099` (AES-GCM). It gets **zero**
-   usable signal (every query is `403`), recovers nothing → the AEAD app is safe.
+4. **Confirm the fix:** run the same padding-oracle routine against `:8099` (AES-GCM). It gets **zero**
+   usable signal (every query is `403`), recovers nothing → this target provides no usable padding signal. This is evidence against
+   this attack, not proof that every aspect of the application is secure.
 
 **The key is never known to the attacker.** The whole point is that unauthenticated CBC + a
 padding side channel gives *decryption without the key*; AEAD removes both the side channel and
@@ -78,10 +83,9 @@ python exploit.py             # PASS on :8098 (recovers plaintext + flag), PASS 
                               #   (attack gets no signal); exit 0
 docker compose down
 ```
-Per-student flag: `python3 ../../instructor/seed_flags.py env <STUDENT_ID> > .env` before
-`docker compose up` (once this course's `instructor/seed_flags.py` exists — see
-`course-plan-19weeks.md` open decision; until then `FLAG_AEAD` falls back to a shared placeholder that is the same for everyone). The exploit derives the block count from `/secret`, so
-flags of any length work.
+Flag configuration: use an instructor-supplied personalised `.env` if available. Otherwise
+record the shared demo flag with your own evidence and explanation; no automatic roster
+validation is assumed.
 
 **Verified:** `docker compose up -d --build` (from a scratch copy — OneDrive placeholders can
 break in-place `docker build`) followed by `python exploit.py` was run against live containers on
@@ -95,9 +99,14 @@ ciphertext → `403` on both apps; a tampered GCM tag → `403` on `:8099`; the 
 `200` on both.
 
 ## Deliverable
-The recovered flag + a short note on **which byte you force to `0x01`, `0x02 0x02`, … in the
-forged previous block**, why that reveals one byte of the intermediate value `D(C_t)` per query,
-and why AES-GCM has no equivalent probe. Full tasks: `worksheet.md`.
+
+Submit the common evidence and reasoning (60) plus only the assigned Conventional (40)
+or AIR-Sec (40) format. The details below describe the common artifact; the worksheet
+identifies the alternative sections.
+The recovered flag + a short note on **how changing the forged previous block forces
+`0x01`, `0x02 0x02`, … in the decrypted plaintext**. Explain how several trial queries identify
+a byte of the intermediate value `D(C_t)`, including the false-positive check, and why
+AES-GCM provides no equivalent padding-validity probe. Full tasks: `worksheet.md`.
 
 ## References
 - Boneh & Shoup, *A Graduate Course in Applied Cryptography*, ch. 9 (Authenticated Encryption) —

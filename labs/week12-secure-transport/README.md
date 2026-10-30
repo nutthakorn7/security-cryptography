@@ -5,18 +5,28 @@
 verification, machine-in-the-middle · **Analogous CWE:** CWE-295 (Improper Certificate
 Validation), CWE-300 (Channel Accessible by Non-Endpoint)
 
+## 100-minute class and assigned worksheet version
+
+**In class:** 10 min retrieval quiz + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min.
+
+**Shared core — every student:** Run vulnerable and validating TLS configurations, capture their contrasting results, then implement and test build_client_context() in alice_student.py. Every student completes this coding and evidence task as part of the shared 60 points.
+
+**Preparation and extensions:** Prepare images and read the certificate topology before class. Complete the full PKI/Noise essays or AIR-Sec critique/EiPE/Prompt outside the core block as needed. Preserve the required W12 code link in the worksheet.
+
+**Assessment:** everyone completes the shared core (60 points) plus **one assigned version** (40 points): Conventional written analysis, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. All questions remain available; complete the assigned version's full questions, using out-of-class time for extended responses. The other version is ungraded reference practice, not an additional requirement. Viva/micro-demo questions are formative checks of the submitted explanation, with no separate points or automatic pass/fail score gate.
+
+**Evidence:** record reproducible observations or reasoning and your name/student ID. Where the local target prints a shared placeholder flag, record it as observed; a personalized flag or live CTFd account is not a prerequisite. Follow SUBMISSION.md for the announced hand-in channel.
+
 ## This week — what to do
 1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security` and
    this course's earlier weeks); skim the Week 5 (Key Exchanges) MITM recap — this week is its
    TLS-layer sequel.
-2. **Lecture (120 min)** — weekly quiz first (~10 min), then the lecture: SSL→TLS 1.3 evolution,
+2. **Concept preparation and brief explanation (within the 100-minute plan)** — weekly quiz first (~10 min), then the lecture: SSL→TLS 1.3 evolution,
    what the handshake actually authenticates, and why "the traffic is encrypted" is not the same
    claim as "encrypted *to the right person*". Slides: `slides/week12.md`.
-3. **Lab (180 min)** — run the demo in both modes below, then complete **Worksheet 12**
-   (`worksheet.md`, Part 1 — Conventional essays; Part 2 — AIR-Sec arm: lab evidence,
-   Audit-the-AI, EiPE, Prompt Problem, viva prep).
-4. **Submit** — worksheet PDF + captured log evidence → see [SUBMISSION.md](../../SUBMISSION.md) · code unchanged (this is a
-   read/run/observe lab, not an exploit-and-fix-the-code lab) → GitHub. (How: [SUBMISSION.md](../../SUBMISSION.md).)
+3. **Practice and assigned-version work (core in class; extensions outside class)** — run the demo in both modes below, then complete **Worksheet 12**
+   (`worksheet.md`, shared lab evidence plus the assigned Conventional essays or AIR-Sec Audit-the-AI, EiPE and Prompt Problem).
+4. **Submit** — shared-core evidence/reasoning plus your assigned 40-point version in the worksheet PDF via [SUBMISSION.md](../../SUBMISSION.md). Every student also commits the completed `alice_student.py` to branch `wk12` in their fork and includes the commit link/hash and explanation in the PDF. This is the standalone GitHub coding task.
 
 ## Objectives
 - Explain what a TLS handshake authenticates and what it does *not*: encryption protects the
@@ -98,7 +108,7 @@ stack with `Ctrl-C` then tear it down:
 ```bash
 docker compose -f docker-compose.vulnerable.yml down -v
 ```
-The `MITM INTERCEPTED: the vault code is 7731` line is your **personalized/attributable evidence
+The `MITM INTERCEPTED: the vault code is 7731` line is your **attributable evidence
 artifact** for this HYBRID week (in place of a CTF flag) — captured together with your identity
 proof, per the worksheet's Evidence & Integrity section.
 
@@ -161,10 +171,8 @@ to a local scratch dir first) with `docker compose -f <file> up --build --abort-
   (`.gitignore` also excludes `*.pem`/`*.key` as a second line of defense.)
 
 ## Deliverable
-Worksheet 12 (`worksheet.md`, Parts 1–2), including the captured log evidence from both modes
-(Part 2a), the Audit-the-AI finding on the planted `verify=False` snippet (Part 2b), the EiPE
-explanation of why a CA signature matters (Part 2c), the Prompt Problem critique (Part 2d), and
-viva prep (Part 2e).
+Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.
+Every student supplies the completed certificate-validation code, its explanation and vulnerable/fixed test evidence, plus the W12 commit link/hash.
 
 ## References
 - RFC 8446, *The Transport Layer Security (TLS) Protocol Version 1.3* — the handshake, key

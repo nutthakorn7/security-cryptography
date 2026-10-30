@@ -5,6 +5,8 @@ paginate: true
 header: "Security & Cryptography · Week 11"
 ---
 
+<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 70 practice + 10 evidence/feedback. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+
 # Week 11
 ## Digital Signatures & Zero-Knowledge Proofs (ECDSA Signature Malleability)
 Security & Cryptography · Nutthakorn Chalaemwongwan
@@ -49,7 +51,7 @@ Security & Cryptography · Nutthakorn Chalaemwongwan
 
 ---
 
-## A signature is a zero-knowledge proof
+## Schnorr identification and proof of knowledge
 
 **Schnorr identification protocol** — Peggy proves she knows secret `x` (her private key) without revealing it:
 
@@ -69,7 +71,7 @@ Victor is convinced Peggy knows `x` — but learns nothing about `x` itself, and
 - Fiat–Shamir trick: replace Victor's random challenge with `hash(commitment, message)`
 - Now Peggy can compute the whole proof **alone**, offline, and attach it to a message
 
-**Result: a digital signature *is* a non-interactive zero-knowledge proof of knowledge of the private key.** EdDSA (Ed25519) is literally this — a Fiat–Shamir transform of Schnorr. ECDSA (DSA family) is *also* a NIZK proof of knowledge of the private key, but **not** a literal Fiat–Shamir/Schnorr construction (its hash covers only the message, not the commitment).
+**Connection:** Fiat–Shamir can turn suitable identification/proof systems into non-interactive Schnorr-type constructions under explicit assumptions, with the public statement, commitment and message/context bound into the challenge. This is not a blanket theorem that every signature scheme (including ECDSA) is a zero-knowledge proof. See [RFC 8235](https://www.rfc-editor.org/rfc/rfc8235.html).
 
 <!-- Worksheet Q2(b)(c). The "aha": hashing removes the live verifier because a hash is unpredictable *and* bound to the message — nobody can pre-compute a fake response before knowing what they're "committing" to. This is the conceptual bridge from ZKP theory to the ECDSA math on the next two slides. ~5 min. -->
 
@@ -150,7 +152,7 @@ ecdsa-malleability
 - Exchange software that tracked transactions by a **malleable id** reissued/duplicated payouts
 - Bitcoin's own response: **BIP-62 / BIP-146** — standardize a single canonical (low-S) signature per transaction
 
-<!-- Worksheet Q5(b). Keep it honest: malleability was one contributing factor among several claimed for MtGox (accounting bugs, alleged theft) — don't overstate it as "the sole cause," but it IS a real, historically significant instance of exactly this bug class. This is why the lab's dedup-by-signature-hash bank is not a contrived toy — it's a simplified, runnable replay of a real incident's root cause. ~4 min. -->
+<!-- Historical extension: MtGox claimed transaction malleability caused losses; that claim is not established by this toy lab. Decker/Wattenhofer measured no widespread malleability use before the closure. Discuss https://arxiv.org/abs/1403.6676 and distinguish exchange accounting from Bitcoin consensus. -->
 
 ---
 
@@ -205,14 +207,17 @@ Two identical Flask banks, one rule apart:
 
 ## Lab today — Worksheet 11
 
+**Shared practical/analysis core: 60 points for everyone.** Complete only your assigned **Conventional written 40** or **AIR-Sec Audit 20 + EiPE 10 + Prompt 10**. Each version totals 100; viva is formative. Full questions remain in the worksheet, with extensions outside the 100-minute class.
+
+
 > 📋 **Worksheet 11** — `labs/week11-signatures-zkp/worksheet.md` · kickoff: `docker compose up -d`
 
 - **Part 1 (essays):** signatures vs. MACs, Schnorr/Fiat–Shamir as ZKP, RSA/ECDSA/EdDSA, substitution attacks, malleability + MtGox + SUF-CMA
 - **Part 2 (lab):** capture the flag on `:8102`, confirm the `403` rejection on `:8103`
-- **🤖 Audit the AI:** critique a plausible-looking `process()` that dedups by signature hash — same bug, live in front of you
-- **🧠 EiPE + Prompt Problem:** explain ZKP in plain English; probe an AI on *why* ECDSA is malleable and EdDSA isn't
+- **Assigned AIR-Sec Audit the AI:** critique a plausible-looking `process()` that dedups by signature hash — same bug, live in front of you
+- **Assigned AIR-Sec EiPE + Prompt Problem:** explain ZKP in plain English; probe an AI on *why* ECDSA is malleable and EdDSA isn't
 
-<!-- The graded output — mirror the structure students already know from earlier weeks (essays + lab + Audit-the-AI + EiPE/Prompt). Call out that Audit-the-AI is NOT optional here — it's the same flaw as the lab, presented as confident-sounding AI code, and it's worth 20 of 100 points. Point to `docker compose up -d` and remind them both ports publish to localhost, no network-name juggling needed. ~3 min. -->
+<!-- The graded output — mirror the structure students already know from earlier weeks (essays + lab + Audit-the-AI + EiPE/Prompt). Call out that Audit-the-AI is required only for the assigned AIR-Sec version — it's the same flaw as the lab, presented as confident-sounding AI code, and it's worth 20 of 100 points. Point to `docker compose up -d` and remind them both ports publish to localhost, no network-name juggling needed. ~3 min. -->
 
 ---
 
@@ -220,13 +225,13 @@ Two identical Flask banks, one rule apart:
 
 - ECDSA's math is sound — unforgeable (**EUF-CMA**) — but not unique (**not SUF-CMA**)
 - **Textbook-secure primitive, real-system failure:** the bug was trusting `sha256(r,s)` as an identity, not the signature check itself
-- The fix is a **canonicalization rule** (low-S/BIP-62), not "verify harder"
+- The reference control rejects the high-S **twin**; application transaction identity/idempotency is still needed because fresh valid low-S signatures are possible
 
-<!-- Recap, 3 lines — say the spine phrase out loud one more time, it's the thread across all 19 weeks. Cold-call: "if I dedup by `(message, pubkey)` instead of `sha256(r,s)`, does the malleability bug still let me double-spend?" (No — that's the other valid defense from Q5(d).) ~2 min. -->
+<!-- Recap, 3 lines — say the spine phrase out loud one more time, it's the thread across the 20-week course. Cold-call: "if I dedup by `(message, pubkey)` instead of `sha256(r,s)`, does the malleability bug still let me double-spend?" (No — that's the other valid defense from Q5(d).) ~2 min. -->
 
 ---
 
 # Questions?
 Next week: (see course roadmap)
 
-<!-- Close with the viva-style question bank from the worksheet as a preview of what instructors may spot-check live: "point to the one line that decides transaction identity," "which of s or n−s does the fixed bank accept, and why." Remind students the flag is per-student via `FLAG_SIG` — submitting someone else's is a violation. -->
+<!-- Close with the viva-style question bank from the worksheet as a preview of what instructors may spot-check live: "point to the one line that decides transaction identity," "which of s or n−s does the fixed bank accept, and why." Use each student's own execution evidence; record the local placeholder unless per-student seeding is announced. No live CTFd or personalized flag is required. -->

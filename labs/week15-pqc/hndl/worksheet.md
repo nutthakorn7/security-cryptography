@@ -1,5 +1,7 @@
 # Worksheet 15b — Harvest Now, Decrypt Later + Hybrid KEM
 
+> **Optional extension:** complete after the required Lamport core if you choose. This companion adds **0 additional points**, does not change the required W15 worksheet or course weights, and is not a prerequisite for full marks. Its questions and practice rubric are retained for feedback only; no personalized flag is required if that service is not provisioned.
+
 > **Course:** Security & Cryptography (KOSEN69) · **Week 15 (PQC), confidentiality companion**
 > **Topic:** The quantum threat to *key exchange*: harvest-now-decrypt-later, and hybrid
 > (classical + ML-KEM) key encapsulation as the deployable mitigation. (Written fresh for this
@@ -110,9 +112,8 @@ given ML-KEM exists. *Deliverable:* 3 short paragraphs, one per sub-question.
   whole screen** — a cropped window carries nothing that identifies you, and the lab's own
   output is byte-identical for the whole cohort *by design*, so the stamp is the only thing
   that makes the shot yours.
-- **Personalized flag:** ____________________
-  *Flags are unique per student (via the `FLAG_HNDL` env override — see README) — submitting
-  another student's flag is a violation.*
+- **Optional observed flag:** ____________________
+  This optional extension adds no points. Record your own evidence if you run it; a personalized flag is not required when the service is not provisioned.
 - **Explain in your own words** *(graded on your reasoning, not copied text):*
   1. What did you do, and **why did the decryption work** on `:8120`?
   2. **Why does the hybrid KEM stop it** on `:8121`? What exactly is the attacker missing, and why
