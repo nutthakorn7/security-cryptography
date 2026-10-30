@@ -149,7 +149,11 @@ from a plain copy), brought up with `--abort-on-container-exit`, and torn down a
   returned `1`.
 - **Fixed:** the run printed `SERVER: listening on 0.0.0.0:8080 (PAKE=True)`,
   `CLIENT: challenge-response login ... (PAKE=True)`, a single
-  `SERVER SAW: nonce=327decaec7e5d719846da41ed2c55010 proof=40e701177990a639995ceedb524305dacc1dfa6246484327f687426916b65b15`
+
+```text
+SERVER SAW: nonce=327decaec7e5d719846da41ed2c55010 proof=40e701177990a639995ceedb524305dacc1dfa6246484327f687426916b65b15
+```
+
   line (hex random per run), and `LOGIN OK` — with `client` still exiting `0`.
   `grep -c "correct-horse-battery"` returned **`0`**, `grep -c "SERVER SAW PASSWORD"` returned
   **`0`**, `grep -c "SERVER SAW: nonce="` returned `1`, and `grep -c "LOGIN OK"` returned `1`.
