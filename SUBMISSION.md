@@ -74,8 +74,8 @@ docstring), verify it against `docker-compose.student-task.yml`, then:
 | Code fix | **GitHub** | push branch `wk12`, open a PR (or paste the commit link in the worksheet) | Wk12 only |
 
 **File name:** `Wk<NN>_<StudentID>.pdf`  (e.g. `Wk04_65123456.pdf`)
-**Deadline:** before the start of the next week's class session (KOSEN rule), unless the instructor announces otherwise.
-**Late work:** loses 10% of the item's score for each day late (a part day counts as a day), down to 0.
+**Deadline:** 23:59 Thai time (ICT) on the Sunday before the next week's class (KOSEN rule), unless the instructor announces otherwise. The exact date is on `learn.zcr.ai/submit`.
+**Late work:** loses 10% of the item's score for each day late (a part day counts as a day), down to 0. The platform takes late uploads for 10 days, until the score would reach 0, and marks them late.
 **Grading:** each teaching worksheet is **100 points = common practical 60 + assigned-format 40**.
 Common: main task/observations 20 + controls/tests/limitations 20 + reproducible evidence/reasoning 20.
 Conventional: ordinary written questions 40. AIR-Sec: Audit-the-AI 20 + Explain-in-Plain-English 10
@@ -108,7 +108,7 @@ must be your own; a flag alone does not establish that you performed or understo
 
 คู่มือนี้รวบรวม Lab ที่รันได้ของรายวิชา Cryptography: **W02–W06 และ W11–W15** ใช้คู่กับใบงานประจำสัปดาห์ ไม่ใช่เฉลยหรือใบงานทดแทน ส่วน W01/W10 เป็นกิจกรรมแนวคิด, W07/W17 เป็นทบทวน, W08–09/W18–19 เป็นสอบ W16 เป็น CryptoVault studio และ W20 เป็นคืนผล/สะท้อนการเรียนรู้ จึงไม่ใช่ 10 Lab ในรายการนี้
 
-**กติกาส่งงานที่ใช้:** ส่งใบงาน PDF ทุกสัปดาห์ที่ [ส่งงานบนเว็บ](https://learn.zcr.ai/submit) ชื่อ `Wk<NN>_<StudentID>.pdf` ก่อนเริ่มคาบเรียนของสัปดาห์ถัดไป (กติกา KOSEN) เว้นแต่ผู้สอนประกาศเปลี่ยน ส่งช้าหักวันละ 10% ของคะแนนงานนั้น (เกินมาไม่ถึงวันนับเป็นหนึ่งวัน) จนเหลือ 0 เฉพาะ **W12** มีงานแก้โค้ดที่ต้อง commit/ส่งลิงก์ GitHub เพิ่ม หาก README เก่าระบุ GitHub หรือ Classroom ต่างจากหน้านี้ ให้ยึดหัวข้อ Weekly LAB ด้านบนและประกาศผู้สอน Google Classroom ใช้แจ้งข่าวและสรุปรายสัปดาห์เท่านั้น ไม่ต้องส่งงานที่นั่น ผู้สอนเก็บสำเนางานจากเว็บส่งงานไว้เป็นหลักฐานของรายวิชาเอง
+**กติกาส่งงานที่ใช้:** ส่งใบงาน PDF ทุกสัปดาห์ที่ [ส่งงานบนเว็บ](https://learn.zcr.ai/submit) ชื่อ `Wk<NN>_<StudentID>.pdf` ภายในวันอาทิตย์ 23:59 น. (เวลาไทย) ก่อนวันเรียนของสัปดาห์ถัดไป (กติกา KOSEN) เว้นแต่ผู้สอนประกาศเปลี่ยน วันที่แน่นอนดูได้ที่หน้าส่งงาน ส่งช้าหักวันละ 10% ของคะแนนงานนั้น (เกินมาไม่ถึงวันนับเป็นหนึ่งวัน) จนเหลือ 0 เว็บรับงานส่งช้าได้อีก 10 วันหลังกำหนดส่ง เฉพาะ **W12** มีงานแก้โค้ดที่ต้อง commit/ส่งลิงก์ GitHub เพิ่ม หาก README เก่าระบุ GitHub หรือ Classroom ต่างจากหน้านี้ ให้ยึดหัวข้อ Weekly LAB ด้านบนและประกาศผู้สอน Google Classroom ใช้แจ้งข่าวและสรุปรายสัปดาห์เท่านั้น ไม่ต้องส่งงานที่นั่น ผู้สอนเก็บสำเนางานจากเว็บส่งงานไว้เป็นหลักฐานของรายวิชาเอง
 
 ### เตรียมเครื่องและวิธีใช้คำสั่ง
 

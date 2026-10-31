@@ -105,8 +105,8 @@ graded against the specific failure mode its weekly lab exists to teach.
 total cannot exceed 100 — it lets a team recover points lost elsewhere, but a team that nails the
 100-point rubric does not need it for full marks.
 
-**Deadline and late work:** the final build, report and video are due before the start of the Week 19
-class session. Late work loses 10% of the project score for each day late (a part day counts as a
+**Deadline and late work:** the final build, report and video are due by 23:59 Thai time (ICT) on
+the Sunday before the Week 19 class. Late work loses 10% of the project score for each day late (a part day counts as a
 day), down to 0.
 
 ## Peer-contribution evaluation (individual fairness)

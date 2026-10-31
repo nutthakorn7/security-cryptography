@@ -86,7 +86,8 @@ alone proves neither identity nor understanding.
 Written/practical subtotals and ability categories are two views of the same marks; neither is
 added twice. Item-level exam allocations are held with the instructor blueprint.
 
-Every hand-in is due before the start of the next week's class session (KOSEN rule). Late work
+Each worksheet is due by 23:59 Thai time (ICT) on the Sunday before the next week's class (KOSEN
+rule), and the project by 23:59 ICT on the Sunday before Week 19. Late work
 loses 10% of the item's score for each day late (a part day counts as a day), down to 0, unless an
 extension is approved. In-class quizzes have no late window; the existing lowest
 1–2 quiz drop policy applies. Documented emergencies are handled individually.
