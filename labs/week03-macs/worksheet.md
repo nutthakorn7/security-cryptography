@@ -283,6 +283,9 @@ security.
 | AIR-Sec Prompt Problem | — | 10 |
 | **Total for the assigned version** | **100** | **100** |
 
+**Deadline and late work:** hand in before the start of the next week's class session (KOSEN rule).
+Late work loses 10% of this worksheet's score for each day late (a part day counts as a day), down to 0.
+
 Submit the common work plus **one** assigned assessment format; do not add the two
 format columns or complete both formats for extra marks. The original questions remain
 available for study. A viva is a formative/authenticity check within the relevant criteria,

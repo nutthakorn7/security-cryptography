@@ -23,8 +23,9 @@ crypto-agility · **Analogous CWE:** CWE-327 (Use of a Broken or Risky Cryptogra
 3. **Lab** — `docker compose up`, then play the game below: **harvest** a session transcript,
    break its classical KEM **offline**, decrypt it and capture your flag; then watch the *same*
    attack fail against the **hybrid** channel. Complete **Worksheet** (`worksheet.md`).
-4. **Submit** — worksheet PDF + flag → Classroom · exploit run/output → GitHub. (How:
-   [SUBMISSION.md](../../../SUBMISSION.md).)
+4. **Submit (optional)** — this companion adds no points. If you run it, put the flag and exploit
+   output in your Week 15 worksheet PDF on `learn.zcr.ai/submit`; nothing goes to Classroom or
+   GitHub. (How: [SUBMISSION.md](../../../SUBMISSION.md).)
 
 ## Objectives
 
