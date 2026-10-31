@@ -25,22 +25,22 @@ content at the next teaching session: W1 bank opens W2, W6 opens W7, W15 opens W
 
 | Wk | In-class core | Artifact | Total min |
 |---:|---|---|---:|
-| 1 | Threat model; choose primitives; test a changed attacker assumption | Diagram, assumptions and corrected design | 100 |
+| 1 | Environment check; threat model; choose primitives; test a changed attacker assumption; Snake Oil Bingo (AIR-Sec analyses its claims) | Diagram, assumptions and corrected design | 100 |
 | 2 | Weak-hash dictionary recovery; persistent-session login; KDF comparison | Recovery/session outputs and KDF limits | 100 |
 | 3 | Supplied state-resumption helper; MAC extension; HMAC rejection | Authenticated bytes, glue-length reasoning and before/after result | 100 |
-| 4 | Derive CBC same-length XOR delta; test authenticated control | Byte work and tamper accept/reject outputs | 100 |
+| 4 | Derive CBC same-length XOR delta; test authenticated control; form CryptoVault teams and review the design plan | Byte work, tamper accept/reject outputs and submitted design plan | 100 |
 | 5 | Unauthenticated DH MITM versus authenticated exchange | Interception and abort traces | 100 |
 | 6 | CBC oracle; derive one byte; recover with helper; compare GCM | Oracle evidence, byte derivation and control rejection | 100 |
-| 7 | Review quiz; selected Jeopardy clues; two bounded mock checkpoints | Review answers and repair notes | 100 |
+| 7 | Review quiz; selected Jeopardy clues; two bounded mock checkpoints; CryptoVault KDF/AEAD milestone | Review answers, repair notes and milestone demonstration | 100 |
 | 8 | Written midterm: 90 writing + 10 administration | Individual script | 100 |
 | 9 | Individual practical: 80 tasks + 20 administration | Method, result and control evidence | 100 |
 | 10 | Hybrid-encryption diagram, nonce counterexample and corrected design | Diagram, calculation/proof and limitations | 100 |
-| 11 | Fresh signature; manual twin/double authorization; canonical control | (r,s)/(r,n−s), transaction IDs and control | 100 |
+| 11 | Fresh signature 10; twin 15; vulnerable submission 15; fixed controls 15; explanation 15; sharing-flow draft feedback | (r,s)/(r,n−s), transaction IDs and control | 100 |
 | 12 | Disabled TLS validation; all students write/test client context | Code, trusted-peer success and MITM rejection | 100 |
 | 13 | Server plaintext versus client-encrypted relay | Server output, recipient success and key-trust limits | 100 |
-| 14 | Password exposure versus toy challenge/proof | Freshness and exposure comparison; PAKE limitations | 100 |
+| 14 | Password exposure versus toy challenge/proof; CryptoVault transport/self-audit review | Freshness and exposure comparison; PAKE limitations | 100 |
 | 15 | Fresh Lamport key; complementary signatures; forge; single-use control | Signature derivation and control rejection | 100 |
-| 16 | CryptoVault studio and scheduled clarification | WIP evidence, feedback and action list | 100 |
+| 16 | CryptoVault studio; every team demonstrates its sharing flow at peer review; scheduled clarification | WIP evidence, feedback and action list | 100 |
 | 17 | Review quiz; selected clues; bounded final rehearsal | Review and repair notes | 100 |
 | 18 | Written final: 90 writing + 10 administration | Individual script | 100 |
 | 19 | Team practical: 80 tasks + 20 administration | Team solution/evidence; no project Q&A | 100 |
@@ -68,7 +68,7 @@ the assessed work. See [syllabus](syllabus.md) for the full 100% and ability mat
 | 0–20 | Cumulative review quiz (existing 25-point quiz instrument) |
 | 20–35 | Selected Jeopardy clues targeting misconceptions |
 | 35–80 | Two selected mock checkpoints, with working targets already prepared |
-| 80–95 | Explain errors and verify a correction |
+| 80–95 | Explain errors and verify a correction; W7 teams demonstrate the CryptoVault KDF/AEAD milestone |
 | 95–100 | Save repair plan and read exam logistics |
 
 Full boards and mock banks remain available for further practice; they are not all compulsory
@@ -96,11 +96,13 @@ silently reduce a student's task time or introduce an unannounced new grade comp
 |---|---|
 | 0–10 | Retrieval quiz and brief |
 | 10–20 | Self-audit checklist and division of work |
-| 20–75 | Teams implement/test; instructor schedules focused clarification during the work |
-| 75–95 | Peer review and selected micro-demonstrations |
+| 20–75 | Teams implement/test; instructor schedules focused clarification during the work; practice challenges available |
+| 75–95 | Peer review: each team demonstrates its sharing flow to a partner team |
 | 95–100 | Save remaining fixes and final-deliverable plan |
 
-No assumed student headcount or promise of a live presentation from every team. Team videos
+Every team demonstrates its existing sharing flow to its peer-review partner and the instructor,
+not as a full presentation to the whole class, so no student headcount is assumed. Existing
+practice practical challenges check understanding before the final assessment and add no marks. Team videos
 are **≤5 minutes**, submitted before Week 19; final report/build/video are graded using the
 project's existing 15%. Remaining clarification happens in Week 20. It never reduces the
 Week 19 timed practical.

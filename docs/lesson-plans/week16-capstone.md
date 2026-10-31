@@ -4,7 +4,7 @@
 
 **Contact time:100 minutes.**
 
-Teams 3 normally,2 where uneven. Grade through the existing 15%project rubric; no added studio category. Video≤5 minutes is submitted before Week 19. Remaining clarification uses Week 20; do not reserve Q&A inside Week 19CTF. Avoid promises of a full live presentation from every team without a known headcount.
+Teams 3 normally,2 where uneven. Grade through the existing 15%project rubric; no added studio category. Video≤5 minutes is submitted before Week 19. Remaining clarification uses Week 20; do not reserve Q&A inside Week 19CTF. Every team demonstrates its existing sharing flow to its peer-review partner and the instructor; this is not a full presentation to the whole class, so no headcount is assumed. Existing practice practical challenges ([W17 mock bank](../../labs/week17-review/mock-ctf.md)) check understanding before the final assessment and add no marks.
 
 ## In-class run sheet
 
@@ -12,8 +12,8 @@ Teams 3 normally,2 where uneven. Grade through the existing 15%project rubric; n
 |---|---|
 | 0–10 | Retrieval quiz/review and brief. |
 | 10–20 | Teams check the five primitives, trust boundaries and outstanding tests. |
-| 20–75 | Implement/test the current build; instructor conducts focused scheduled clarification during team work. |
-| 75–95 | Peer-review evidence and selected micro-demonstrations; update the self-audit. |
+| 20–75 | Implement/test the current build; instructor conducts focused scheduled clarification during team work; existing practice practical challenges are available to check understanding. |
+| 75–95 | Peer review: each team demonstrates its sharing flow to a partner team; update the self-audit from peer and instructor feedback. |
 | 95–100 | Save remaining fixes, contribution notes and the final-deliverable plan. |
 
 ## Preparation, assessment and reflection

@@ -39,22 +39,22 @@ key-dependent captures made before a container restart cannot be reused.
 
 | Week | Topic and practical core | Kind / class use |
 |---|---|---|
-| 1 | Intro and crypto threat modelling: assets, trust boundaries, misuse cases and controls; quoted AI exhibit as the AIR-Sec audit; optional Snake Oil Bingo recap | Conceptual; 100 minutes |
+| 1 | Intro and crypto threat modelling: in-class environment check; assets, trust boundaries, misuse cases and controls; quoted AI exhibit as the AIR-Sec audit; whole-class Snake Oil Bingo, whose claims AIR-Sec groups analyse | Conceptual; 100 minutes |
 | 2 | Hashes: crack the unsalted MD5 demo data, contrast bcrypt cost and verify legitimate login | Lab; 100 minutes |
 | 3 | MACs: forge `SHA256(secret || message)` by length extension, then test rejection by HMAC-SHA256 | Lab; 100 minutes |
-| 4 | AES modes: CBC bit-flip from guest to admin; GCM detects tampering; project team/design kickoff | Lab; 100 minutes |
+| 4 | AES modes: CBC bit-flip from guest to admin; GCM detects tampering; project team formed, design plan reviewed in class and submitted | Lab; 100 minutes |
 | 5 | Key exchange: MITM unauthenticated DH versus a pre-shared-key HMAC-authenticated exchange; subgroup analysis | Hybrid; 100 minutes |
 | 6 | AEAD: recover CBC-without-MAC plaintext via padding oracle; compare the uniform GCM rejection control | Lab; 100 minutes |
 | 7 | Review W1–6 and cumulative quiz; project KDF/AEAD checkpoint | Review; 100 minutes |
 | 8 | Midterm written, W1–6 | 90-minute paper + 10-minute administration; 8 course points |
 | 9 | Individual midterm practical, W1–6 | 80-minute practical + 20-minute brief/submission; 12 course points |
 | 10 | Hybrid encryption: reproduce GCM nonce-reuse leakage in a supplied code case, correct and explain the design | Conceptual; 100 minutes |
-| 11 | ECDSA signature malleability: fresh signature 10, twin 15, vulnerable POST 15, fixed positive/negative tests 15, reasoning 15 minutes; ZKP theory prepared/extended outside core | Hybrid; 70-minute practical within 100 |
+| 11 | ECDSA signature malleability: fresh signature 10, twin 15, vulnerable POST 15, fixed positive/negative tests 15, reasoning 15 minutes; ZKP theory prepared/extended outside core; feedback on the project sharing-flow draft | Hybrid; 70-minute practical within 100 |
 | 12 | TLS: intercept the unverified client; every student implements and tests `build_client_context()` with trusted CA and hostname validation | Hybrid; 100 minutes; W12 code link required for both formats |
 | 13 | E2E: server-visible plaintext versus client encryption, successful recipient decryption, trust/key-distribution caveats | Hybrid; 100 minutes |
-| 14 | Authentication: password transmission versus a toy challenge-response; distinguish the toy from PAKE/OPAQUE guarantees | Hybrid; 100 minutes |
+| 14 | Authentication: password transmission versus a toy challenge-response; distinguish the toy from PAKE/OPAQUE guarantees; project transport-security and self-audit review | Hybrid; 100 minutes |
 | 15 | PQC/Lamport OTS: collect 15, recover/forge 25, control 20, reasoning 10 minutes; HNDL optional | Lab; 70-minute practical within 100 |
-| 16 | CryptoVault studio: integration, peer review, project demonstration/clarification | Project; 100 minutes |
+| 16 | CryptoVault studio: integration and testing; every team demonstrates its sharing flow at peer review; existing practice practical challenges check understanding; project clarification | Project; 100 minutes |
 | 17 | Review W10–16 and cumulative quiz; prepare for final | Review; 100 minutes |
 | 18 | Final written: cumulative with emphasis W10–16 | 90-minute paper + 10-minute administration; 10 course points |
 | 19 | Team final practical; project video at most 5 minutes submitted beforehand | 80-minute practical + 20-minute brief/submission; 15 course points; no live project Q&A in this exam |

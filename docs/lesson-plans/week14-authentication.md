@@ -10,6 +10,8 @@ Show the toy challenge-response distinction and compare its limits with a real P
 
 The environment switch labelled PAKE enables a toy demonstration, not a full PAKE. The server still has password-derived verification material.
 
+Project: the Week 14 milestone (transport wired in + self-audit drafted) is reviewed in class after the lab analysis.
+
 Images, dependencies and long readings are preparation; confirm the environment before class.
 Students may consult the supplied helper after explaining the bounded manual checkpoint. Only
 authorized local targets/test data are used. An unavailable environment is handled with a
@@ -24,7 +26,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 | 20–40 | Run the ordinary password mode; capture where the raw password reaches the server. |
 | 40–60 | Run the toy challenge-response mode; capture a fresh nonce/proof and successful authentication without raw-password transmission. |
 | 60–80 | Test/explain freshness and compare stolen-verifier/offline-guessing risk with OPAQUE, TOTP and FIDO2. |
-| 80–95 | Compare results/control, explain the mechanism and limits, receive feedback; begin the assigned form. |
+| 80–95 | Compare results/control and distinguish replay protection, offline-guessing resistance and phishing resistance; then the CryptoVault transport-security and self-audit review (Week 14 milestone). |
 | 95–100 | Save evidence and submit the in-class checkpoint. |
 
 **Core artifact:** Password logging versus a fresh challenge/proof exchange.

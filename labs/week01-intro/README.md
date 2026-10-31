@@ -8,7 +8,7 @@ Cryptographic Storage Cheat Sheet · CWE-320 (Key Management Errors) · CWE-330
 
 ## This week — 100-minute class and assigned assessment
 
-1. **Before class** — Read the case and course overview. This week needs no Docker target; complete term-wide account/repository setup outside the class block.
+1. **Before class** — Read the case and course overview and complete term-wide account/repository setup. This week needs no Docker target; a short environment check happens in class after the brief introduction.
 2. **In class (100 minutes)** — 10 quiz/review + 10 brief + 60 shared practice/analysis +
    15 debrief + 5 evidence capture. Week 1 starts with orientation/review, not a quiz on
    material not yet taught. Slides: `slides/week01.md`. The full deck includes reference/deep-dive
@@ -49,7 +49,8 @@ Everyone gets a bingo card of common crypto myths ("military-grade encryption," 
 256-bit security," "quantum-proof because the key is long enough"). As the week's AI-generated
 exhibit is read aloud and picked apart, mark a square the moment its myth surfaces — but a square
 only counts once your table can give the one-line *technical* reason it's wrong. First verified
-BINGO wins.
+BINGO wins. Everyone plays. AIR-Sec groups also analyse the Bingo claims that come up; this sits
+alongside the Audit-the-AI critique, which still targets the Exhibit's one systematic gap.
 
 **Why it's exciting:** spotting a plausible-sounding lie is oddly addictive, and "textbook-secure
 primitive, real-system failure" is the one lens that transfers to literally every other week this

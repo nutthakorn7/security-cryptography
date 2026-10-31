@@ -10,6 +10,8 @@ Construct (r,n−s) for the same signed message and distinguish signature-byte i
 
 Prebuild images, but acquire the signature after the current server starts: restarting changes the key/state. Run the manual original/twin pair before any automated exploit, then reset before a rerun.
 
+Project: teams submit the CryptoVault sharing-flow draft (Week 11 milestone) before class; the instructor reviews it in the final feedback block.
+
 Images, dependencies and long readings are preparation; confirm the environment before class.
 Students may consult the supplied helper after explaining the bounded manual checkpoint. Only
 authorized local targets/test data are used. An unavailable environment is handled with a
@@ -21,11 +23,12 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 |---|---|
 | 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
-| 20–30 | Start fresh state and obtain a live signature; read txid derivation and submit the original withdrawal once. |
-| 30–55 | Derive the twin signature and submit it; record both signature encodings, transaction identifiers and the duplicate authorization effect. |
-| 55–75 | Run the canonical low-S control from fresh state; show which form is accepted and why the twin is rejected. |
-| 75–90 | Explain a protocol-level deduplication alternative and the boundary between malleability and nonce-reuse key recovery. |
-| 90–100 | Save before/after evidence, give concise reasoning, obtain feedback and submit the checkpoint. |
+| 20–30 | Start fresh state and obtain a live signature; read the txid derivation. |
+| 30–45 | Create the malleated twin `(r, n−s)` for the same message; record both signature encodings and their transaction identifiers. |
+| 45–60 | Submit the original and the twin to the vulnerable service; record the duplicate authorization effect. |
+| 60–75 | Run the fixed service's positive/negative controls from fresh state; show which low-S form is accepted and why the twin is rejected. |
+| 75–90 | Explain the results: a protocol-level deduplication alternative and the boundary between malleability and nonce-reuse key recovery. |
+| 90–100 | Save before/after evidence, give concise reasoning and submit the checkpoint; instructor feedback on the CryptoVault sharing-flow draft (Week 11 milestone). |
 
 **Core artifact:** A signature twin, repeated authorization and canonicalization control.
 
