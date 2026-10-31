@@ -8,9 +8,9 @@ Lab/analysis: [`labs/week01-intro`](../../labs/week01-intro/README.md) · slides
 
 Identify assets, adversaries and trust boundaries; select hash, MAC, encryption or signature for a stated goal.
 
-No Docker target or flag is required. Complete environment checks before class; troubleshoot installation outside the core analysis block.
+No Docker target or flag is required. Students check their environment in class after the brief introduction; troubleshoot long installations outside the core analysis block.
 
-Images, dependencies and long readings are preparation; confirm the environment before class.
+Images, dependencies and long readings are preparation; the in-class environment check confirms them.
 Students may consult the supplied helper after explaining the bounded manual checkpoint. Only
 authorized local targets/test data are used. An unavailable environment is handled with a
 prepared trace/code example and documented follow-up, not a fabricated successful result.
@@ -20,11 +20,11 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 | Minutes | Activity |
 |---|---|
 | 0–10 | Ungraded orientation diagnostic and baseline review; no graded retrieval quiz this week. |
-| 10–20 | Brief the mechanism, safety scope and expected evidence. |
+| 10–20 | Brief introduction, safety scope and expected evidence; students check their environment. |
 | 20–35 | Draw assets, data flows and trust boundaries for the supplied small system. |
 | 35–60 | Map confidentiality, integrity and authenticity requirements to primitives; identify three misuse risks. |
 | 60–80 | Test the design against one changed attacker assumption and document a correction. |
-| 80–95 | Compare results/control, explain the mechanism and limits, receive feedback; begin the assigned form. |
+| 80–95 | Compare results; Snake Oil Bingo on the AI Exhibit (whole class; AIR-Sec groups also analyse the Bingo claims, alongside their Audit-the-AI); feedback on security goals and trust assumptions. |
 | 95–100 | Save evidence and submit the in-class checkpoint. |
 
 **Core artifact:** Threat model and primitive-selection diagram.

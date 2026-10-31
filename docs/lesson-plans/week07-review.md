@@ -4,7 +4,7 @@
 
 **Contact time:100 minutes.**
 
-Review Weeks 1–6. The full mock/Jeopardy banks are optional further practice; do not attempt every original challenge inside the slot. No 13th graded worksheet is introduced.
+Review Weeks 1–6. The full mock/Jeopardy banks are optional further practice; do not attempt every original challenge inside the slot. No 13th graded worksheet is introduced. Teams demonstrate the CryptoVault KDF + AEAD-at-rest milestone in class; it is reviewed for feedback and adds no separate marks.
 
 ## In-class run sheet
 
@@ -13,7 +13,7 @@ Review Weeks 1–6. The full mock/Jeopardy banks are optional further practice; 
 | 0–20 | Cumulative review quiz (existing 25 point instrument). |
 | 20–35 | Choose a small set of Jeopardy clues based on prior errors. |
 | 35–80 | Attempt two selected mock checkpoints: one MAC/CBC task and one KDF/oracle/control task; targets prebuilt. |
-| 80–95 | Compare methods, repair one error and explain the control. |
+| 80–95 | Compare methods, repair one error and explain the control; teams demonstrate the CryptoVault KDF + AEAD-at-rest milestone to the instructor. |
 | 95–100 | Save a revision checklist and read exam timing/rules. |
 
 ## Preparation, assessment and reflection

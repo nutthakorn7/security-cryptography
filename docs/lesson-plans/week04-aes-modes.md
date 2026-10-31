@@ -10,6 +10,8 @@ Derive a CBC XOR delta, observe the collateral block effect, and verify that aut
 
 Use the documented exact byte layout. Do not guess offsets from a displayed Unicode string.
 
+Project: the Week 4 milestone forms the CryptoVault team and submits the design plan (KDF + AEAD-at-rest). Teams review the plan in class before submitting it; do not assume a design was submitted earlier.
+
 Images, dependencies and long readings are preparation; confirm the environment before class.
 Students may consult the supplied helper after explaining the bounded manual checkpoint. Only
 authorized local targets/test data are used. An unavailable environment is handled with a
@@ -24,7 +26,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 | 20–35 | Decode the token and locate IV, ciphertext blocks and the known plaintext field. |
 | 35–60 | Compute and apply guest-to-admin XOR bytes; submit once and record the vulnerable result. |
 | 60–80 | Repeat against the authenticated control and explain its rejection, including which block the original edit corrupts. |
-| 80–95 | Compare results/control, explain the mechanism and limits, receive feedback; begin the assigned form. |
+| 80–95 | Compare results/control and explain the confidentiality/integrity difference; teams confirm membership and review their CryptoVault design plan with instructor feedback before submitting it. |
 | 95–100 | Save evidence and submit the in-class checkpoint. |
 
 **Core artifact:** A same-length CBC field modification and authenticated rejection.
