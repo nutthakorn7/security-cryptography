@@ -86,8 +86,9 @@ alone proves neither identity nor understanding.
 Written/practical subtotals and ability categories are two views of the same marks; neither is
 added twice. Item-level exam allocations are held with the instructor blueprint.
 
-The existing late-work rule remains −10% of the item's score per day for up to three days,
-unless an extension is approved. In-class quizzes have no late window; the existing lowest
+Every hand-in is due before the start of the next week's class session (KOSEN rule). Late work
+loses 10% of the item's score for each day late (a part day counts as a day), down to 0, unless an
+extension is approved. In-class quizzes have no late window; the existing lowest
 1–2 quiz drop policy applies. Documented emergencies are handled individually.
 
 ## Weekly outline

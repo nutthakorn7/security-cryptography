@@ -11,8 +11,9 @@
 | Worksheet PDFs, project report | **`learn.zcr.ai/submit`** — the submission code on your slip |
 | Code fixes (Wk12) | **GitHub** — your own fork of this course's repo |
 
-> **No Google.** Material, quizzes and worksheet hand-in all run on the course
-> platform. There is no Google Classroom and no Google Form for this course.
+> **Hand in on the course platform only.** Google Classroom carries announcements and the weekly
+> outline. Nothing is submitted there, and there is no Google Form for this course. The instructor
+> keeps copies of what you hand in on the platform as course evidence, so never upload work twice.
 
 This course has its **own** GitHub repo, separate from the companion
 `software-security` course's, with its own 20-week, 100-minute timetable and assessment policy.
@@ -73,7 +74,8 @@ docstring), verify it against `docker-compose.student-task.yml`, then:
 | Code fix | **GitHub** | push branch `wk12`, open a PR (or paste the commit link in the worksheet) | Wk12 only |
 
 **File name:** `Wk<NN>_<StudentID>.pdf`  (e.g. `Wk04_65123456.pdf`)
-**Deadline:** before the next class session (unless told otherwise).
+**Deadline:** before the start of the next week's class session (KOSEN rule), unless the instructor announces otherwise.
+**Late work:** loses 10% of the item's score for each day late (a part day counts as a day), down to 0.
 **Grading:** each teaching worksheet is **100 points = common practical 60 + assigned-format 40**.
 Common: main task/observations 20 + controls/tests/limitations 20 + reproducible evidence/reasoning 20.
 Conventional: ordinary written questions 40. AIR-Sec: Audit-the-AI 20 + Explain-in-Plain-English 10
@@ -106,7 +108,7 @@ must be your own; a flag alone does not establish that you performed or understo
 
 คู่มือนี้รวบรวม Lab ที่รันได้ของรายวิชา Cryptography: **W02–W06 และ W11–W15** ใช้คู่กับใบงานประจำสัปดาห์ ไม่ใช่เฉลยหรือใบงานทดแทน ส่วน W01/W10 เป็นกิจกรรมแนวคิด, W07/W17 เป็นทบทวน, W08–09/W18–19 เป็นสอบ W16 เป็น CryptoVault studio และ W20 เป็นคืนผล/สะท้อนการเรียนรู้ จึงไม่ใช่ 10 Lab ในรายการนี้
 
-**กติกาส่งงานที่ใช้:** ส่งใบงาน PDF ทุกสัปดาห์ที่ [ส่งงานบนเว็บ](https://learn.zcr.ai/submit) ชื่อ `Wk<NN>_<StudentID>.pdf` ก่อนคาบถัดไป เว้นแต่ผู้สอนประกาศเปลี่ยน เฉพาะ **W12** มีงานแก้โค้ดที่ต้อง commit/ส่งลิงก์ GitHub เพิ่ม หาก README เก่าระบุ GitHub หรือ Classroom ต่างจากหน้านี้ ให้ยึดหัวข้อ Weekly LAB ด้านบนและประกาศผู้สอน
+**กติกาส่งงานที่ใช้:** ส่งใบงาน PDF ทุกสัปดาห์ที่ [ส่งงานบนเว็บ](https://learn.zcr.ai/submit) ชื่อ `Wk<NN>_<StudentID>.pdf` ก่อนเริ่มคาบเรียนของสัปดาห์ถัดไป (กติกา KOSEN) เว้นแต่ผู้สอนประกาศเปลี่ยน ส่งช้าหักวันละ 10% ของคะแนนงานนั้น (เกินมาไม่ถึงวันนับเป็นหนึ่งวัน) จนเหลือ 0 เฉพาะ **W12** มีงานแก้โค้ดที่ต้อง commit/ส่งลิงก์ GitHub เพิ่ม หาก README เก่าระบุ GitHub หรือ Classroom ต่างจากหน้านี้ ให้ยึดหัวข้อ Weekly LAB ด้านบนและประกาศผู้สอน Google Classroom ใช้แจ้งข่าวและสรุปรายสัปดาห์เท่านั้น ไม่ต้องส่งงานที่นั่น ผู้สอนเก็บสำเนางานจากเว็บส่งงานไว้เป็นหลักฐานของรายวิชาเอง
 
 ### เตรียมเครื่องและวิธีใช้คำสั่ง
 
@@ -515,7 +517,7 @@ the final practical is in teams of 3 (or 2 where needed).
 | Exam | Covers | Time, weight and hand-in |
 |---|---|---|
 | W8 Midterm written | W1–6 | 90-minute paper + 10-minute administration; 8 course points; paper or instructor-assigned quiz |
-| W9 Midterm practical | W1–6 | 80-minute practical + 20-minute brief/submission; 12 course points; PDF with evidence, payload and mitigation |
+| W9 Midterm practical | W1–6 | 80-minute practical + 20-minute brief/submission; 12 course points; evidence PDF (evidence, payload and mitigation) through the submission platform |
 | W18 Final written | Cumulative, emphasis W10–16 | 90-minute paper + 10-minute administration; 10 course points; paper or instructor-assigned quiz |
 | W19 Team final practical | Cumulative, emphasis W10–16 | 80-minute practical + 20-minute brief/submission; 15 course points; evidence PDF through the submission platform |
 
@@ -528,7 +530,8 @@ the W19 practical's 100 minutes.
 - Use [project/REPORT-TEMPLATE.md](project/REPORT-TEMPLATE.md), export the report to PDF and submit
   through the course platform. Link the team's GitHub code, design and self-audit.
 - Milestones: W4 team/design → W7 KDF+AEAD → W11 sharing → W14 transport/self-audit → W16 studio.
-- Submit the final report/code and a **video of at most 5 minutes before W19**. Project clarification
+- Submit the final report/code and a **video of at most 5 minutes before W19**. Put the video link
+  (unlisted YouTube, or Google Drive viewable by anyone with the link) in the report PDF. Project clarification
   takes place in W16/W20; no live project demonstration is added to the W19 exam.
 - The existing optional crypto-agility bonus is +5 raw points capped at 100. HNDL is optional and
   adds no new mandatory marks. See [project/README.md](project/README.md) for the full rubric.
@@ -538,7 +541,7 @@ the W19 practical's 100 minutes.
 ## Rules for every submission
 - **Name + Student ID** on every file; teamwork only where stated (worksheets/quizzes/written exams/midterm practical are individual; final practical is team work and CryptoVault is team-graded with peer-contribution scaling — see `project/README.md`).
 - **AI-tool disclosure:** state how you used any AI tool (search, code, translate) — a section is built into the worksheet/report.
-- **Late:** −10%/day, up to 3 days (see `syllabus.md` §3); submit what you have.
+- **Late:** −10% of the item's score for each day late (a part day counts as a day), down to 0 (see `syllabus.md`); submit what you have.
 
 ---
 

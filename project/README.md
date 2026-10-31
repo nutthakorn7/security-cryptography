@@ -61,7 +61,8 @@ the constraint is on the cryptographic composition, not the framework.
 4. **Crypto-agility note** *(stretch)* — the PQC note described in item 6 above.
 5. **Demo** — a walkthrough of create entry → share → verify/decrypt, narrating the primitive
    at each step. Use the **Week 16** studio for work-in-progress feedback and clarification.
-   Submit the final **video no longer than 5 minutes before Week 19**, with the build and report;
+   Submit the final **video no longer than 5 minutes before Week 19**, with the build and report
+   (put the video link, unlisted YouTube or Google Drive viewable by anyone with the link, in the report PDF);
    it is graded asynchronously using the existing project rubric. Any remaining clarification
    uses **Week 20**. The **Week 19 100 minute session is reserved for the final practical** and
    contains no project Q&A. No particular class headcount is assumed.
@@ -103,6 +104,10 @@ graded against the specific failure mode its weekly lab exists to teach.
 **Total: 100.** Crypto-agility note *(stretch)*: **+5 bonus**, added on top and capped so the
 total cannot exceed 100 — it lets a team recover points lost elsewhere, but a team that nails the
 100-point rubric does not need it for full marks.
+
+**Deadline and late work:** the final build, report and video are due before the start of the Week 19
+class session. Late work loses 10% of the project score for each day late (a part day counts as a
+day), down to 0.
 
 ## Peer-contribution evaluation (individual fairness)
 
