@@ -1,6 +1,6 @@
 # Week 17 — Cumulative Review Quiz (Weeks 10–16)
 
-**Course:** Security & Cryptography (KOSEN69) · **Time:** 30 min · **Total:** 25 pts
+**Course:** Cryptography and Network Security (KOSEN69) · **Time:** 30 min · **Total:** 25 pts
 **Covers:** Asymmetric/hybrid encryption · Signatures & ZKP · Secure transport (TLS) · E2E
 encryption · Authentication · PQC · Capstone (+ light callback to Wk2–6 fundamentals)
 

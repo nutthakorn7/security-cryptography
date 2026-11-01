@@ -2,14 +2,14 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 13"
+header: "Cryptography and Network Security · Week 13"
 ---
 
 <!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 13
 ## End-to-End Encryption (TLS is not enough; the server still reads your messages)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if an app is HTTPS everywhere, can the company running the server still read your messages?" Most students say no. Reveal: by default, yes — that's exactly what "HTTPS everywhere" leaves open. Today closes that gap. ~2 min. -->
 

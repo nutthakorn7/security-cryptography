@@ -2,12 +2,12 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 6"
+header: "Cryptography and Network Security · Week 6"
 ---
 
 # Week 6
 ## Authenticated Encryption / AEAD (the CBC padding oracle)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if I encrypt something with AES, is it safe?" Let them say yes. Then: "I'm going to decrypt this ciphertext in front of you — without the key — using nothing but a web server that answers yes/no." Today's spine: a mathematically sound cipher (AES-CBC), combined wrong with a MAC (or with no MAC at all), fails in a very specific, very real way.  -->
 

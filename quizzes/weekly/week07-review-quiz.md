@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 7 (Cumulative Review, Weeks 1–6)
 
-**Course:** Security & Cryptography (KOSEN69) · **~20 min · 10 questions · low-stakes**
+**Course:** Cryptography and Network Security (KOSEN69) · **~20 min · 10 questions · low-stakes**
 (lowest weekly-quiz scores dropped, per course grading policy). Individual, closed book.
 **Covers:** threat modeling · hash functions · MACs · AES/block-cipher modes · key exchanges ·
 AEAD — one or two questions per week, at the same difficulty as that week's own weekly quiz.

@@ -2,14 +2,14 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 14"
+header: "Cryptography and Network Security · Week 14"
 ---
 
 <!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 14
 ## User Authentication (challenge-response, PAKE, MFA)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "when you type your password into a login form, who actually sees it?" Most students say "nobody, it's HTTPS." Wrong — the server does, in the clear, inside a request handler. Today's spine: the challenge-response math is textbook-sound; "just send the password over TLS" is the real-system failure baked into almost every login form on earth. ~2 min. -->
 

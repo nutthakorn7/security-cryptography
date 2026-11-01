@@ -2,7 +2,7 @@
 
 > **Optional extension:** complete after the required Lamport core if you choose. This companion adds **0 additional points**, does not change the required W15 worksheet or course weights, and is not a prerequisite for full marks. Its questions and practice rubric are retained for feedback only; no personalized flag is required if that service is not provisioned.
 
-> **Course:** Security & Cryptography (KOSEN69) · **Week 15 (PQC), confidentiality companion**
+> **Course:** Cryptography and Network Security (KOSEN69) · **Week 15 (PQC), confidentiality companion**
 > **Topic:** The quantum threat to *key exchange*: harvest-now-decrypt-later, and hybrid
 > (classical + ML-KEM) key encapsulation as the deployable mitigation. (Written fresh for this
 > course.)
