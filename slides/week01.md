@@ -237,8 +237,8 @@ Lightweight process, applied to a system that handles cryptographic keys:
 
 > **100-minute class; no Docker target or flag.**
 
-- **Common 60:** analyse the supplied web-application case; draw its data/key trust boundaries,
-  compare controls and limitations, and capture the diagram/table with causal reasoning.
+- **Common 60 (Part A):** who sees the notes and the key (A1), two risk/control rows (A2),
+  and the seed-crack simulation with a screenshot (A3).
 - **Conventional 40:** the six original short-answer questions, if assigned.
 - **AIR-Sec 40:** Audit the AI 20 + EiPE 10 + Prompt Problem 10, if assigned.
 - Viva is formative/authenticity feedback within the criteria, with no separate points.
