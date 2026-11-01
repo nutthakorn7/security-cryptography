@@ -144,6 +144,8 @@ seed-crack
   seed-crack screenshot + 3 short answers (A3)
 - **Your form (40):** student ID ends in an **odd** digit → Conventional · **even** → AIR-Sec
 - Thai or English answers are fine · no Docker, no flag
+- **Answer sheet:** Classroom → Week 01 → open the file for your form, type in the grey boxes,
+  then File → Download → PDF
 - Hand in `Wk01_<StudentID>.pdf` at `learn.zcr.ai/submit` by **Sun 8 Nov 23:59**
 
 ---
