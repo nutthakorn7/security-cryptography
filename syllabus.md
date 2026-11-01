@@ -32,7 +32,7 @@ and 15 reserve 70 minutes for their stateful practical and 10 minutes for eviden
 alongside the same 10-minute quiz and 10-minute briefing. Installation, image pulls and long
 readings happen before class; complete written answers and extension tasks after class. All
 original questions remain available; only the named core sequence is planned inside the slot.
-Week 1 orientation is an ungraded diagnostic; its retrieval bank is used in Week 2.
+Week 1 has **no quiz** (it is an ungraded orientation); the first quiz, on Week 1's material, opens Week 2.
 Week 12 includes a student-written `build_client_context()` and tests in both worksheet forms.
 
 ## Assessment
