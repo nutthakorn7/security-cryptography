@@ -80,7 +80,10 @@ docstring), verify it against `docker-compose.student-task.yml`, then:
 **Grading:** each teaching worksheet is **100 points = common practical 60 + assigned-format 40**.
 Common: main task/observations 20 + controls/tests/limitations 20 + reproducible evidence/reasoning 20.
 Conventional: ordinary written questions 40. AIR-Sec: Audit-the-AI 20 + Explain-in-Plain-English 10
-+ Prompt Problem 10. Complete one assigned 40-point section, not both. The 12 worksheets
++ Prompt Problem 10. Complete one assigned 40-point section, not both.
+**Your form is set by the last digit of your student ID: odd = Conventional, even = AIR-Sec**, for the
+whole term unless the instructor announces a change. Write your form in the worksheet's Group field.
+The 12 worksheets
 (W1–6, W10–15) contribute equally at **2.5 course points each**, totalling 30%.
 W1/W10 earn the common 60 through cases, diagrams, experiments or code analysis; no Docker/flag
 is required. Viva verifies understanding within the existing rubric, with no additional marks
@@ -141,7 +144,7 @@ docker info
 1. ชื่อ–รหัสนักศึกษา สัปดาห์ และวันที่ทำงาน
 2. คำสั่งหรือ payload ที่ใช้จริง พร้อมผลจาก vulnerable และ fixed ตามใบงาน
 3. ภาพหน้าจอหรือ log ที่แสดง flag/ผลลัพธ์ที่สัปดาห์นั้นกำหนด ไม่ใช้เพียงภาพว่า container เปิดอยู่
-4. คำอธิบายผลด้วยคำของตนเอง: ทุกคนทำปฏิบัติร่วม 60 คะแนน แล้วทำเฉพาะส่วนที่ได้รับมอบหมาย — Conventional questions 40 หรือ AIR-Sec: Audit-the-AI 20 + EiPE 10 + Prompt Problem 10 ไม่ต้องทำสองรูปแบบรวมกัน รายการด้านล่างเป็นเช็กลิสต์หลักฐาน ไม่ใช่คำถามทั้งหมด
+4. คำอธิบายผลด้วยคำของตนเอง: ทุกคนทำปฏิบัติร่วม 60 คะแนน แล้วทำเฉพาะส่วนที่ได้รับมอบหมาย — Conventional questions 40 หรือ AIR-Sec: Audit-the-AI 20 + EiPE 10 + Prompt Problem 10 ไม่ต้องทำสองรูปแบบรวมกัน **รหัสนักศึกษาลงท้ายเลขคี่ทำ Conventional ลงท้ายเลขคู่ทำ AIR-Sec** ใช้ทั้งเทอมเว้นแต่อาจารย์ประกาศเปลี่ยน และเขียนรูปแบบของตนในช่อง Group ของใบงาน รายการด้านล่างเป็นเช็กลิสต์หลักฐาน ไม่ใช่คำถามทั้งหมด
 5. เปิดเผยการใช้ AI; viva ใช้ตรวจความเข้าใจภายใต้คะแนนส่วนเดิม ไม่มีคะแนนเพิ่มหรือเกณฑ์ตกอัตโนมัติ
 
 ใช้ชื่อ–รหัสนักศึกษาใน PDF และแสดงคำสั่ง ผลรัน หรือภาพ/log ให้ทำซ้ำและอธิบายได้ทั้งสองรูปแบบ หากงานเฉพาะกำหนดให้ระบุพารามิเตอร์หรือหลักฐานที่ออกให้เฉพาะคน ให้แนบตามโจทย์นั้น ไม่บังคับ identity stamp หรือ flag ส่วนบุคคลกับทุกกิจกรรม Flag ให้บันทึกค่าจากการรันจริง; placeholder ไม่ใช่หลักฐานระบุตัวบุคคล
