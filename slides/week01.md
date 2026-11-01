@@ -26,7 +26,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 ## The words we use every week
 
-**Plaintext** "meet at 10" → *encrypt* (+ key) → **Ciphertext** "9f3a…c1" → *decrypt* (+ key) → **Plaintext**
+![Plaintext meet at 10 is encrypted with a key into scrambled ciphertext, then decrypted with the key back into the same plaintext. The algorithm is public; only the key is secret.](img/w1-encrypt-decrypt.svg)
 
 | Word | Meaning |
 |---|---|
@@ -40,6 +40,8 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 ---
 
 ## Symmetric vs asymmetric
+
+![Left, symmetric: Alice and Bob hold the same shared key and send ciphertext between them. Right, asymmetric: Alice locks the message with Bob's public key, which anyone can use, and only Bob's private key can open it.](img/w1-sym-asym.svg)
 
 **Symmetric** — one shared key locks and unlocks
 
@@ -74,8 +76,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 ## Who is the attacker?
 
-- **Passive** — reads traffic or stolen data, changes nothing → defend with **encryption**
-- **Active** — modifies, replays, sits in the middle → defend with **MAC / signature / AEAD / certificates**
+![Left, passive attacker: Eve listens to the line between Alice and Bob but changes nothing, so encryption is the defence. Right, active attacker: Mallory sits between Alice and Bob and can change, replay or impersonate, so integrity and authenticity tools are needed.](img/w1-passive-active.svg)
 
 | The attacker has… | Example |
 |---|---|
@@ -123,6 +124,8 @@ seed-crack
 
 ## Threat model in 4 steps — the notes app
 
+![The notes app: the user's browser talks over HTTPS to the app server, which reads and writes the encrypted note database, uses the key store, and sends encrypted backups to an ops team that also has a key-recovery path. The worksheet asks who can see the plaintext and the key, and where the trust boundaries are.](img/w1-notes-app.svg)
+
 1. **Assets** — notes, the database key, backups, the recovery key
 2. **Attackers** — outsider, a hacked app server, an ops-team insider
 3. **Trust boundaries** — browser → server · server → database · server → backup/ops · key store
@@ -142,6 +145,8 @@ seed-crack
 - Mark a square when its myth comes up — in **any** slide today, or while the Exhibit is read aloud
 - A square counts only when your table gives the **one-line technical reason** it's wrong
 - **5 verified squares in a line = BINGO**
+
+![An example Snake Oil Bingo grid: five by five squares with the myth numbers 1 to 24 in any order and FREE in the centre; two squares are ticked as verified. Five verified squares in a row, column or diagonal wins.](img/w1-bingo-grid.svg)
 
 **The Exhibit** (worksheet Part 3): a real AI answer to *"why does textbook-secure crypto fail in
 real systems?"* Every sentence is true — but it leaves something big out. Even-ID (AIR-Sec)
