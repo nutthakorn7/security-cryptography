@@ -65,8 +65,9 @@ Every student does the same core practical work. Each worksheet is scored out of
 
 For Weeks 1 and 10, the common 60 is practical analysis, diagrams, calculations or proofs, with
 control/counterexample reasoning. No Docker flag is required. In Week 12 the code and its tests
-are part of common 60. Students complete the form assigned for that week; the other form is not
-an additional 40 points. Score to course points as `worksheet score / 100 × 2.5`.
+are part of common 60. Students complete their assigned form: a student ID ending in an odd digit does Conventional,
+one ending in an even digit does AIR-Sec, for the whole term unless the instructor announces a
+change. The other form is not an additional 40 points. Score to course points as `worksheet score / 100 × 2.5`.
 
 Feedback, reproduction checks and short oral explanations sample understanding within the
 existing work. They add no separate viva points and create no automatic AIR-only grade gate.
