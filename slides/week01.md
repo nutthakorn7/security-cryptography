@@ -154,6 +154,7 @@ seed-crack
 
 - **"Cryptographically secure" is a claim about the math, not about your system**
 - Systems break at the edges: keys, randomness, protocol use, side channels, bugs
+- **No quiz today.** Week 2 opens with a 10-minute quiz on today's basics at `learn.zcr.ai/quiz`
 - Next week: **hash functions** — we crack a leaked password database in minutes,
   then fix it with salt + a slow KDF (Docker lab — bring a laptop)
 
