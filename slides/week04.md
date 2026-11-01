@@ -2,12 +2,12 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 4"
+header: "Cryptography and Network Security · Week 4"
 ---
 
 # Week 4
 ## AES / Block-Cipher Modes (CBC bit-flipping, malleability)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if AES is unbreakable, why do we keep having crypto CVEs?" Answer: AES the cipher is fine — what breaks is how it's *used*. This is the course spine every week: textbook-secure primitive, real-system failure. Today's failure: encryption without integrity lets you edit a message you can't even read.  -->
 

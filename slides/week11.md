@@ -2,14 +2,14 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 11"
+header: "Cryptography and Network Security · Week 11"
 ---
 
 <!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 70 practice + 10 evidence/feedback. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 11
 ## Digital Signatures & Zero-Knowledge Proofs (ECDSA Signature Malleability)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if I hand you a signature `(r, s)` that verifies True, can you produce a SECOND, DIFFERENT-looking valid signature for the exact same message and key, with no idea what the private key is?" Answer: yes, for ECDSA, in one line of arithmetic. That's today. Title note: the objective/README call this "signature malleability," not nonce reuse (nonce reuse is a different, key-recovery bug) — say that distinction out loud up front so students don't conflate the two ECDSA pitfalls. ~2 min. -->
 

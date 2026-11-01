@@ -2,12 +2,12 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 3"
+header: "Cryptography and Network Security · Week 3"
 ---
 
 # Week 3
 ## MACs (hash-only auth, length-extension)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if I hash a secret and a message together, is that a MAC?" Let them say yes. Today you prove them wrong — live — by forging an admin cookie with pure math, no password.  -->
 

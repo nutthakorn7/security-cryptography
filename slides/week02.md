@@ -2,12 +2,12 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 2"
+header: "Cryptography and Network Security · Week 2"
 ---
 
 # Week 2
 ## Hash Functions (password storage / cracking)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: put a leaked CSV of "username,md5hash" on screen and ask "how long would it take you to find the admin's password?" Answer: milliseconds, live, in front of them — that's what's coming. Today = a mathematically sound primitive (hash functions) breaking in one very specific, very common way.  -->
 

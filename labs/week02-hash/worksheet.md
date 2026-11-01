@@ -1,6 +1,6 @@
 # Worksheet 2 — Hash Functions: Cracking a Leaked Password Database (100-minute class + preparation/extension)
 
-> **Course:** Security & Cryptography (KOSEN69) · **Week 2**
+> **Course:** Cryptography and Network Security (KOSEN69) · **Week 2**
 > **Cracking game:** "Crack the Leaked DB" (recover the admin password from a leaked, unsalted
 > MD5 store, then show a bcrypt store resists the same fast attack)
 

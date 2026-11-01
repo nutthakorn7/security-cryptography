@@ -2,14 +2,14 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 12"
+header: "Cryptography and Network Security · Week 12"
 ---
 
 <!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 12
 ## Secure Transport / TLS (certificate-validation-bypass MITM)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if the padlock icon is green and the URL says https, is the connection safe?" Most students say yes. Today's answer: it means encrypted — not necessarily encrypted to the party you think you're talking to. That gap is the whole lecture. ~2 min. -->
 

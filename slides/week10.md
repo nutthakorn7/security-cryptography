@@ -2,14 +2,14 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 10"
+header: "Cryptography and Network Security · Week 10"
 ---
 
 <!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 10
 ## Asymmetric & Hybrid Encryption
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if RSA can encrypt anything, why does every real system — TLS, Signal, age, PGP — bolt AES onto it instead of just using RSA?" Let them guess before you answer. Today = why hybrid encryption exists, then an implementation that gets every primitive right and is still broken. ~2 min. -->
 

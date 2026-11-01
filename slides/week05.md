@@ -2,12 +2,12 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 5"
+header: "Cryptography and Network Security · Week 5"
 ---
 
 # Week 5
 ## Key Exchanges (Diffie-Hellman, MITM on unauthenticated DH)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if Alice and Bob have never met and the network is public, how do they agree on a secret key without an eavesdropper learning it?" Let them sit with it for 30 sec — that's the whole lecture. This week's spine: DH is a textbook-secure primitive; run it *unauthenticated* over a network an active attacker controls and it fails completely, invisibly.  -->
 

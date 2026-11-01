@@ -2,14 +2,14 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 15"
+header: "Cryptography and Network Security · Week 15"
 ---
 
 <!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 70 practice + 10 evidence/feedback. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 15
 ## Post-Quantum Cryptography (Lamport one-time signatures, key reuse)
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask "if a large-scale quantum computer existed today, is a TLS session you sent an hour ago already broken?" Answer: only if someone recorded it — "harvest now, decrypt later." Today: why quantum breaks RSA/ECC but not AES/SHA, and a signature scheme so simple that its ENTIRE private key falls out of the math the moment you misuse it once. ~2 min. -->
 

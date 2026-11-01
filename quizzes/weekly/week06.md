@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 6 (Authenticated Encryption / AEAD)
 
-**Course:** Security & Cryptography (KOSEN69) · **~10 min · 6 questions · low-stakes**
+**Course:** Cryptography and Network Security (KOSEN69) · **~10 min · 6 questions · low-stakes**
 (lowest scores dropped). Individual.
 
 **Name:** ____________  **Student ID:** ________

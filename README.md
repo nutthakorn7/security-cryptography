@@ -1,4 +1,4 @@
-# Security & Cryptography
+# Cryptography and Network Security
 
 **02005104 Cryptography and Network Security** — Year 4, 1 credit, Semester 2 AY2026.
 Lecture format with practical work in class: **20 weeks × 100 minutes**. The 12 teaching

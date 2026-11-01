@@ -2,12 +2,12 @@
 marp: true
 theme: default
 paginate: true
-header: "Security & Cryptography · Week 1"
+header: "Cryptography and Network Security · Week 1"
 ---
 
 # Week 1
 ## Security Mindset & Threat-Modeling a Cryptographic System
-Security & Cryptography · Nutthakorn Chalaemwongwan
+Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 <!-- Hook: ask the room "if I told you a system uses AES-256 and RSA-4096 — the biggest algorithms available — is it safe?" Let a few say yes. Hold the answer. That tension is this entire course.  -->
 
