@@ -7,8 +7,8 @@
 | What | Where |
 |---|---|
 | Course material — worksheets, lab guides | **`learn.zcr.ai/learn/cryptography`** — no sign-in needed |
-| Weekly quiz | **`learn.zcr.ai/quiz`** — the one-time code on your slip |
-| Worksheet PDFs, project report | **`learn.zcr.ai/submit`** — the submission code on your slip |
+| Weekly quiz | **`learn.zcr.ai/quiz`** — the one-time quiz code the instructor gives you |
+| Worksheet PDFs, project report | **`learn.zcr.ai/submit`** — the submission code in your `[02005104 Crypto]` KMITL email |
 | Code fixes (Wk12) | **GitHub** — your own fork of this course's repo |
 
 > **Hand in on the course platform only.** Google Classroom carries announcements and the weekly
@@ -18,17 +18,17 @@
 This course has its **own** GitHub repo, separate from the companion
 `software-security` course's, with its own 20-week, 100-minute timetable and assessment policy.
 Fork *this* course's repo; work submitted against the wrong course cannot be graded here. The
-platform files every quiz and every hand-in under the course it belongs to, so the code on your
-slip is what puts your work in *this* class.
+platform files every quiz and every hand-in under the course it belongs to, so the code issued
+to you for this course is what puts your work in *this* class.
 
 All offensive work is on the provided sandbox targets only — see this course's own ethics &
 authorized-use policy, [`ETHICS.md`](ETHICS.md).
 
 ---
 
-## One-time setup (Week 1)
-**Every lab starts with `cd labs/weekNN-…`, so you need the repository on your own
-machine before Week 1. Nothing on the website will work without this step.**
+## One-time setup (before Week 2)
+**From Week 2, every lab starts with `cd labs/weekNN-…`, so you need the repository on your own
+machine before Week 2. Week 1 needs no Docker target, and the course pages can be read without this step.**
 
 1. Create a GitHub account, then **fork** this course's repo:
    <https://github.com/nutthakorn7/security-cryptography>
@@ -37,10 +37,11 @@ machine before Week 1. Nothing on the website will work without this step.**
    git clone https://github.com/<your-github-username>/security-cryptography.git
    cd security-cryptography
    ```
-   Then stand up the environment (Docker) per Week 1.
+   Then install Docker with Compose v2 and check that it runs before Week 2.
 3. Read the material at **`learn.zcr.ai/learn/cryptography/`** — no sign-in needed.
-4. Keep the **slip you are given in class**. It carries your quiz code and your submission code;
-   those two codes are the only credential you need, and they are what files your work under
+4. Keep your codes private. Your **submission codes** are in your `[02005104 Crypto]` KMITL email
+   (ask the instructor for a printed slip if you cannot find it), and the instructor gives out the
+   **quiz code**. These codes are the only credential you need, and they are what files your work under
    *this* course. There is no account to create and no password to remember.
 
 ---
@@ -70,12 +71,12 @@ docstring), verify it against `docker-compose.student-task.yml`, then:
 **Submit:**
 | Part | Where | What | Weeks |
 |------|-------|------|------|
-| Worksheet | **`learn.zcr.ai/submit`** | the completed worksheet exported to **PDF** (screenshots embedded). You can replace it any time before the deadline. | all |
+| Worksheet | **`learn.zcr.ai/submit`** | the completed worksheet exported to **PDF** (screenshots embedded). You can replace it any time before the deadline; uploading or replacing a file after the deadline makes the hand-in late. | all |
 | Code fix | **GitHub** | push branch `wk12`, open a PR (or paste the commit link in the worksheet) | Wk12 only |
 
 **File name:** `Wk<NN>_<StudentID>.pdf`  (e.g. `Wk04_65123456.pdf`)
-**Deadline:** 23:59 Thai time (ICT) on the Sunday before the next week's class (KOSEN rule), unless the instructor announces otherwise. The exact date is on `learn.zcr.ai/submit`.
-**Late work:** loses 10% of the item's score for each day late (a part day counts as a day), down to 0. The platform takes late uploads for 10 days, until the score would reach 0, and marks them late.
+**Deadline:** 23:59 Thai time (ICT) on the Sunday before the next week's class (KOSEN rule), unless the instructor announces otherwise. The exact date is in your codes email and in the week's Classroom post.
+**Late work:** loses 10% of the item's score for each day late (a part day counts as a day), down to 0. The platform takes late uploads for 10 days, until the score would reach 0, and marks them late. Uploading or replacing a file after the deadline also counts as late.
 **Grading:** each teaching worksheet is **100 points = common practical 60 + assigned-format 40**.
 Common: main task/observations 20 + controls/tests/limitations 20 + reproducible evidence/reasoning 20.
 Conventional: ordinary written questions 40. AIR-Sec: Audit-the-AI 20 + Explain-in-Plain-English 10
@@ -108,7 +109,7 @@ must be your own; a flag alone does not establish that you performed or understo
 
 คู่มือนี้รวบรวม Lab ที่รันได้ของรายวิชา Cryptography: **W02–W06 และ W11–W15** ใช้คู่กับใบงานประจำสัปดาห์ ไม่ใช่เฉลยหรือใบงานทดแทน ส่วน W01/W10 เป็นกิจกรรมแนวคิด, W07/W17 เป็นทบทวน, W08–09/W18–19 เป็นสอบ W16 เป็น CryptoVault studio และ W20 เป็นคืนผล/สะท้อนการเรียนรู้ จึงไม่ใช่ 10 Lab ในรายการนี้
 
-**กติกาส่งงานที่ใช้:** ส่งใบงาน PDF ทุกสัปดาห์ที่ [ส่งงานบนเว็บ](https://learn.zcr.ai/submit) ชื่อ `Wk<NN>_<StudentID>.pdf` ภายในวันอาทิตย์ 23:59 น. (เวลาไทย) ก่อนวันเรียนของสัปดาห์ถัดไป (กติกา KOSEN) เว้นแต่ผู้สอนประกาศเปลี่ยน วันที่แน่นอนดูได้ที่หน้าส่งงาน ส่งช้าหักวันละ 10% ของคะแนนงานนั้น (เกินมาไม่ถึงวันนับเป็นหนึ่งวัน) จนเหลือ 0 เว็บรับงานส่งช้าได้อีก 10 วันหลังกำหนดส่ง เฉพาะ **W12** มีงานแก้โค้ดที่ต้อง commit/ส่งลิงก์ GitHub เพิ่ม หาก README เก่าระบุ GitHub หรือ Classroom ต่างจากหน้านี้ ให้ยึดหัวข้อ Weekly LAB ด้านบนและประกาศผู้สอน Google Classroom ใช้แจ้งข่าวและสรุปรายสัปดาห์เท่านั้น ไม่ต้องส่งงานที่นั่น ผู้สอนเก็บสำเนางานจากเว็บส่งงานไว้เป็นหลักฐานของรายวิชาเอง
+**กติกาส่งงานที่ใช้:** ส่งใบงาน PDF ทุกสัปดาห์ที่ [ส่งงานบนเว็บ](https://learn.zcr.ai/submit) ชื่อ `Wk<NN>_<StudentID>.pdf` ภายในวันอาทิตย์ 23:59 น. (เวลาไทย) ก่อนวันเรียนของสัปดาห์ถัดไป (กติกา KOSEN) เว้นแต่ผู้สอนประกาศเปลี่ยน วันที่แน่นอนดูได้ในอีเมลรหัสและโพสต์ของสัปดาห์นั้นใน Classroom ส่งช้าหักวันละ 10% ของคะแนนงานนั้น (เกินมาไม่ถึงวันนับเป็นหนึ่งวัน) จนเหลือ 0 เว็บรับงานส่งช้าได้อีก 10 วันหลังกำหนดส่ง การอัปโหลดหรือเปลี่ยนไฟล์หลังกำหนดส่งนับว่าส่งช้า เฉพาะ **W12** มีงานแก้โค้ดที่ต้อง commit/ส่งลิงก์ GitHub เพิ่ม หาก README เก่าระบุ GitHub หรือ Classroom ต่างจากหน้านี้ ให้ยึดหัวข้อ Weekly LAB ด้านบนและประกาศผู้สอน Google Classroom ใช้แจ้งข่าวและสรุปรายสัปดาห์เท่านั้น ไม่ต้องส่งงานที่นั่น ผู้สอนเก็บสำเนางานจากเว็บส่งงานไว้เป็นหลักฐานของรายวิชาเอง
 
 ### เตรียมเครื่องและวิธีใช้คำสั่ง
 
@@ -494,14 +495,14 @@ docker compose down
 
 ### ก่อนกดส่ง
 
-ตรวจว่า PDF มีหลักฐานตามสัปดาห์นั้นครบ มีคำสั่ง/ผลและบริบทที่ทำซ้ำได้ อธิบาย vulnerable/fixed และข้อจำกัดด้วยตนเอง ทำปฏิบัติร่วม 60 และส่วนเฉพาะรูปแบบ 40 ที่ได้รับมอบหมายครบ ใส่ AI disclosure และใช้ชื่อไฟล์ `Wk<NN>_<StudentID>.pdf` สำหรับ W12 ตรวจเพิ่มว่าลิงก์ commit/PR เปิดได้และตรงกับโค้ดที่ทดสอบ แล้วส่งที่ [learn.zcr.ai/submit](https://learn.zcr.ai/submit) ด้วย submission code บน slip ของตนเอง
+ตรวจว่า PDF มีหลักฐานตามสัปดาห์นั้นครบ มีคำสั่ง/ผลและบริบทที่ทำซ้ำได้ อธิบาย vulnerable/fixed และข้อจำกัดด้วยตนเอง ทำปฏิบัติร่วม 60 และส่วนเฉพาะรูปแบบ 40 ที่ได้รับมอบหมายครบ ใส่ AI disclosure และใช้ชื่อไฟล์ `Wk<NN>_<StudentID>.pdf` สำหรับ W12 ตรวจเพิ่มว่าลิงก์ commit/PR เปิดได้และตรงกับโค้ดที่ทดสอบ แล้วส่งที่ [learn.zcr.ai/submit](https://learn.zcr.ai/submit) ด้วย submission code ในอีเมล `[02005104 Crypto]` ของตนเอง
 
 
 ---
 
 ## QUIZ — how it works
-- **On the course platform:** go to **`learn.zcr.ai/quiz`** and enter the **one-time code** on
-  your slip. The code is yours alone and works once.
+- **On the course platform:** go to **`learn.zcr.ai/quiz`** and enter the **one-time quiz code**
+  the instructor gives you. The code is yours alone and works once.
 - **Weekly quiz:** a short **~10-min quiz at the start of teaching weeks after W1 orientation** (6 Q: 5 MCQ + 1 short, **individual**). Low-stakes — the **lowest 1–2 are dropped**.
 - **Cumulative review quizzes:** two bigger 25-pt quizzes in the **review weeks** (W7 pre-midterm, W17 pre-final).
 - No separate file to submit — the quiz **is** the submission. Questions come one at a time and
