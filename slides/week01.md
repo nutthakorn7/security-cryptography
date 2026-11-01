@@ -6,163 +6,110 @@ header: "Cryptography and Network Security · Week 1"
 ---
 
 # Week 1
-## Security Mindset & Threat-Modeling a Cryptographic System
+## Cryptography basics & the security mindset
 Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
-<!-- Hook: ask the room "if I told you a system uses AES-256 and RSA-4096 — the biggest algorithms available — is it safe?" Let a few say yes. Hold the answer. That tension is this entire course.  -->
+<!-- Warm-up week: no math, no Docker. Hook: "if a system uses AES-256 and RSA-4096 — the biggest algorithms available — is it safe?" Let a few say yes and hold the answer; the sim later in the deck answers it. Have every table draw its 5×5 Bingo grid now (see the Bingo slide) so squares can be marked during the whole lecture. -->
 
 ---
 
 ## Today
 
-**100-minute class:** 10 quiz/review · 10 brief · 60 shared practice · 15 debrief · 5 capture.
-**Assessment:** common 60 + assigned Conventional written 40 **or** AIR-Sec 20/10/10.
-Preparation and detailed write-up are outside the contact block. Week 1 opens with orientation/review.
-
-<!-- The full deck is a teaching/reference bank, not an additional lecture block.
-Use the core explanation for the 10-minute brief and just-in-time guidance during practice;
-assign the remaining deep dives as preparation or follow-up. Viva is formative, with no
-separate points or automatic-zero rule. -->
-
-- The course's spine: **textbook-secure primitive, real-system failure**
-- What "cryptographically secure" promises — and doesn't
-- CIA triad, applied precisely to cryptography
-- Trust boundaries + a lightweight threat-modeling process
-- 🐍 Game: **Snake Oil Bingo**
-
-<!-- Roadmap. No recap today — this is Week 1, so we're framing the whole 20-week course instead. Name the lab up front: Worksheet 1, no Docker, no flag — a reasoning exercise (Audit-the-AI) instead of a code exploit.  -->
+- The **words** we use every week
+- **Symmetric** vs **asymmetric**
+- Which **tool** for which goal
+- Who the **attacker** is
+- **Try it:** crack a key that was never really random
+- 🐍 **Snake Oil Bingo** · Worksheet 1 (Part A + your form)
 
 ---
 
-## The course's spine
+## The words we use every week
 
-Every remaining teaching week takes **one mathematically sound primitive**
-and shows **one specific, real way it fails when misused**:
+**Plaintext** "meet at 10" → *encrypt* (+ key) → **Ciphertext** "9f3a…c1" → *decrypt* (+ key) → **Plaintext**
 
-> **Textbook-secure primitive, real-system failure.**
+| Word | Meaning |
+|---|---|
+| **Plaintext** | The readable data you want to protect |
+| **Ciphertext** | The scrambled output — useless without the right key |
+| **Key** | The secret value that controls encryption and decryption |
+| **Kerckhoffs' principle** | The algorithm is public; **only the key is secret** |
 
-- The primitive's proof holds
-- The deployment breaks it anyway
-- Implementation bugs, bad randomness, protocol misuse, side channels,
-  key-management failure — never the math itself
-
-<!-- Write the boxed line on the board — it is the lens for all 20 weeks. Emphasize: nobody in this course is going to break AES or factor an RSA modulus. Every "break" from here on is a decision made *around* a sound primitive.  -->
-
----
-
-## Preview: the pattern, week by week
-
-| Wk | Primitive (textbook-secure) | Real-system failure |
-|---|---|---|
-| 2 | Hash functions | Unsalted/unstretched password storage — GPU cracks the DB |
-| 4 | AES (block cipher) | CBC with no integrity check — ciphertext bits flip undetected |
-| 5 | Diffie–Hellman | No authentication — MITM relays two key exchanges |
-| 11 | ECDSA signatures | Malleable signatures and duplicate withdrawal identifiers |
-| 12 | TLS / certificates | Sound crypto, client skips hostname validation — MITM anyway |
-
-*(Full 11-row table is in this week's README — you'll hypothesize about two
-unseen rows in the worksheet.)*
-
-<!-- Don't over-explain each row yet — these are previews, not lessons. Point out the shape: primitive column never says "broken," failure column always names a missing check or a violated assumption. Ask: "what do all five failure descriptions have in common?"  -->
+<!-- Thai glosses if useful: plaintext = ข้อความต้นฉบับ, ciphertext = ข้อความที่เข้ารหัสแล้ว, key = กุญแจ. Kerckhoffs answers Bingo #16 ("our algorithm is proprietary, so attackers have nothing to analyse"). -->
 
 ---
 
-## What "cryptographically secure" actually promises
+## Symmetric vs asymmetric
 
-- A primitive resists a **well-defined class of mathematical attack**
-- Under **stated assumptions** (e.g. discrete log is hard in this group)
-- At a **stated security level** (e.g. 128-bit, 256-bit)
+**Symmetric** — one shared key locks and unlocks
 
-That's it. It says **nothing** about:
+- Fast; used for bulk data. Examples: **AES**, ChaCha20
+- Problem: how do both sides get the same key safely?
 
-- Whether the program calling it is secure
-- Whether keys are generated, stored, or rotated safely
-- Whether the protocol around it is composed correctly
+**Asymmetric** — a key pair: **public** key (share it) + **private** key (never share it)
 
-<!-- The precise definition students need to be able to state on the viva (Part 5, Q1). Contrast with the vague "it's unbreakable" framing from marketing. This is also directly the Snake Oil Bingo answer key — "military-grade encryption" fails on exactly this distinction.  -->
+- Encrypt with Bob's public key → only Bob's private key decrypts
+- Slower; used to agree on keys and to sign. Examples: **RSA**, elliptic curves
 
----
+> Real systems use **both** (hybrid): asymmetric to agree on a key, symmetric for the data —
+> this is what HTTPS/TLS does.
 
-## CIA, specifically for cryptography
-
-| Property | Mechanism | The limit |
-|---|---|---|
-| **Confidentiality** | Encryption (right primitive/mode/key mgmt) | Says nothing about tampering or availability |
-| **Integrity/Authenticity** | MACs, signatures, AEAD — **not encryption alone** | Missing this is the #1 conflation this course fixes |
-| **Availability** | Key management (generation, backup, rotation) | Usually a key-mgmt failure, not an algorithm failure |
-
-<!-- Walk each row. Integrity row is the big one — write "encryption ≠ integrity" on the board, it recurs hard in Week 4 (CBC bit-flipping) and Week 6 (padding oracles). Ask: "if I encrypt a message with no MAC, can an attacker change it without me noticing?" (yes).  -->
+<!-- Draw Alice and Bob on the board: one key between them (symmetric), then Bob's padlock that anyone can close but only Bob can open (asymmetric). No math today. -->
 
 ---
 
-## "We encrypted it" is a confidentiality claim only
+## Pick the tool for the goal
 
-- Encryption alone answers: **can an adversary read this?**
-- It does **not** answer: can an adversary **tamper** with it undetected?
-- Encryption with no integrity mechanism → ciphertext can be modified in
-  structured, exploitable ways
+| Goal | Tool | Gives | Does **not** give |
+|---|---|---|---|
+| Keep data secret | Encryption (AES-GCM) | Only key holders read it | Plain encryption alone doesn't stop tampering — use **AEAD** |
+| Notice a change | Hash (SHA-256) | A fingerprint of the data | No secret, so it proves nothing about *who* |
+| Prove it came from a key holder | MAC (HMAC) | Detects tampering by outsiders | Both sides can create it |
+| Prove who signed | Digital signature (Ed25519, RSA) | Anyone can verify | Doesn't keep data secret |
+| Store passwords | Slow KDF (bcrypt, Argon2) | Makes guessing expensive | Weak passwords still fall |
 
-> Encrypt-then-MAC, or a proper AEAD mode, is what actually closes this gap
-> (Week 6). Week 4 shows exactly how the gap gets exploited.
-
-<!-- This is Worksheet Q5 — make sure they can articulate it precisely. Concrete hook: "if you flip one bit of an AES-CBC ciphertext block, what happens to the decrypted plaintext? Predictably — that's the Week 4 exploit." No need to solve it now, just plant the seed.  -->
-
----
-
-## Trust boundaries around key material
-
-A trust boundary = any point where **control over, or visibility into, key
-material changes hands**:
-
-- Client vs. server
-- Application vs. OS keystore / HSM
-- One microservice vs. another
-- A developer's laptop vs. production
-
-Every crossing is where key-management failures concentrate: hardcoded
-keys in source control, keys logged in plaintext, keys shared across
-environments, no rotation or revocation path.
-
-<!-- This is the practical skill for Worksheet Q3 (name 3 crossings in a web app + what goes wrong at each). Draw a simple box diagram: browser → app server → DB, mark the boundaries. Ask for volunteers to name a key-management failure at each.  -->
+<!-- Quick-fire questions: "store passwords?" (slow KDF, not SHA-256 — Bingo #12), "make sure a downloaded file wasn't changed?" (hash), "prove an update came from the vendor?" (signature). The AEAD row answers Bingo #2 ("it's encrypted, so nobody can change it"). Hash, MAC, AEAD and signatures each get their own lab in Weeks 2–11. -->
 
 ---
 
-## Real incident: sound primitive, broken deployment
+## Who is the attacker?
 
-**Debian OpenSSL predictable-RNG bug (CVE-2008-0166)**
+- **Passive** — reads traffic or stolen data, changes nothing → defend with **encryption**
+- **Active** — modifies, replays, sits in the middle → defend with **MAC / signature / AEAD / certificates**
 
-- OpenSSL's PRNG itself: mathematically fine
-- A Debian packaging patch cut the entropy-gathering code
-- Result: only ~32,768 possible keys per key type, system-wide
-- **CWE-330** — Use of Insufficiently Random Values
+| The attacker has… | Example |
+|---|---|
+| Ciphertext only | Captured encrypted Wi-Fi traffic |
+| Known plaintext | Knows messages start with a fixed header |
+| Chosen plaintext | Can make your system encrypt what they pick |
+| Chosen ciphertext | Can send changed ciphertext and watch the reaction (Week 6) |
 
-<!-- The primitive (OpenSSL's CSPRNG design) was never the problem. A single packaging change destroyed its entropy source, and every key generated on affected Debian systems for ~2 years was guessable. This is the "bad randomness" branch of the throughline table — foreshadow Week 15 (Lamport OTS: reuse breaks even a provably secure scheme).  -->
-
----
-
-## Real incident: the PS3's signing key
-
-**fail0verflow, "Console Hacking 2010" (27C3)**
-
-- Sony used ECDSA — mathematically sound — to sign PS3 firmware
-- The implementation reused the **same nonce** for every signature
-- Reused nonce + two signatures → private signing key algebraically
-  recoverable
-- Result: anyone could sign arbitrary "official" firmware
-
-<!-- ECDSA itself is fine; nonce reuse is a protocol-misuse/key-management failure, not a math failure. Use this as background on signature misuse. The running Week 11 lab demonstrates signature malleability and duplicate withdrawal identifiers, not nonce-reuse key recovery. Ask: "was RSA or ECDSA broken here?" (no — the nonce discipline was).  -->
+> Assume the strongest attacker. Brute force on a 128-bit key (2^128 guesses) is not practical —
+> real attacks go **around** the math.
 
 ---
 
-## Watch the entropy collapse — live
+## The course's lens: good crypto, broken system
 
-- The Debian bug above isn't special-cased math — it's a **keyspace** failure
-- Shrink the seed source to ~32,768 possible values and the strongest algorithm
-  downstream can't save you
-- Same shape as Snake Oil squares #4 and #9 — "seeded from the clock," "our session
-  tokens are randomly generated, so they can't be guessed"
-- This is what square **#23** ("we follow current NIST key-length guidance, so our use
-  of cryptography is fine") leaves out — and it's the Exhibit's exact thesis in Part 3
+Every week takes **one sound primitive** and shows **one real way a system breaks it**.
+
+| How systems break | Real example |
+|---|---|
+| **Key management** — key hardcoded or stored next to the data | Keys committed to a repository |
+| **Bad randomness** — predictable seeds | Debian OpenSSL (2008): only ~32,768 keys |
+| **Protocol misuse** — reused nonce, encryption without integrity | PS3 signing key recovered (2010) |
+| **Side channels** — timing, error messages | Padding oracle (Week 6) |
+| **Implementation bugs** | Heartbleed (2014) leaked memory |
+
+<!-- Write on the board: "Textbook-secure primitive, real-system failure." Nobody in this course breaks AES or factors RSA; every break is a decision made around a sound primitive. -->
+
+---
+
+## Try it: crack a key that was never really random
+
+- Debian's OpenSSL bug cut the randomness: every key came from ~32,768 possible seeds
+- The algorithm was fine — the **seed** was guessable
+- Open the simulation, pick a target, press **Run the brute force**, and watch it recover the key
 
 ![Two zones sharing one comparison point. Top: the intended design expands a seed assumed to be one of 2^128 possible values into a private key, then publishes a one-way commitment to it -- safe only if that assumption holds. Bottom: in the real deployment the seed actually comes from a narrow, guessable source such as a process ID, so an attacker who only ever sees the published commitment runs every one of the roughly 32,768 real candidates through the identical expand and commit functions, compares each result against that published commitment, and recovers the exact private key in under a second.](img/entropy-collapse.svg)
 
@@ -170,98 +117,55 @@ environments, no rotation or revocation path.
 seed-crack
 ```
 
-<!-- expand()/commit() in the sim are toy mixers, not real HKDF/SHA-256 — say so explicitly, same disclaimer as Week 3's toy hash. What's real: the brute-force loop actually runs in the browser, and Verifier B's "years needed" figure is computed live from the exact candidates/sec that loop just measured, not quoted from a table. To make the search-range slider fail, don't nudge it just below the real range — TRUE_SEED is uniform in that range, so near the boundary a "wrong" guess still succeeds most of the time (a genuine coin flip right at the edge, worth naming out loud). Drag it down to roughly a quarter of the real range instead, run it (misses), then push it back to the real range or above (recovers the exact key in well under a second) — that flip is this slide's version of "textbook-secure primitive, real-system failure": expand()/commit() are never the problem, the seed is. Close the loop explicitly to Part 3: the sim is a live refutation of square #23 in the one failure category (randomness/entropy) the Exhibit never names.  -->
+<!-- This is worksheet Part A3: everyone screenshots KEY RECOVERED. expand()/commit() are toy mixers, not real HKDF/SHA-256 — say so. The brute-force loop really runs in the browser, and the "years needed" figure is computed from the speed it just measured. To show a miss, drag the search range down to about a quarter of the real range, run it, then push it back up. Bingo #4 and #9 surface here. -->
 
 ---
 
-## This week's break: an AI that's never technically wrong
+## Threat model in 4 steps — the notes app
 
-- No primitive has been taught yet — nothing to exploit in code
-- Instead: a real, professionally-worded AI answer to *"why does
-  textbook-secure crypto fail in real systems?"*
-- Every individual factual claim in it is **true**
-- It still has exactly **one systematic, load-bearing gap**
+1. **Assets** — notes, the database key, backups, the recovery key
+2. **Attackers** — outsider, a hacked app server, an ops-team insider
+3. **Trust boundaries** — browser → server · server → database · server → backup/ops · key store
+4. **Each risk** → control → assumption → what is still left
 
-> Finding that gap *is* this week's exploit — a reasoning exploit instead
-> of a code exploit.
+| Risk | Control | Assumption | Still left |
+|---|---|---|---|
+| Backups *and* the key go to the same ops team | Keep the key in a separate key store | Key-store access is limited and logged | Lose the key = backups unrecoverable |
 
-<!-- Set up Part 3 of the worksheet before they read the Exhibit. This is the pattern that recurs every AIR-Sec week from here: distrust confident, correct-sounding AI output; verify against primary literature. Don't reveal the gap yet — let the worksheet do that work.  -->
-
----
-
-## The Exhibit's shape (don't solve it yet)
-
-The AI's answer explains real-world crypto failure entirely in terms of:
-
-- Insufficient **key length** (DES-56, RSA-1024)
-- Outdated **algorithm choices** (SHA-1, MD5)
-- "Stay current with NIST key-length guidance" as the fix
-
-It's all correct. It is also **only one of several failure categories** —
-compare it against everything on this slide deck so far.
-
-<!-- Read the Exhibit aloud from the README/worksheet verbatim (or have a student read it) — this is the Snake Oil Bingo trigger moment. Do not tell them the gap categories; the worksheet task is to name them (key management, randomness/entropy, protocol/composition misuse, side channels) and give an example of each.  -->
+<!-- This is worksheet Part A1/A2. Ask: "the database is encrypted — can the app server still read the notes?" (yes, it holds the key; Bingo #13 is the key-next-to-data version). -->
 
 ---
 
-## The correct construction: threat model before you code
+## 🐍 Snake Oil Bingo + the AI Exhibit
 
-Lightweight process, applied to a system that handles cryptographic keys:
+- Each table draws a **5 × 5 grid**, centre = FREE, and writes the myth numbers **1–24** in any order
+- Mark a square when its myth comes up — in **any** slide today, or while the Exhibit is read aloud
+- A square counts only when your table gives the **one-line technical reason** it's wrong
+- **5 verified squares in a line = BINGO**
 
-1. **Assets** — what needs protecting (keys, plaintext, session tokens)
-2. **Adversaries** — who's attacking, what can they see/touch
-3. **Attack surface** — every trust boundary the assets cross
-4. **Ask, at each primitive:** what assumption does this rely on, and does
-   this system actually uphold it?
+**The Exhibit** (worksheet Part 3): a real AI answer to *"why does textbook-secure crypto fail in
+real systems?"* Every sentence is true — but it leaves something big out. Even-ID (AIR-Sec)
+students audit it in the worksheet.
 
-<!-- This is the antidote to the Exhibit's gap and the antidote to "textbook-secure ≠ system-secure" in general. Walk a mini example on the board: a login form's password — asset, adversary (network sniffer, DB thief), boundary (browser→server, server→DB). This process is what Week 4's project design doc will require.  -->
-
----
-
-## 🐍 Signature game — Snake Oil Bingo
-
-- Everyone gets a bingo card of common crypto myths: *"military-grade
-  encryption," "unbreakable 256-bit security," "quantum-proof because the
-  key is long enough"*
-- As the Exhibit is read aloud and picked apart, mark a square the moment
-  its myth surfaces
-- A square only counts once your table gives the one-line **technical**
-  reason it's wrong
-- First verified BINGO wins
-
-<!-- Hand the cards out at the START of the lecture, not at this slide. Verified against the shipped cards (instructor/week01-snake-oil-bingo-key.md §3): the Exhibit read-aloud plus the square you model yourself puts only 3 squares up on any card — one line short of the 4 non-FREE squares any BINGO line needs, so a win is impossible on all six cards if cards come out only now. The trust-boundary, Debian RNG and PS3 slides earlier in this same lecture put the count to ~11 after those examples, which makes a line arithmetically reachable on 2 of 6 cards — still tight, so budget the prompt bank in the instructor key. If you forgot to hand cards out early, pre-announce a reduced win condition (e.g. any 4 verified squares, not necessarily in a line) before play starts — never after a table is one square away. Model one square yourself first: "military-grade encryption" → not a real technical term, no standard defines "military-grade." Circulate to verify squares — a table must give the real reason, not just "that sounds fake."  -->
+<!-- Project the myth list (instructor/print/week01-bingo-no-print-slides.pdf) while tables write their grids; the reasons are in instructor/week01-snake-oil-bingo-key.md. Read the Exhibit aloud from the worksheet. Don't reveal its gap — that is the AIR-Sec task. -->
 
 ---
 
-## Lab today — Worksheet 1
+## Worksheet 1 — warm-up week
 
-> **100-minute class; no Docker target or flag.**
-
-- **Common 60 (Part A):** who sees the notes and the key (A1), two risk/control rows (A2),
-  and the seed-crack simulation with a screenshot (A3).
-- **Conventional 40:** the six original short-answer questions, if assigned.
-- **AIR-Sec 40:** Audit the AI 20 + EiPE 10 + Prompt Problem 10, if assigned.
-- Viva is formative/authenticity feedback within the criteria, with no separate points.
-- Finish detailed answers after class and submit the PDF per SUBMISSION.md.
-
-<!-- The original question bodies and AI exhibit remain available. Each student submits
-common work and only the assigned format. Bingo/deep dives can continue outside the contact block. -->
+- **Part A (everyone, 60):** who sees the notes and the key (A1) · two risk/control rows (A2) ·
+  seed-crack screenshot + 3 short answers (A3)
+- **Your form (40):** student ID ends in an **odd** digit → Conventional · **even** → AIR-Sec
+- Thai or English answers are fine · no Docker, no flag
+- Hand in `Wk01_<StudentID>.pdf` at `learn.zcr.ai/submit` by **Sun 8 Nov 23:59**
 
 ---
 
 ## Takeaway
 
-- **"Cryptographically secure" is a claim about math, not about your system**
-- Real failures cluster at the boundary: bad randomness, key management,
-  protocol misuse, side channels — rarely the primitive itself
-- **Textbook-secure primitive, real-system failure** — this is the lens for
-  every remaining week
+- **"Cryptographically secure" is a claim about the math, not about your system**
+- Systems break at the edges: keys, randomness, protocol use, side channels, bugs
+- Next week: **hash functions** — we crack a leaked password database in minutes,
+  then fix it with salt + a slow KDF (Docker lab — bring a laptop)
 
-<!-- Cold-call: "if AES-256 and RSA-4096 are both unbroken and the system still gets compromised, where does security actually live?" (answer: in the decisions around the primitive — the theme of the whole course).  -->
-
----
-
-# Questions?
-Next week: Cryptographic hash functions
-
-<!-- Cliffhanger: "SHA-256 has never been cracked. Next week we crack an entire password database anyway — in minutes, with a GPU. The hash function isn't the problem." Remind: bring a laptop, Week 2 has a Docker lab. -->
+<!-- Cold-call: "AES-256 and RSA-4096 are unbroken and the system was still compromised — where does security live?" (in the decisions around the primitive). Remind them to install Git, Docker and Python and fork the repo before Week 2. -->
