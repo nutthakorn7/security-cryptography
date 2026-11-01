@@ -43,18 +43,10 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 ![Left, symmetric: Alice and Bob hold the same shared key and send ciphertext between them. Right, asymmetric: Alice locks the message with Bob's public key, which anyone can use, and only Bob's private key can open it.](img/w1-sym-asym.svg)
 
-**Symmetric** — one shared key locks and unlocks
+- **Symmetric:** one shared key — fast (AES). Hard part: sharing the key safely.
+- **Asymmetric:** public key locks, private key opens — slower (RSA, elliptic curves); used to agree on keys and to sign.
 
-- Fast; used for bulk data. Examples: **AES**, ChaCha20
-- Problem: how do both sides get the same key safely?
-
-**Asymmetric** — a key pair: **public** key (share it) + **private** key (never share it)
-
-- Encrypt with Bob's public key → only Bob's private key decrypts
-- Slower; used to agree on keys and to sign. Examples: **RSA**, elliptic curves
-
-> Real systems use **both** (hybrid): asymmetric to agree on a key, symmetric for the data —
-> this is what HTTPS/TLS does.
+> Real systems use **both**: asymmetric to agree on a key, symmetric for the data (HTTPS/TLS).
 
 <!-- Draw Alice and Bob on the board: one key between them (symmetric), then Bob's padlock that anyone can close but only Bob can open (asymmetric). No math today. -->
 
@@ -85,8 +77,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 | Chosen plaintext | Can make your system encrypt what they pick |
 | Chosen ciphertext | Can send changed ciphertext and watch the reaction (Week 6) |
 
-> Assume the strongest attacker. Brute force on a 128-bit key (2^128 guesses) is not practical —
-> real attacks go **around** the math.
+> Brute force on a 128-bit key is not practical — real attacks go **around** the math.
 
 ---
 
@@ -126,10 +117,7 @@ seed-crack
 
 ![The notes app: the user's browser talks over HTTPS to the app server, which reads and writes the encrypted note database, uses the key store, and sends encrypted backups to an ops team that also has a key-recovery path. The worksheet asks who can see the plaintext and the key, and where the trust boundaries are.](img/w1-notes-app.svg)
 
-1. **Assets** — notes, the database key, backups, the recovery key
-2. **Attackers** — outsider, a hacked app server, an ops-team insider
-3. **Trust boundaries** — browser → server · server → database · server → backup/ops · key store
-4. **Each risk** → control → assumption → what is still left
+**Assets → attackers → trust boundaries → each risk: control · assumption · still left**
 
 | Risk | Control | Assumption | Still left |
 |---|---|---|---|
@@ -141,16 +129,10 @@ seed-crack
 
 ## 🐍 Snake Oil Bingo + the AI Exhibit
 
-- Each table draws a **5 × 5 grid**, centre = FREE, and writes the myth numbers **1–24** in any order
-- Mark a square when its myth comes up — in **any** slide today, or while the Exhibit is read aloud
-- A square counts only when your table gives the **one-line technical reason** it's wrong
-- **5 verified squares in a line = BINGO**
-
 ![An example Snake Oil Bingo grid: five by five squares with the myth numbers 1 to 24 in any order and FREE in the centre; two squares are ticked as verified. Five verified squares in a row, column or diagonal wins.](img/w1-bingo-grid.svg)
 
-**The Exhibit** (worksheet Part 3): a real AI answer to *"why does textbook-secure crypto fail in
-real systems?"* Every sentence is true — but it leaves something big out. Even-ID (AIR-Sec)
-students audit it in the worksheet.
+- Mark a myth when it comes up today; it counts only with a **one-line technical reason**
+- **The Exhibit** (worksheet Part 3): an AI answer where every sentence is true — but something big is missing
 
 <!-- Project the myth list (instructor/print/week01-bingo-no-print-slides.pdf) while tables write their grids; the reasons are in instructor/week01-snake-oil-bingo-key.md. Read the Exhibit aloud from the worksheet. Don't reveal its gap — that is the AIR-Sec task. -->
 
