@@ -1,20 +1,21 @@
-# Weekly Quiz — Week 1 (Security Mindset & Threat-Modelling a Cryptographic System)
+# Weekly Quiz — Week 1 (Cryptography Basics & the Security Mindset)
 
-**~10 min · 6 questions · low-stakes** (lowest scores dropped). Individual.
+**~10 min · 6 questions · low-stakes** (lowest scores dropped). Individual. Taken at the start of
+Week 2 as a recap of Week 1. You may answer the short question in Thai or English.
 
 **Name:** ____________  **Student ID:** ________
 
 ## MCQ (5 × 1)
-1. Calling a primitive **"cryptographically secure"** promises:
-   a) that no attacker will ever break it, however powerful  b) that any system calling it correctly is secure overall  c) that it resists a defined attack class under stated assumptions  d) that NIST has approved it for government and military use
-2. In this week's lightweight **threat-modelling** process, the question you ask at each primitive is:
-   a) which assumption it relies on, and whether the system upholds it  b) whether its key length still meets current NIST minimum guidance  c) whether the library implementing it has all vendor patches applied  d) how many years a brute-force attack against it would need
-3. On its own, **"we encrypted the data"** is a claim about:
-   a) confidentiality and integrity  b) confidentiality and availability  c) all three CIA properties  d) confidentiality only
-4. The **PS3 firmware-signing** break (fail0verflow, 27C3) happened because:
-   a) ECDSA turned out to be mathematically broken  b) the same nonce was reused across signatures  c) the signing key was far too short  d) the firmware hash was MD5, which collides
-5. In a system handling cryptographic keys, a **trust boundary** is:
-   a) any point where control over key material changes hands  b) the network perimeter between the LAN and the internet  c) the line between encrypted and plaintext database fields  d) the date on which a key is due for rotation
+1. Kerckhoffs' principle says a cryptosystem should stay secure even if the attacker knows everything except:
+   a) the ciphertext  b) the algorithm  c) the key  d) the length of the message
+2. Alice wants to send Bob a secret message using **asymmetric** encryption. Which key does she use to lock (encrypt) it?
+   a) Alice's private key  b) Bob's public key  c) Bob's private key  d) a password they both memorised
+3. A website must store its users' passwords. Which tool is right for this job?
+   a) AES encryption with one key for the whole table  b) one plain SHA-256 hash per password  c) a digital signature on each password  d) a slow password KDF such as bcrypt or Argon2
+4. In the seed-crack simulation, your browser recovered the private key in well under a second. What went wrong?
+   a) the hash used in the design was broken  b) the private key was too short for its algorithm  c) the key came from a seed with only a few thousand possible values  d) the server sent the private key to the browser
+5. In the notes app, the note database is encrypted and the app server uses the key to read it. Can the app server see the plaintext notes?
+   a) yes — it holds the key and decrypts the notes to show them  b) no — encryption hides the notes from everyone  c) only if the user's browser sends it the key  d) only while the nightly backup is running
 
 ## Short answer (1 × 3)
-6. Name **one** category of real-world cryptographic failure that a longer key or a newer algorithm would do nothing to prevent. Give one concrete example of it, and say in one sentence why more key bits do not help.
+6. AES-256 and RSA-4096 have no known practical attack, yet systems that use them still get broken. In 2–3 sentences: name **one** way this happens, give **one** example (from this week's slides, the seed-crack activity or your own idea), and say why a longer key would not help.
