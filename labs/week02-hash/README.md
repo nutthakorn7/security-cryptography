@@ -9,12 +9,14 @@ Hash Without a Salt / With a Predictable Salt)
 
 ## This week — 100-minute class and assigned assessment
 
-1. **Before class** — Prepare Docker and the host tools listed in SUBMISSION.md before class; complete first downloads before the contact block. Read the relevant recap.
-2. **In class (100 minutes)** — 10 quiz/review + 10 brief + 60 shared practice/analysis +
-   15 debrief + 5 evidence capture. Week 1 starts with orientation/review, not a quiz on
-   material not yet taught. Slides: `slides/week02.md`. The full deck includes reference/deep-dive
-   material; the instructor selects the core explanation for this block.
-3. **Common work (60 points)** — Recover the admin password from the supplied MD5 store and demonstrate the login/session flow. Compare the bcrypt store and verification code; explain salting, work factor and why a weak password remains guessable.
+1. **Before class** — install **Docker** and run `docker compose up -d` once at home (the first run
+   downloads an image and installs packages). The lab scripts run *inside* the containers, so you
+   do **not** need Python on your own laptop. Read the Week 1 recap.
+2. **In class (100 minutes)** — 10-minute Week 1 quiz + short brief + guided lab (crack the leaked
+   file, capture the flag, show the fix) + debrief + evidence capture. Slides: `slides/week02.md`.
+3. **Common work (60 points)** — crack the leaked MD5 store with `crack.py`, log in as `admin` and
+   capture the flag with `login.py`, then run `exploit.py` to show the same attack finds nothing
+   against the bcrypt store. Explain why.
 4. **Assigned format (40 points)** — complete **either** the Conventional written questions
    **or** AIR-Sec (Audit the AI 20 + EiPE 10 + Prompt Problem 10). Both versions total 100.
    Viva checks support feedback/authenticity within the criteria; they add no separate marks.
@@ -24,14 +26,13 @@ Hash Without a Salt / With a Predictable Salt)
    has no separate code-fix/GitHub submission.
 
 ## Objectives
-- State the three hash security properties (preimage, second-preimage, collision resistance) and
-  name an attack each one prevents.
+- Say what a hash function gives you (fixed-size, one-way, deterministic) and why we store the
+  hash of a password, not the password.
 - Explain why an **unsalted, fast** hash (MD5/SHA-256) is a poor way to store passwords, and
   crack one in practice with an offline dictionary attack.
-- Explain what a **per-user salt** defeats (precomputed rainbow tables, shared-hash correlation)
-  and why it need not be secret.
-- Explain what a slow KDF's **work factor / cost** controls, and verify empirically that the
-  fast dictionary technique that broke the MD5 store finds nothing against a bcrypt store.
+- Explain what a **per-user salt** defeats and why it need not be secret.
+- Explain what a slow password hash's **cost** controls, and verify by running that the fast
+  attack that broke the MD5 store finds nothing against a bcrypt store.
 
 ## 🔓 Cracking game — "Crack the Leaked DB"
 A user database leaked. Two versions of the same store, same usernames and passwords, different
@@ -69,29 +70,29 @@ guess. bcrypt buys you **work factor**, not invincibility; pair it with a strong
 This is exactly the cost/work-factor argument in worksheet Q3.
 
 ## Run it
+
+Run the scripts **inside** the container, so no Python is needed on your laptop:
+
 ```bash
 cd labs/week02-hash
-docker compose up -d          # vulnerable_app.py on :8094, fixed_app.py on :8095
-python exploit.py             # PASS on :8094 (flag), PASS on :8095 (fast technique finds nothing); exit 0
+docker compose up -d                              # :8094 vulnerable, :8095 fixed
+docker compose logs vulnerable | grep "Running on"  # wait until the server is up
+docker compose exec vulnerable python crack.py       # recover every password from the MD5 file
+docker compose exec vulnerable python login.py sunshine2021   # log in as admin -> flag
+docker compose exec vulnerable python exploit.py     # PASS :8094 (flag) + PASS :8095 (0 matches)
 ```
-`exploit.py` needs only `requests` on the host (its bcrypt-store check uses `hashlib` + a string
-compare — no bcrypt needed to *run the exploit*; bcrypt is only needed inside the fixed
-container).
 
-Flag configuration: use an instructor-supplied personalised `.env` if available. Otherwise
-record the shared demo flag with your own evidence and explanation; no automatic roster
-validation is assumed.
+(You can also run `python exploit.py` on the host if you have Python 3 with `requests`; running
+inside the container avoids any host-Python setup.)
 
-**Verified:** `docker compose up -d` followed by `python exploit.py` was run against live
-containers on this machine — the admin MD5 was cracked from the 101-word wordlist in ~0.1 ms to
-`sunshine2021`, the cracked login was accepted and `GET /admin` returned the flag (PASS on
-`:8094`), and the md5-precompute technique matched `0/8` bcrypt rows (PASS on `:8095`); the
-script exited `0`. The `FLAG_HASH` env-var override was confirmed to change the captured flag
-(re-ran with `FLAG_HASH=FLAG{hash_test_9z}` and that exact value came back). Negative controls
-confirmed: `/admin` with no session → `403`; a wrong password → `403` on both apps. A manual
-`curl` login+/admin against the **fixed** app on `:8095` with the real cracked password returned
-the flag, confirming the fixed app's endpoints work (bcrypt only *raises the cost* of guessing,
-it doesn't reject the correct password).
+Flag configuration: the shared demo flag is fine — record the value from your own run with your
+own evidence and explanation; no personal flag is required this week.
+
+**Verified (2026-11-02):** `docker compose up -d`, then `crack.py`, `login.py sunshine2021` and
+`exploit.py` were all run inside live containers on this machine. `crack.py` recovered all 8
+passwords (admin → `sunshine2021`) in ~0.09 ms; `login.py` showed `/login` → 200, `/admin` with
+the session → the flag, and `/admin` with no cookie → 403; `exploit.py` printed both `PASS` lines
+and exited 0 (md5 technique matched 0/8 bcrypt rows). A wrong password → 403 on both apps.
 
 ## Deliverable
 

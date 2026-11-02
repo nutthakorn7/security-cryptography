@@ -1,20 +1,21 @@
 # Weekly Quiz — Week 2 (Hash Functions)
 
 **~10 min · 6 questions · low-stakes** (lowest scores dropped). Individual.
+Taken at the start of Week 3 as a recap of Week 2.
 
 **Name:** ____________  **Student ID:** ________
 
 ## MCQ (5 × 1)
-1. Given only a digest **h**, an attacker who could find *any* input **m** with `H(m) = h` would be defeating:
-   a) collision resistance  b) second-preimage resistance  c) preimage resistance  d) the avalanche effect
-2. An unsalted MD5 password store leaks and the passwords fall in milliseconds. Which hash security property actually failed?
-   a) none of them — the properties hold; the attacker simply guesses and hashes at enormous speed  b) collision resistance, since practical MD5 collisions exist  c) preimage resistance, since an MD5 digest can be inverted directly  d) second-preimage resistance, since the attacker already holds one input
-3. A per-user random **salt** is stored in the clear, right next to the hash. That is acceptable because the salt's job is to:
-   a) keep the digest secret from anyone who steals the database file  b) make each hash slower to compute  c) repair the underlying hash's known collision weakness  d) make every stored hash unique, so one precomputed table cannot cover the whole file
-4. Raising a slow KDF's **cost / work factor** hurts the attacker far more than the defender because:
-   a) it lengthens the salt, so a rainbow table has to be bigger  b) the defender pays it once per real login, the attacker pays it per guess, per row  c) it makes the hash collision-resistant as well as slow  d) it stops the hash being computed offline, forcing the attacker through the login page
-5. A leaked password store's rows all begin `$2b$…`. You run one precomputed MD5 table over the wordlist against it. The result is:
-   a) it cracks every row whose password is in the wordlist  b) it cracks only the `admin` row  c) it matches nothing, and no attack could ever recover these passwords  d) it matches nothing, but a slow per-hash bcrypt attack could still find a wordlist password
+1. You store a password as its hash. An attacker steals the file. What do they actually do to find a password?
+   a) they run the hash backwards to get the password  b) they guess common passwords, hash each guess, and look for a match  c) they ask the server to decrypt it  d) nothing — a hash cannot be attacked
+2. An unsalted MD5 password file leaks and the passwords fall in milliseconds. What went wrong?
+   a) nothing is "broken" about MD5 here — it is just fast and unsalted, so guessing is cheap  b) MD5 was reversed directly  c) the attacker found two files with the same hash  d) the salt was guessed
+3. A per-user random **salt** is stored in the clear, right next to the hash. That is fine because the salt's job is to:
+   a) keep the hash secret from whoever steals the file  b) make the hash slower to compute  c) fix MD5's known weaknesses  d) make each stored hash unique, so one list of guesses can't crack the whole file at once
+4. A slow password hash (bcrypt/Argon2) has a tunable **cost**. Raising it hurts the attacker far more than the real user because:
+   a) it makes the salt longer  b) the real user pays it once per login; the attacker pays it on every guess, for every user  c) it turns the hash collision-resistant  d) it blocks offline guessing completely
+5. A leaked password file's rows all start with `$2b$` (bcrypt). You run one list of MD5-hashed guesses against it. The result is:
+   a) it cracks every row whose password is in the list  b) it cracks only the admin row  c) it matches nothing, and these passwords can never be recovered  d) it matches nothing, but a much slower per-user bcrypt attack could still find a weak password
 
 ## Short answer (1 × 3)
-6. A developer says: *"I store `SHA-256(password)` with no salt, and SHA-256 has never been broken, so I'm fine."* In your own words, explain the mechanism that makes them wrong: what does an attacker who steals that file actually do, and what does (a) a per-user random salt and (b) a slow KDF each change about that work?
+6. A developer says: *"I store `SHA-256(password)` with no salt, and SHA-256 has never been broken, so I'm fine."* In your own words: what does an attacker who steals that file actually do, and what does (a) a per-user salt and (b) a slow password hash each change about that work?
