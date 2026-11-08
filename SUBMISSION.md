@@ -9,7 +9,7 @@
 | Course material — worksheets, lab guides | **`learn.zcr.ai/learn/cryptography`** — no sign-in needed |
 | Weekly quiz | **`learn.zcr.ai/quiz`** — the one-time quiz code the instructor gives you |
 | Worksheet PDFs, project report | **`learn.zcr.ai/submit`** — the submission code in your `[02005104 Crypto]` KMITL email |
-| Code fixes (Wk12) | **GitHub** — your own fork of this course's repo |
+| Code fixes (Wk12 only) | **GitHub** — your own fork of this course's repo (not needed before Week 12) |
 
 > **Hand in on the course platform only.** Google Classroom carries announcements and the weekly
 > outline. Nothing is submitted there, and there is no Google Form for this course. The instructor
@@ -17,7 +17,7 @@
 
 This course has its **own** GitHub repo, separate from the companion
 `software-security` course's, with its own 20-week, 100-minute timetable and assessment policy.
-Fork *this* course's repo; work submitted against the wrong course cannot be graded here. The
+For Week 12, fork *this* course's repo (not the other one); work submitted against the wrong course cannot be graded here. The
 platform files every quiz and every hand-in under the course it belongs to, so the code issued
 to you for this course is what puts your work in *this* class.
 
@@ -27,19 +27,27 @@ authorized-use policy, [`ETHICS.md`](ETHICS.md).
 ---
 
 ## One-time setup (before Week 2)
-**From Week 2, every lab starts with `cd labs/weekNN-…`, so you need the repository on your own
-machine before Week 2. Week 1 needs no Docker target, and the course pages can be read without this step.**
+**From Week 2, every lab starts with `cd labs/weekNN-…`, so you need the repository's files on your own
+machine before Week 2. You do not need a GitHub account or a fork until Week 12. Week 1 needs no Docker
+target, and the course pages can be read without this step.**
+(ก่อน Week 2 ต้องมีไฟล์ของ repo ในเครื่อง ไม่ต้องมีบัญชี GitHub และไม่ต้อง fork จนถึง Week 12)
 
-1. Create a GitHub account, then **fork** this course's repo:
-   <https://github.com/nutthakorn7/security-cryptography>
-2. Clone your fork and check it out:
-   ```bash
-   git clone https://github.com/<your-github-username>/security-cryptography.git
-   cd security-cryptography
-   ```
-   Then install Docker with Compose v2 and check that it runs before Week 2.
-3. Read the material at **`learn.zcr.ai/learn/cryptography/`** — no sign-in needed.
-4. Keep your codes private. Your **submission codes** are in your `[02005104 Crypto]` KMITL email
+1. Install **Docker Desktop** (or Docker Engine with Compose v2), open it, and wait until it says
+   **Engine running**: <https://www.docker.com/products/docker-desktop/>
+2. Get the files. The easiest way needs no account: open
+   <https://github.com/nutthakorn7/security-cryptography>, click the green **Code** button, choose
+   **Download ZIP**, and unzip it. You get a folder named `security-cryptography-master`.
+   (If you already use git, `git clone https://github.com/nutthakorn7/security-cryptography.git` works
+   too: the repo is public, so no fork is needed.)
+3. Each week, open a Terminal inside that week's folder, for example `labs/week02-hash`.
+   **Windows:** open the folder in File Explorer, right-click an empty spot, choose **Open in Terminal**
+   (no such menu? hold Shift, right-click, choose **Open PowerShell window here**).
+   **Mac:** open Terminal, type `cd` and a space, drag the folder into the window, press Enter.
+4. Read the material at **`learn.zcr.ai/learn/cryptography/`** — no sign-in needed.
+5. **Week 12 only:** before Week 12, create a GitHub account and **fork** the repo above, then clone
+   *your fork* (`git clone https://github.com/<your-github-username>/security-cryptography.git`) and
+   push your branch `wk12` from there. The ZIP is not a git repository, so use `git clone` for Week 12.
+6. Keep your codes private. Your **submission codes** are in your `[02005104 Crypto]` KMITL email
    (ask the instructor for a printed slip if you cannot find it), and the instructor gives out the
    **quiz code**. These codes are the only credential you need, and they are what files your work under
    *this* course. There is no account to create and no password to remember.
@@ -116,9 +124,9 @@ must be your own; a flag alone does not establish that you performed or understo
 
 ### เตรียมเครื่องและวิธีใช้คำสั่ง
 
-ติดตั้ง Git, Docker Desktop หรือ Docker Engine พร้อม Compose v2 และ Python 3 แล้ว fork/clone repository ตาม One-time setup ด้านบน เปิด Docker ให้พร้อมก่อนเริ่ม
+ติดตั้ง Docker Desktop หรือ Docker Engine พร้อม Compose v2 แล้วโหลดไฟล์ของ repository ตาม One-time setup ด้านบน (ZIP หรือ `git clone` ไม่ต้อง fork ยกเว้น W12 ซึ่งต้องใช้ Git และบัญชี GitHub) เปิด Docker ให้พร้อมก่อนเริ่ม **W02 และ W03 ไม่ต้องใช้ Python บนเครื่อง** เพราะสคริปต์รันใน container ส่วนสัปดาห์ที่สั่งให้รัน `python exploit.py` บนเครื่องต้องมี Python 3 ด้วย
 
-จากโฟลเดอร์หลัก `security-cryptography` สร้าง Python environment **ครั้งเดียว** สำหรับรันสคริปต์บนเครื่อง:
+จากโฟลเดอร์หลัก `security-cryptography` สร้าง Python environment **ครั้งเดียว** สำหรับสัปดาห์ที่รันสคริปต์บนเครื่อง (ข้ามได้ถ้าตอนนี้ทำแค่ W02–W03):
 
 ```bash
 python3 -m venv .venv
@@ -130,7 +138,7 @@ docker info
 
 คำสั่งในคู่มือนี้ใช้ terminal แบบ bash/zsh บน macOS/Linux; บน Windows ใช้ WSL2 พร้อมเปิด Docker Desktop integration สำหรับ WSL หรือปรับคำสั่ง activate ให้ตรง shell ของตนเอง เมื่อเปิด terminal ใหม่ ให้กลับมาโฟลเดอร์ repo แล้ว `source .venv/bin/activate` อีกครั้ง ไม่ต้องสร้าง environment ใหม่
 
-**ทุกชุดคำสั่งประจำสัปดาห์เริ่มจากโฟลเดอร์หลักของ repo** หากอยู่ใน `labs/weekNN-...` ของสัปดาห์ก่อน ให้ `cd ../..` ก่อนเลือกสัปดาห์ถัดไป สำหรับ Lab ที่ให้รัน `python exploit.py` สคริปต์รันบนเครื่องของนักศึกษา ส่วน target รันใน Docker; ไม่ต้องติดตั้ง Flask หรือ bcrypt บนเครื่องเพื่อรันสคริปต์เหล่านี้
+**ทุกชุดคำสั่งประจำสัปดาห์เริ่มจากโฟลเดอร์หลักของ repo** หากอยู่ใน `labs/weekNN-...` ของสัปดาห์ก่อน ให้ `cd ../..` ก่อนเลือกสัปดาห์ถัดไป W02 และ W03 รันสคริปต์ใน container ด้วย `docker compose exec` ส่วน Lab ที่ให้รัน `python exploit.py` สคริปต์รันบนเครื่องของนักศึกษา และ target รันใน Docker; ไม่ต้องติดตั้ง Flask หรือ bcrypt บนเครื่องเพื่อรันสคริปต์เหล่านี้
 
 - **Vulnerable** คือโหมดสำหรับสังเกตปัญหา; **fixed** คือ reference สำหรับเปรียบเทียบผล ยังต้องอ่านข้อจำกัดของแต่ละ demo และอธิบายเหตุผลด้วยตนเอง
 - `up -d` รันเบื้องหลัง; ดูความพร้อมด้วย `docker compose ps -a` และ `docker compose logs` การติดตั้ง dependency ใน container ครั้งแรกอาจใช้เวลา
@@ -168,33 +176,39 @@ docker info
 
 ## W02 — Hash: เดารหัสผ่านจาก MD5 และเทียบกับ bcrypt
 
-**เรียนรู้อะไร:** ใช้รายการคำศัพท์โจมตีฐานข้อมูลรหัสผ่านที่เก็บเป็น MD5 โดยไม่มี salt แล้วใช้รหัสผ่านที่หาได้เข้าสู่ระบบ เปรียบเทียบกับฐานข้อมูล bcrypt เพื่ออธิบายผลของ salt และต้นทุนการคำนวณ
+**เรียนรู้อะไร:** ใช้รายการคำศัพท์ (wordlist) โจมตีไฟล์รหัสผ่านที่รั่วออกมาซึ่งเก็บเป็น MD5 โดยไม่มี salt แล้วใช้รหัสผ่านที่หาได้เข้าสู่ระบบ จากนั้นดูว่าวิธีเดียวกันใช้กับ bcrypt ไม่ได้ เพื่ออธิบายผลของ salt และการ hash ที่ช้า
 
 เอกสาร: [README](labs/week02-hash/README.md) · [Worksheet](labs/week02-hash/worksheet.md)
 
-**คำสั่งรันจาก repo root:** ต้องมี Docker และ Python พร้อมแพ็กเกจ `requests` บนเครื่องก่อน `exploit.py` รันบนเครื่อง ส่วนแอปเป้าหมายรันใน Docker
+**คำสั่งรันจาก repo root:** ต้องมี Docker เท่านั้น สคริปต์รันใน container จึงไม่ต้องลง Python บนเครื่อง
 
 ```bash
 cd labs/week02-hash
 docker compose up -d
-python exploit.py
+docker compose logs vulnerable
+docker compose exec vulnerable python crack.py
+docker compose exec vulnerable python login.py sunshine2021
+docker compose exec vulnerable python exploit.py
 ```
 
-แอป vulnerable อยู่ที่ `http://localhost:8094` และ fixed อยู่ที่ `http://localhost:8095` เปิดสองบริการไว้ระหว่างทำโจทย์และเก็บหลักฐาน หลังทำครบจึงรัน:
+แอป vulnerable อยู่ที่ `http://localhost:8094` และ fixed อยู่ที่ `http://localhost:8095` ครั้งแรกต้องรอหลายนาที ให้ `docker compose logs vulnerable` ขึ้นบรรทัด `Running on http://127.0.0.1:8094` ก่อนรันสามคำสั่งหลัง (ถ้าใช้ Docker ไม่ได้ ใช้ <https://learn.zcr.ai/sim/hash-crack> แทน) เก็บหลักฐานให้ครบก่อนปิด:
 
 ```bash
 docker compose down
 cd ../..
 ```
 
-**ผลที่ต้องตรวจ:** สคริปต์แสดงผลการโจมตี vulnerable สำเร็จ ได้ flag และตรวจ fixed ผ่านด้วย exit code `0` จากนั้นทำการทดลองใน worksheet เพิ่มเติม ได้แก่ หา password และจับเวลาคร่าว ๆ ด้วยตนเอง เทียบคำขอที่มี session cookie กับคำขอที่ไม่มี cookie และลองใช้ตาราง MD5 เดิมกับข้อมูล bcrypt แล้วอธิบายผล ไม่ควรสรุปว่า bcrypt ถอดไม่ได้ทุกกรณี
+**ผลที่ต้องตรวจ:**
 
-**หลักฐานส่งใน PDF:**
+- `crack.py` แสดงรหัสผ่านที่เดาได้ครบ 8 จาก 8 คนในเวลาน้อยกว่าหนึ่งวินาที
+- `login.py` แสดงว่าเข้าสู่ระบบเป็น admin ได้และได้ flag ส่วนคำขอที่ไม่มี session cookie ถูกปฏิเสธด้วย `403`
+- `exploit.py` ลงท้ายด้วยบรรทัด `PASS` สองบรรทัด: vulnerable ได้ flag และ fixed (bcrypt) ไม่เจอรหัสผ่านเลย
 
-- คำสั่งและภาพผลการหา password พร้อมเวลาที่ใช้โดยประมาณ และบรรทัดโค้ดตรวจ MD5 ที่ worksheet ให้ระบุ
-- ผล `exploit.py` พร้อม flag และผลตรวจ vulnerable/fixed
-- คำสั่งและผลการเรียก endpoint โดยใช้ cookie jar เทียบกับไม่ส่ง cookie ซึ่งกรณีหลังต้องถูกปฏิเสธ
-- ผลทดลองตาราง MD5 กับข้อมูล bcrypt พร้อมคำอธิบายเรื่อง salt, work factor และการตรวจด้วย `checkpw`
+**หลักฐานส่งใน PDF** (ตรงกับใบตอบของสัปดาห์นี้):
+
+- ผลของ `crack.py` และหนึ่งประโยคว่าทำไมจึงเร็ว
+- ผลของ `login.py` (flag และบรรทัด `403`) และหนึ่งประโยคว่าทำไมคำขอที่สามถูกปฏิเสธ
+- สองบรรทัด `PASS` ของ `exploit.py` และคำตอบข้อ a, b, c: ทำไมไฟล์ MD5 ทั้งไฟล์ถูกเดาพร้อมกัน, bcrypt เพิ่มอะไรสองอย่าง, และรหัสผ่านที่อยู่ใน wordlist ยังเดาได้ในที่สุดไหมและแพงตรงไหน
 
 ## W03 — MACs: Length extension และ HMAC
 
