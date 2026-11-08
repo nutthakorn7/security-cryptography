@@ -212,33 +212,34 @@ cd ../..
 
 ## W03 — MACs: Length extension และ HMAC
 
-**เรียนรู้อะไร:** โจมตี MAC แบบ `SHA256(secret || message)` ด้วย length extension และพิสูจน์ว่าการปลอมแบบเดียวกันไม่ผ่าน HMAC-SHA256
+**เรียนรู้อะไร:** เห็นว่าลายเซ็นจับคุกกี้ที่แก้เองได้ แล้วรันสคริปต์ที่ให้มาเพื่อดูว่า MAC แบบ `SHA256(secret || message)` ถูกปลอมได้ และการปลอมแบบเดียวกันไม่ผ่าน HMAC-SHA256
 
 เอกสาร: [README](labs/week03-macs/README.md) · [Worksheet](labs/week03-macs/worksheet.md)
 
-**คำสั่งรันจาก repo root:** ต้องมี Docker และ Python พร้อม `requests` บนเครื่อง ใช้ค่าตั้งต้นของ lab เพื่อให้ความยาว secret ตรงกับสมมติฐานของสคริปต์
+**คำสั่งรันจาก repo root:** ต้องมี Docker เท่านั้น สคริปต์รันใน container จึงไม่ต้องลง Python บนเครื่อง ใช้ค่าตั้งต้นของ lab เพื่อให้ความยาว secret ตรงกับสมมติฐานของสคริปต์
 
 ```bash
 cd labs/week03-macs
 docker compose up -d
-python exploit.py
+docker compose logs
+docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py
 ```
 
-vulnerable อยู่ที่ `http://localhost:8092` และ fixed อยู่ที่ `http://localhost:8093` เก็บหลักฐานและทำคำขอเพิ่มเติมให้ครบก่อนปิด:
+vulnerable อยู่ที่ `http://localhost:8092` และ fixed อยู่ที่ `http://localhost:8093` รอจน log ขึ้น `Running on http://127.0.0.1:8092` และ `:8093` ครบทั้งสองบรรทัด เก็บหลักฐานให้ครบก่อนปิด:
 
 ```bash
 docker compose down
 cd ../..
 ```
 
-**ผลที่ต้องตรวจ:** สคริปต์ใช้ค่าที่ได้รับจากบริการเพื่อสร้างคู่ข้อมูล/ลายเซ็นที่ถูกต่อเติม vulnerable ยอมรับและคืน flag ส่วน fixed ปฏิเสธด้วย HTTP `403` คำนวณ glue padding ด้วยตนเองตาม worksheet และตรวจผลด้วยคำขอ manual ที่ใบงานกำหนด
+**ผลที่ต้องตรวจ:** คุกกี้ที่แก้เองถูกปฏิเสธด้วย `bad signature` สคริปต์ทำให้ vulnerable ยอมรับและคืน flag ส่วน fixed ปฏิเสธด้วย HTTP `403`
 
 **หลักฐานส่งใน PDF:**
 
-- ค่า cookie `data`/`sig` ก่อนโจมตี และข้อความหลัง decode ตามโจทย์
-- ขั้นตอนคำนวณ glue padding และการแสดงช่วงไบต์ที่ใบงานขอ พร้อมคำอธิบายของตนเอง
-- ผลสคริปต์ คู่ข้อมูล/ลายเซ็นที่ปลอมได้ flag และคำสั่ง manual ที่ยืนยันว่า vulnerable ยอมรับ
-- ผล fixed ปฏิเสธการปลอม พร้อมอธิบายว่าทำไม HMAC จึงไม่ใช้โครงสร้างแบบ secret-prefix MAC
+- ค่า cookie `data`/`sig` และข้อความหลัง decode
+- ผล `bad signature` จากคุกกี้ที่แก้เอง
+- บรรทัด `PASS` ทั้งสองบรรทัด พร้อม flag
+- บรรทัด `sig =` ของทั้งสองไฟล์ พร้อมอธิบายด้วยคำของตนเองว่าทำไม HMAC จึงหยุดการปลอมนี้
 
 ## W04 — AES Modes: CBC bit-flipping เทียบกับ GCM
 
