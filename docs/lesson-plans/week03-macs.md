@@ -6,9 +6,9 @@ Lab/analysis: [`labs/week03-macs`](../../labs/week03-macs/README.md) · slides: 
 
 ## Objectives and preparation
 
-Explain and demonstrate a secret-prefix SHA-256 MAC extension and show why the same construction attack does not forge HMAC.
+See a signature catch a hand-changed cookie, run the supplied forgery against a secret-prefix SHA-256 MAC, and show why the same script does not forge HMAC.
 
-Prepare the helper and images before class. Authenticate the original bytes and parse them consistently; arbitrary injected usernames are not the intended route.
+Students pull the image before class; the script runs inside the container, so no host Python is needed. Arbitrary injected usernames are not the intended route.
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
 Students may consult the supplied helper after explaining the bounded manual checkpoint. Only
@@ -21,9 +21,9 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 |---|---|
 | 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
-| 20–35 | Obtain an ordinary cookie and inspect exactly which bytes are authenticated. |
-| 35–60 | Use the supplied SHA-256 state-resumption helper; derive the glue length and forge the allowed appended admin field. |
-| 60–80 | Submit the forged cookie to both variants, capture accept/reject evidence and explain the construction change. |
+| 20–35 | A1: obtain an ordinary cookie, decode it, and see a hand-changed cookie refused. |
+| 35–60 | A2: run the supplied `exploit.py` inside the container, record the flag, and say in plain words what it started from. |
+| 60–80 | A3: read the HMAC rejection, find the one-line difference in `make_cookie`, and answer the HMAC and comparison questions. |
 | 80–95 | Compare results/control, explain the mechanism and limits, receive feedback; begin the assigned form. |
 | 95–100 | Save evidence and submit the in-class checkpoint. |
 
@@ -47,7 +47,7 @@ Worksheet 3 is **100 raw points → 2.5 course points**, one of 12 equally weigh
 Everyone completes shared 60; finish only the assigned form's 40. In Weeks 1/10 shared work is
 analysis/diagram/proof, with no Docker or flag requirement. Week 12 code/testing belongs in
 shared 60. Preserve and complete the full assigned question text outside class as needed:
-Retain full glue-padding derivations and tag-length questions for outside-class completion. An extendable HMAC outer hash is not a valid HMAC for an extended message.
+Padding arithmetic is not part of this KOSEN-level version; short-tag, timing, KMAC and key-rotation questions are optional reading.
 
 The quiz remains inside the course's 10% quiz/participation component. Reproduction checks and
 short explanations are feedback/authenticity checks within work, with no extra viva score or

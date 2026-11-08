@@ -27,7 +27,7 @@ content at the next teaching session: W1 bank opens W2, W6 opens W7, W15 opens W
 |---:|---|---|---:|
 | 1 | Environment check; threat model; choose primitives; test a changed attacker assumption; Snake Oil Bingo (AIR-Sec analyses its claims) | Diagram, assumptions and corrected design | 100 |
 | 2 | Weak-hash dictionary recovery; persistent-session login; KDF comparison | Recovery/session outputs and KDF limits | 100 |
-| 3 | Supplied state-resumption helper; MAC extension; HMAC rejection | Authenticated bytes, glue-length reasoning and before/after result | 100 |
+| 3 | Change a signed cookie by hand; supplied forgery script; HMAC rejection | Refused cookie, flag and before/after result | 100 |
 | 4 | Derive CBC same-length XOR delta; test authenticated control; form CryptoVault teams and review the design plan | Byte work, tamper accept/reject outputs and submitted design plan | 100 |
 | 5 | Unauthenticated DH MITM versus authenticated exchange | Interception and abort traces | 100 |
 | 6 | CBC oracle; derive one byte; recover with helper; compare GCM | Oracle evidence, byte derivation and control rejection | 100 |
