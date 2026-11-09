@@ -30,7 +30,7 @@ content at the next teaching session: W1 bank opens W2, W6 opens W7, W15 opens W
 | 3 | Change a signed cookie by hand; supplied forgery script; HMAC rejection | Refused cookie, flag and before/after result | 100 |
 | 4 | Change an encrypted CBC token and see it accepted (guest → admin by supplied script); GCM rejection; form CryptoVault teams and review the design plan | Accepted/rejected tamper outputs and submitted design plan | 100 |
 | 5 | Unauthenticated DH MITM versus authenticated exchange | Interception and abort traces | 100 |
-| 6 | CBC oracle; derive one byte; recover with helper; compare GCM | Oracle evidence, byte derivation and control rejection | 100 |
+| 6 | Ask the CBC server about changed messages (200 vs 403); supplied script reads the secret; GCM gives the same answer | Oracle answers, recovered secret and GCM control | 100 |
 | 7 | Review quiz; selected Jeopardy clues; two bounded mock checkpoints; CryptoVault KDF/AEAD milestone | Review answers, repair notes and milestone demonstration | 100 |
 | 8 | Written midterm: 90 writing + 10 administration | Individual script | 100 |
 | 9 | Individual practical: 80 tasks + 20 administration | Method, result and control evidence | 100 |
