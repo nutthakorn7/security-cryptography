@@ -322,33 +322,37 @@ cd ../..
 
 ## W06 — AEAD: Padding oracle เทียบกับ AES-GCM
 
-**เรียนรู้อะไร:** ใช้ความต่างของคำตอบจาก CBC padding oracle เพื่อกู้ plaintext ทีละไบต์ เปรียบเทียบกับ AES-GCM ที่ตรวจ tag และใช้ผลผิดพลาดแบบเดียวกันจนไม่เหลือ oracle ที่ใช้โจมตีแบบนี้ได้
+**เรียนรู้อะไร:** เห็นว่าเซิร์ฟเวอร์ CBC ที่ไม่เคยบอกข้อความลับ ก็ยังหลุดข้อมูลผ่านคำตอบสองแบบ (`200` กับ `403`) รันสคริปต์ที่ให้มาเพื่ออ่านข้อความลับโดยไม่มีกุญแจ แล้วดูว่า GCM ตอบเหมือนเดิมทุกกรณีจึงไม่หลุดอะไร เพื่ออธิบายว่า tag ที่ตรวจก่อนและคำตอบเดียวกันทุกครั้งช่วยอย่างไร
 
 เอกสาร: [README](labs/week06-aead/README.md) · [Worksheet](labs/week06-aead/worksheet.md)
 
-**คำสั่งรันจาก repo root:** ต้องมี Docker และ Python พร้อม `requests` บนเครื่อง สคริปต์โจมตีส่ง HTTP จำนวนมาก จึงควรรอจนทำงานจบ
+**คำสั่งรันจาก repo root:** ต้องมี Docker เท่านั้น สคริปต์รันใน container จึงไม่ต้องลง Python บนเครื่อง
 
 ```bash
 cd labs/week06-aead
 docker compose up -d
-python exploit.py
+docker compose logs | grep "Running on"
+docker compose exec vulnerable python ask.py vuln end
+docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py
 ```
 
-vulnerable อยู่ที่ `http://localhost:8098` และ fixed อยู่ที่ `http://localhost:8099` เก็บหลักฐานและทำคำขอ manual ใน worksheet ก่อนปิด:
+vulnerable อยู่ที่ `http://localhost:8098` และ fixed อยู่ที่ `http://localhost:8099` รอจน log ขึ้น `Running on http://127.0.0.1:8098` และ `:8099` ครบทั้งสองบรรทัด ส่วนคำสั่ง `curl` ของขั้นดูข้อความลับ และคำสั่ง `ask.py` ทั้งหกแบบอยู่ในใบงานทีละขั้น เก็บหลักฐานให้ครบก่อนปิด:
+
+Windows: ใช้ `docker compose logs | findstr /C:"Running on"` แทน `grep` และใช้ `curl.exe` แทน `curl` ในใบงาน ทุกครั้งที่เปิด lab ต้องต่ออินเทอร์เน็ต เพราะ container ติดตั้งแพ็กเกจใหม่ทุกครั้งที่เริ่ม ถ้ารอเกิน 2 นาทีแล้วไม่ขึ้น ให้พิมพ์ `docker compose ps -a` และ `docker compose logs` แล้ว screenshot ให้อาจารย์ดู
 
 ```bash
 docker compose down
 cd ../..
 ```
 
-**ผลที่ต้องตรวจ:** vulnerable เปิดเผยความต่างของผลตรวจ padding ผ่านสถานะ HTTP ทำให้สคริปต์กู้ plaintext และ flag ได้ ส่วน fixed ไม่ให้สัญญาณที่ใช้กู้ข้อความด้วยการโจมตีนี้ได้ ตรวจจำนวนบล็อกจาก ciphertext ของตนเอง และอธิบายการทดสอบหนึ่งคำขอรวมถึงการตรวจซ้ำเพื่อกรอง false positive ตามใบงาน
+**ผลที่ต้องตรวจ:** เซิร์ฟเวอร์ CBC ตอบ `200 ok` เมื่อไม่แก้ และเมื่อแก้ตัวอักษรแรก แต่ตอบ `403 bad padding` เมื่อแก้ตัวอักษรใกล้ท้าย สคริปต์อ่านข้อความลับจากคำตอบเหล่านี้และพิมพ์ flag ส่วนเซิร์ฟเวอร์ GCM ตอบ `200` เมื่อไม่แก้ และ `403 decryption failed` ทุกครั้งที่แก้ ไม่ว่าแก้ตรงไหน สคริปต์จึงไม่ได้สัญญาณและกู้ข้อความไม่ได้
 
 **หลักฐานส่งใน PDF:**
 
-- ciphertext ที่ได้ ความยาว และจำนวนบล็อกหลังแยก IV ตามที่ worksheet ขอ
-- ผลสคริปต์ที่กู้ plaintext และ flag จาก vulnerable
-- คำสั่ง manual ที่เรียก oracle พร้อมสถานะตอบกลับ และคำอธิบายความหมายของผลนั้น
-- ผลทดสอบ fixed ที่ไม่สามารถใช้ response เป็น padding oracle ได้ พร้อมอธิบายลำดับตรวจ tag และการตอบข้อผิดพลาด
+- ข้อความลับที่เข้ารหัสไว้ของตนเอง (`/secret`) และคำตอบของ `ask.py vuln original`, `vuln start`, `vuln end`
+- ผลสคริปต์ `exploit.py`: ข้อความที่อ่านได้ทีละบล็อก บรรทัด `Recovered plaintext` และบรรทัด `PASS` แรกพร้อม flag
+- คำตอบของ `ask.py fixed original`, `fixed start`, `fixed end` และบรรทัด `PASS` ที่สอง
+- บรรทัดโค้ดที่ใช้ `pkcs7_valid(plaintext)` และ `_aesgcm.decrypt` พร้อมอธิบายด้วยคำของตนเองว่าทำไมคำตอบ `200` / `403` ของ CBC หลุดข้อมูล แต่ GCM ไม่หลุด
 
 ## W11 — Signatures & Zero-Knowledge Proofs
 
