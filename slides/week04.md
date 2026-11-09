@@ -6,214 +6,144 @@ header: "Cryptography and Network Security · Week 4"
 ---
 
 # Week 4
-## AES / Block-Cipher Modes (CBC bit-flipping, malleability)
+## AES modes — encrypted is not tamper-proof
 Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
-<!-- Hook: ask "if AES is unbreakable, why do we keep having crypto CVEs?" Answer: AES the cipher is fine — what breaks is how it's *used*. This is the course spine every week: textbook-secure primitive, real-system failure. Today's failure: encryption without integrity lets you edit a message you can't even read.  -->
+<!-- Lab week: short talk, then the lab. Hook: ask "if AES is unbreakable, can someone still change a message they cannot read?" Let them say no. The lab shows they can. Bring a laptop with Docker; one guided path, no math. -->
 
 ---
 
 ## Today
 
-**100-minute class:** 10 quiz/review · 10 brief · 60 shared practice · 15 debrief · 5 capture.
-**Assessment:** common 60 + assigned Conventional written 40 **or** AIR-Sec 20/10/10.
-Preparation and detailed write-up are outside the contact block. Week 1 opens with orientation/review.
+- A **10-minute quiz** on Week 3 to start (one question at a time)
+- AES is strong — the **mode** is where things go wrong
+- **ECB** shows patterns; **CBC** can be changed without the key
+- The fix: **GCM** — encryption **plus a tag** that checks for changes
+- 🔓 **Lab:** change an encrypted token, then watch GCM refuse the same kind of change
 
-<!-- The full deck is a teaching/reference bank, not an additional lecture block.
-Use the core explanation for the 10-minute brief and just-in-time guidance during practice;
-assign the remaining deep dives as preparation or follow-up. Viva is formative, with no
-separate points or automatic-zero rule. -->
-
-- AES: the primitive (block cipher) vs. the **mode** wrapping it
-- Why unauthenticated **CBC is malleable** — bit-flip an encrypted token
-- The fix: **AES-GCM / AEAD** — encryption + integrity, together
-- 🏁 Game: **Flip Your Way to Admin** — forge `role=admin` without the key
-
-<!-- Roadmap,  Flag the lab up front: two live Flask targets, same endpoints, one CBC-only (breakable) and one GCM (not). Students will attack both. -->
+<!-- Roadmap. Say the spine line out loud: "the math is fine; the way it was used is not". Most of the class is the lab, not these slides. At the end of the class the teams confirm membership and review the CryptoVault design plan (a project item, not part of the worksheet). -->
 
 ---
 
 ## Recap — Week 3
 
-- A **keyed hash is not automatically a MAC** — length-extension forges valid tags without the key
-- HMAC fixed *that* gap: a construction designed to resist it
-- Same theme, one level up: last week broke **integrity without a real MAC**; today we break **integrity without any authentication at all**
+- A plain hash has **no secret**, so it cannot prove who made a message
+- A **MAC (HMAC)** adds a secret key and checks that a message was **not changed**
+- This week: what about **encryption**? Does it also stop changes?
 
-<!-- Bridge from W3. W3 = "keyed hash ≠ MAC." W4 = "encryption ≠ integrity" — an even more common real-world mistake, because encrypted data *looks* safe. Ask: "if I encrypt something, is it also protected from tampering?" (No — that's today.)  -->
-
----
-
-## AES: the primitive vs. the mode
-
-- AES itself: a **textbook-secure** block cipher — 128-bit blocks, 128/192/256-bit keys, no known practical break
-- A block cipher only encrypts **one 16-byte block**
-- Real messages need a **mode of operation** to chain blocks together: ECB, CBC, GCM…
-- The **mode** — not AES — decides whether the resulting scheme is actually secure
-
-<!-- Set up the whole lecture's thesis in one slide. Emphasize: nobody breaks AES itself in this course, or in practice. Every attack today is a mode/protocol-usage attack. This is the "textbook-secure primitive" half of the spine.  -->
+<!-- Bridge from W3. W3 = checking that a message was not changed (MAC). W4 asks the natural next question: if I encrypt it, is it also protected from changes? (No — that is today.) -->
 
 ---
 
-## ECB leaks patterns (Q1)
+## AES is strong — the mode decides
 
-- ECB encrypts each block **independently** with the same key
-- Identical plaintext blocks → **identical ciphertext blocks**
-- The "ECB penguin": encrypt a bitmap image in ECB — the outline is still visible in the ciphertext
-- AES is unbroken here — the **mode** leaks structure, the cipher doesn't
+- **AES** locks one **block** (16 bytes) at a time
+- No practical attack on AES itself is known
+- A real message has many blocks, so we need a **mode** to connect them: ECB, CBC, GCM …
+- The **mode** — not AES — decides whether the result is safe
 
-<!-- Show the ECB penguin image if you have it handy (search "ECB penguin"). Ask: "the ciphertext looks random byte-by-byte — so why can you still see the outline?" Answer: repeated plaintext blocks (same-color regions) always encrypt the same way under ECB. This is Q1 on the worksheet.  -->
-
----
-
-## CBC: chaining fixes ECB's leak
-
-- Each plaintext block is XOR-ed with the **previous ciphertext block** before encrypting
-- `C_i = E(P_i XOR C_{i-1})` — block 0 uses a random **IV** instead of a previous block
-- Decrypt: `P_i = D(C_i) XOR C_{i-1}`
-- Fixes ECB's pattern leak... but the XOR-chaining opens a different door
-
-<!-- Walk the formula on the board both directions (encrypt and decrypt). Stress the IV's job: without it, two messages with the same first block would still produce the same first ciphertext block (this is Q2 — reused IV leaks a shared prefix). Don't resolve the "different door" yet — that's the next slide's reveal.  -->
+<!-- The thesis in one slide: nobody breaks AES in this course, or in practice. Every attack today is about how AES is used. -->
 
 ---
 
-## The gap: encryption ≠ integrity (Q3, Q9)
+## ECB: same block → same ciphertext
 
-- CBC (and most classic modes) give **confidentiality only**
-- Nothing stops an attacker from **editing ciphertext** — the receiver still decrypts to *something* and trusts it
-- No MAC / no auth tag = no way to *detect* tampering
-- **CWE-353** (Missing Support for Integrity Check) / **CWE-649** (Reliance on Encryption Without Integrity)
-- Today's lab exploits exactly this gap to become `admin`
+![The same two blocks HELLO and HELLO are encrypted. In ECB they give two equal ciphertext blocks, so the pattern leaks. In CBC they give two different ciphertext blocks.](img/w4-ecb-same-blocks.svg)
 
-<!-- The core lesson of the week — say it plainly: "encrypted" and "tamper-proof" are NOT the same property, and CBC alone never claimed to give you the second one. Cold-call: "if you can't read the plaintext, can you still change it?" (Yes — that's the whole lab.)  -->
+- ECB locks every block **on its own**, with the same key
+- Repeated blocks stay repeated, so **patterns leak** (the famous "ECB penguin")
+- Never use ECB for real data
 
----
-
-## The target: an unauthenticated CBC token
-
-`vulnerable_app.py :8096` issues `base64(IV ‖ C0 ‖ C1)` — AES-256-CBC, **no MAC**. Fixed 32-byte plaintext, two blocks:
-
-| Block | Plaintext | Token bytes |
-|---|---|---|
-| 0 | `comment=FILLER!!` | `IV = token[0:16]` |
-| 1 | `role=guest;xpad0` | `C0 = token[16:32]`, `C1 = token[32:48]` |
-
-- `/login` issues the token, `/whoami` decrypts and reports the role, `/admin` checks it
-
-<!-- Put this table on screen and keep it up for the next two slides — it's the anchor for the whole exploit. Point out: /login takes no user input, so the role offset is always the same deterministic byte range. That determinism is what makes the flip "clean."  -->
+<!-- Worksheet Q1. NIST SP 800-38A §6.1: ECB assigns a fixed ciphertext block to each plaintext block under a given key. Ask: "the ciphertext looks random byte by byte, so why can you still see an outline in an encrypted picture?" (equal blocks stay equal). Do not show the original Tux image; the picture on this slide is enough. -->
 
 ---
 
-## Why flipping C0 changes the role
+## CBC: mix each block with the one before
 
-- CBC decrypt: **`P1 = AES_decrypt(C1) XOR C0`**
-- Flipping byte *k* of **C0** flips byte *k* of **P1** — deterministically, without the key
-- `guest` sits at `P1[5..9]`; `admin` is also 5 bytes → same-length swap
-- `C0[5+i] ^= guest[i] ^ admin[i]` for `i = 0..4` → edit token bytes `21..25`
-- Side effect: block 0's plaintext (`comment=...`) turns to garbage — harmless, the app never reads it
+- Before locking a block, CBC **mixes** it with the **block before**
+- The first block is mixed with a fresh, unpredictable starting value, the **IV**
+- Equal blocks now normally give **different** ciphertext, so the ECB pattern is gone
+- But: CBC has **no way to notice** that someone changed the data
 
-<!-- The "aha" slide. Derive it live: P1 = D(C1) XOR C0, so if you XOR a delta d into C0, the new P1 becomes (old P1) XOR d. Pick d = guest XOR admin and the guest bytes become admin bytes. Ask: "what happens to block 0's plaintext when we edit C0?" (It becomes garbage — that's fine, only block 1 matters.)  -->
+<!-- Keep to this level: lock = encrypt, mix = XOR. No formulas needed. NIST SP 800-38A: the CBC IV need not be secret but must be unpredictable (that is Q2 in the optional list). Do not reveal the "different door" yet: the next slide does. -->
 
-![Two decrypt chains that share the same C1 and the same decrypt function, arranged top to bottom. Top: the server's real decrypt path takes the token's actual ciphertext block C0, decrypts C1 with the secret key, XORs in C0, and produces the plaintext role=guest, exactly as it does for every request. Bottom: the attacker's version reuses that identical decrypt code and the same C1, but XORs a five-byte delta into C0 first, producing C0-prime, without ever touching the key; because CBC XORs that block straight into the output, the plaintext flips byte-for-byte into role=admin, which the admin check accepts and returns the flag.](img/cbc-bitflip.svg)
+---
+
+## Encrypted ≠ tamper-proof
+
+- CBC gives **secrecy** (nobody can read it)
+- It does **not** give **integrity** (nobody can change it unseen)
+- The server just decrypts whatever arrives, and trusts the result
+- **CWE-353** (missing integrity check) / **CWE-649** (encryption without integrity)
+
+> A token nobody can read can still be **changed**.
+
+<!-- The core idea of the week. Cold-call: "if you cannot read a message, can you still change it?" Yes — that is the lab. In the lab, changing one letter of a CBC token changes nothing the server can see: it still answers guest. -->
+
+---
+
+## Why changing the block before works
+
+![In CBC a block is read back in two steps: unlock it with the secret key, then mix the result with the block before it. If someone changes the block before, the same spot in the result changes, so role guest can become role admin without the key. The changed block itself turns into garbage, but in this lab nobody reads it.](img/w4-cbc-mix.svg)
+
+- Reading a block = **unlock**, then **mix with the block before**
+- The block before is **in the token**, so anyone holding the token can change it
+- The result changes in the **same spot** — no key needed
 
 ```sim
 cbc-bitflip
 ```
 
-<!-- The sim uses a toy 16-byte block cipher, not real AES — same CBC chaining shape (P1 = D(C1) XOR C0), small enough to read the whole XOR delta on screen. Say that explicitly so nobody walks away thinking AES itself is "toy". The default preset already matches this slide's exact numbers (guest -> admin, offset 5) — drag the offset slider to a wrong value first and let Verifier A's rejection land "the RIGHT offset, not just any offset" faster than the board math alone. Verifier B (an AEAD/GCM stand-in) previews the fix two slides from now — don't over-explain it, just let them see it hold.  -->
+<!-- The aha slide, in pictures. The lab script does this for the students; they never compute it. The sim uses a toy cipher, not real AES, with the same chaining shape; say so explicitly so nobody thinks AES itself is toy. Verifier B in the sim previews the fix on the next slide; do not over-explain it. -->
 
 ---
 
-## Cashing in the flip
+## The fix: GCM = encrypt + tag
 
-```bash
-docker compose up -d          # vulnerable_app.py :8096, fixed_app.py :8097
-python exploit.py             # needs Python 3 + `requests` on the host
-                               # PASS :8096 (flag), PASS :8097 (rejected)
-```
+![A GCM token has a nonce, the encrypted data and a tag. The server re-makes the tag from what arrived using its secret key and compares it with the tag that came in. If they match it accepts; if anything was changed they do not match and it answers invalid or tampered token.](img/w4-gcm-tag-check.svg)
 
-- No AES library needed for the attack itself — pure byte math (XOR)
-- Replay the tampered token cookie against `/admin` → flag
-- The attack **never touches the key** — swapping `AES_KEY` still works, proving it's pure ciphertext malleability, not a key leak
+- GCM adds a **tag** (a seal) to every message
+- On arrival the server **re-makes the tag** and compares
+- Changed token → tags differ → **rejected** (`403`)
+- A matching tag means **not changed**; an old valid token sent again still passes (needs a different defence)
 
-<!-- Live-run this if you can (or show a recorded terminal). The env-var swap point is important — it proves to skeptical students the exploit isn't secretly cheating by reading the key. Negative controls worth mentioning: /admin with no cookie → 403; /admin with the original untampered guest token → 403.  -->
+<!-- Say "tag" = seal. Do not go into GHASH. The tag also covers any extra authenticated data (none in this lab) and depends on the nonce; a matching tag shows the data was not changed, it does not stop replay. TLS 1.3 removed CBC and keeps only authenticated (AEAD) algorithms such as AES-GCM: RFC 8446 §1.2. It only helps if the program really obeys the check (worksheet step 17 and optional Q10). -->
 
 ---
 
-## The fix: authenticated encryption (Q4)
+## One more rule: a nonce is used once
 
-- `fixed_app.py :8097` issues `base64(nonce ‖ AES-256-GCM(plaintext) ‖ tag)`
-- GCM = AES-CTR (confidentiality) **+ GHASH** authentication tag computed over the ciphertext
-- Decrypt **checks the tag first** — any edited ciphertext byte → tag mismatch → reject
-- Attacker can't recompute a valid tag without the key — no equivalent of the CBC trick exists
+- GCM needs a number called a **nonce** for every message
+- It is **not secret** — but it must **never repeat** with the same key
+- Repeat it, and the data **leaks** and tags can be **forged**
+- In code **you** hand the library the nonce: use a new one for every message
 
-<!-- Contrast directly with the CBC slide: CBC has no step that ever asks "was this tampered with?" — it just decrypts and hands back bytes. GCM adds exactly that missing check. Explain GHASH only at the level "it's a keyed checksum over the ciphertext" — no need for the polynomial math here.  -->
-
----
-
-## Proving it empirically
-
-- Apply the *same* "flip a ciphertext byte" idea to a `:8097` token
-- Result: **`403`, no flag** — GCM rejects the tamper every time
-- The concrete difference: CBC silently accepts a coherent forged plaintext; GCM raises on decrypt
-- Q10's trap: GCM only helps if the app **actually checks the tag** and doesn't swallow the exception (an improper-verification bug, in the spirit of **CWE-347**)
-
-<!-- This is the empirical proof step students run themselves in the lab — don't just assert it, show the exploit.py output for both ports side by side. Ask: "AES-GCM is deployed correctly here — could a developer still mess this up?" (Yes — catch and ignore the tag-verification exception, and you're back to square one.)  -->
+<!-- Worksheet Q5 (Q6 optional). NIST SP 800-38D §8: a repeated IV under the same key breaks GCM; the recommended length is 96 bits. Real case, only if time allows: in 2016 researchers found 184 HTTPS servers repeating GCM nonces (Böck et al., IACR ePrint 2016/475). -->
 
 ---
 
-## The wider family of mode pitfalls
+## 🔓 Lab today — what to do
 
-- **ECB** — pattern leakage (Q1)
-- **CBC, reused IV** — reveals whether two messages share a prefix (Q2)
-- **GCM, reused nonce** — catastrophic: keystream *and* auth key both reused → plaintext XOR leaks *and* tags become forgeable (Q5/Q6)
-- **Disk encryption (LUKS/BitLocker)** uses **AES-XTS**, not GCM — no room for a per-sector nonce+tag, so it trades away authentication for a tweakable cipher (Q8)
-- **Mobile/IoT**: AES-GCM where **hardware AES acceleration** exists (x86 AES-NI, ARMv8 crypto ext.); ChaCha20-Poly1305 otherwise — avoids timing side channels without hardware accel (Q7)
-
-<!-- Zoom out from this week's one exploit to the whole family — the lab only shows malleability, but the worksheet's Q5–Q8 cover the rest. Nonce reuse in GCM is worse than people expect: it doesn't just leak, it can let an attacker forge future tags. Don't derive the math live — point them to the worksheet.  -->
-
----
-
-## 🏁 Game — Flip Your Way to Admin
-
-| Service | Port | Scheme | Tamperable? |
+| Service | Port | Mode | Changed token noticed? |
 |---|---|---|---|
-| `vulnerable_app.py` | `:8096` | AES-256-CBC, no MAC | **Yes** |
-| `fixed_app.py` | `:8097` | AES-256-GCM, AEAD | **No** |
+| vulnerable | `:8096` | AES-256-CBC | **No** |
+| fixed | `:8097` | AES-256-GCM | **Yes** |
 
-1. `GET /login` on `:8096` → capture the `token` cookie
-2. XOR the 5-byte delta into `token[21..25]` — no key needed
-3. Replay against `/admin` → flag
-4. Try the identical trick on `:8097` → rejected
+- **Everyone (common 60):** A1 change a letter of a CBC token · A2 run the script, get `admin` · A3 see GCM refuse
+- **Your form (40):** student ID ends **odd** → Conventional · **even** → AIR-Sec
+- **Answer sheet:** Classroom → Week 04 → open the file for your form, type in the grey boxes, then File → Download → PDF
+- Hand in `Wk04_<StudentID>.pdf` at `learn.zcr.ai/submit`
+- At the end of class: teams confirm membership and review the **CryptoVault** design plan (KDF + AEAD), then submit it as the project brief says
 
-<!-- Explain the game before lab: it's not guesswork, it's exact byte math they compute themselves on paper first (Task 2), then verify with exploit.py. "Why it's exciting" framing for students: flipping bytes you can't even read to seize admin is the closest thing to hacking in a movie this course gets.  -->
-
----
-
-## Lab today
-
-- **Common 60:** Capture the token, calculate the target byte range and XOR delta, and demonstrate CBC bit-flipping.
-- Compare the control/fixed case, explain its limits, and capture your own evidence.
-- **Conventional 40:** the original written questions, if assigned.
-- **AIR-Sec 40:** Audit the AI 20 + EiPE 10 + Prompt Problem 10, if assigned.
-- Finish the detailed write-up after class; submit the PDF per SUBMISSION.md.
-- Viva is formative/authenticity feedback within the rubric, with no separate points.
-
-<!-- Preserve every worksheet question; students submit the common work and only their
-assigned format. Shared demo flags are acceptable if no personal configuration is supplied. -->
+<!-- Exact commands are in the worksheet: one known-good path, copy and run. The shared demo flag is fine. Start Docker early; wait for Running on ...:8096 and :8097 in the logs. On Windows, use curl.exe. -->
 
 ---
 
-## Key takeaways
+## Takeaway
 
-- AES the cipher is textbook-secure — the **mode** is where real systems fail
-- Encryption alone is not integrity: unauthenticated CBC is **malleable**
-- AEAD (GCM / ChaCha20-Poly1305) binds confidentiality + integrity — but only if the tag is actually **checked**
+- AES is strong — the **mode** is where real systems fail
+- Encryption alone is **not** integrity: unauthenticated CBC can be changed
+- **GCM** adds a tag — but only helps if the program **checks it**
+- Next week: **key exchange** — a secret handshake in the open, and the man in the middle
 
-<!-- Recap, 3 lines, tie explicitly back to the course spine: "textbook-secure primitive, real-system failure" — say it out loud one more time. Cold-call: "name one thing GCM checks that CBC never does."  -->
-
----
-
-# Questions?
-Next week: Key Exchanges — MITM-ing an unauthenticated Diffie-Hellman handshake
-
-<!-- Cliffhanger: "next week you become the silent eavesdropper in the middle of a key exchange — and then get shut out by a single authentication tag." Remind: docker targets for W5 will be new containers, same workflow.  -->
+<!-- Land the spine: "textbook-secure primitive, real-system failure". Cold-call: "name one thing GCM checks that CBC never does." Remind: Docker + laptop ready for next week too. -->
