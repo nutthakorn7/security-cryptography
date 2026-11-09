@@ -241,35 +241,38 @@ cd ../..
 - บรรทัด `PASS` ทั้งสองบรรทัด พร้อม flag
 - บรรทัด `sig =` ของทั้งสองไฟล์ พร้อมอธิบายด้วยคำของตนเองว่าทำไม HMAC จึงหยุดการปลอมนี้
 
-## W04 — AES Modes: CBC bit-flipping เทียบกับ GCM
+## W04 — AES Modes: CBC เทียบกับ GCM
 
-**เรียนรู้อะไร:** เปลี่ยนความหมายของข้อมูลที่เข้ารหัสด้วย CBC ผ่านการแก้ ciphertext โดยไม่รู้กุญแจ แล้วเปรียบเทียบกับ AES-GCM ที่ตรวจ authentication tag ก่อนยอมรับข้อมูล
+**เรียนรู้อะไร:** เห็นว่าโทเค็นที่เข้ารหัสด้วย CBC ถูกแก้ได้โดยไม่รู้กุญแจและเซิร์ฟเวอร์ไม่รู้ตัว รันสคริปต์ที่ให้มาเพื่อเปลี่ยนสิทธิ์ guest เป็น admin แล้วดูว่า GCM ปฏิเสธโทเค็นที่ถูกแก้ เพื่ออธิบายว่าทำไมการเข้ารหัสอย่างเดียวไม่พอและ tag ช่วยอย่างไร
 
 เอกสาร: [README](labs/week04-aes-modes/README.md) · [Worksheet](labs/week04-aes-modes/worksheet.md)
 
-**คำสั่งรันจาก repo root:** ต้องมี Docker และ Python พร้อม `requests` บนเครื่อง การโจมตีในสคริปต์ไม่ต้องติดตั้งไลบรารี AES บนเครื่องเพิ่ม
+**คำสั่งรันจาก repo root:** ต้องมี Docker เท่านั้น สคริปต์รันใน container จึงไม่ต้องลง Python บนเครื่อง
 
 ```bash
 cd labs/week04-aes-modes
 docker compose up -d
-python exploit.py
+docker compose logs | grep "Running on"
+docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py
 ```
 
-vulnerable อยู่ที่ `http://localhost:8096` และ fixed อยู่ที่ `http://localhost:8097` ทำขั้นตอนใน worksheet และเก็บหลักฐานก่อนปิด:
+vulnerable อยู่ที่ `http://localhost:8096` และ fixed อยู่ที่ `http://localhost:8097` รอจน log ขึ้น `Running on http://127.0.0.1:8096` และ `:8097` ครบทั้งสองบรรทัด ส่วนคำสั่ง `curl` ของขั้น login, whoami และการแก้โทเค็นอยู่ในใบงานทีละขั้น เก็บหลักฐานให้ครบก่อนปิด:
+
+Windows: ใช้ `docker compose logs | findstr /C:"Running on"` แทน `grep` และใช้ `curl.exe` แทน `curl` ในใบงาน ทุกครั้งที่เปิด lab ต้องต่ออินเทอร์เน็ต เพราะ container ติดตั้งแพ็กเกจใหม่ทุกครั้งที่เริ่ม ถ้ารอเกิน 2 นาทีแล้วไม่ขึ้น ให้พิมพ์ `docker compose ps -a` และ `docker compose logs` แล้ว screenshot ให้อาจารย์ดู
 
 ```bash
 docker compose down
 cd ../..
 ```
 
-**ผลที่ต้องตรวจ:** token เดิมแสดงสิทธิ์ guest จากนั้น token ที่ถูกแก้ทำให้ vulnerable ยอมรับสิทธิ์ admin และคืน flag แต่ fixed ปฏิเสธ token ที่ถูกแก้ด้วย HTTP `403` ต้องคำนวณตำแหน่งไบต์และ XOR delta ตาม worksheet เอง พร้อมอธิบายว่าการเข้ารหัสอย่างเดียวไม่รับประกันความถูกต้องของข้อมูล
+**ผลที่ต้องตรวจ:** `/whoami` ของโทเค็น CBC ตอบ `guest` แม้เปลี่ยนตัวอักษรแรกของโทเค็น สคริปต์ทำให้ vulnerable เห็นสิทธิ์เป็น `admin` และคืน flag ส่วน fixed (GCM) ปฏิเสธโทเค็นที่ถูกแก้ด้วย `invalid or tampered token` (HTTP `403`) และไม่ให้ flag
 
 **หลักฐานส่งใน PDF:**
 
-- token เดิมและผลตรวจสิทธิ์ก่อนแก้
-- การคำนวณตำแหน่งและ XOR delta พร้อมเหตุผลว่าการแก้บล็อกก่อนหน้ากระทบ plaintext เป้าหมายอย่างไร
-- token หลังแก้ ผลสคริปต์ flag และคำสั่ง manual ที่ยืนยันผลกับ vulnerable
-- ผล fixed ปฏิเสธ พร้อมอธิบายบทบาทของ GCM tag และเหตุใดจึงนำตำแหน่งแบบ CBC ไปใช้ตรง ๆ ไม่ได้
+- โทเค็น CBC ของตนเองและผล `/whoami` ก่อนแก้ กับผลหลังเปลี่ยนตัวอักษรแรก
+- ผลสคริปต์: บรรทัด `/whoami` ก่อนและหลังแก้ และบรรทัด `PASS` แรกพร้อม flag
+- ผล GCM ปฏิเสธโทเค็นที่เปลี่ยนตัวอักษรแรก และบรรทัด `PASS` ที่สอง
+- บรรทัดโค้ดที่ใช้ `modes.CBC` และ `AESGCM` พร้อมอธิบายด้วยคำของตนเองว่าทำไม CBC ยอมรับโทเค็นที่ถูกแก้ แต่ GCM ปฏิเสธ
 
 ## W05 — Key Exchanges: MITM ต่อ Diffie–Hellman
 
