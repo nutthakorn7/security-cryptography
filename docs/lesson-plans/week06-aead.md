@@ -55,7 +55,7 @@ The quiz remains inside the course's 10% quiz/participation component. Reproduct
 short explanations are feedback/authenticity checks within work, with no extra viva score or
 automatic AIR-only gate. Use name/ID and cite tools/sources equally in both forms. Flags are
 accepted only where the target provides them; a personal flag is required only if configured
-and issued, never assumed from a shared default. The lab uses a fixed key and nonce for this demo only because it encrypts exactly one message; say so in class, since real systems must never repeat a nonce under a key.
+and issued, never assumed from a shared default. This lab repeats the same shared demo message with a fixed key and nonce. Do not assign distinct flags under that key/nonce pair; real systems need nonce uniqueness across runs and processes too.
 
 ## Instructor checks and reflection
 

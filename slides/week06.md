@@ -119,7 +119,7 @@ padding-oracle
 - Reuse a **nonce** with the same key, and data leaks and tags can be forged (Week 4)
 - Other different answers still leak: "user not found" vs "wrong password" (CWE-204)
 
-<!-- Keep it short. The lab's GCM server uses one fixed nonce only because it encrypts exactly one message per run; say that real systems must never repeat a nonce under a key. The login message example is the classic CWE-204 case and is Conventional Q3's last bullet. -->
+<!-- Keep it short. The lab repeats one identical shared message with a fixed key and nonce. Different personal flags under that same pair would break GCM's nonce-uniqueness rule across runs. The login message example is the classic CWE-204 case and is Conventional Q3's last bullet. -->
 
 ---
 
