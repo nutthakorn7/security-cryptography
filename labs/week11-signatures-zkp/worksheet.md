@@ -69,8 +69,8 @@ violates. (d) How should a protocol designer build a system *assuming* signature
 
 **Learning goals:** exploit ECDSA malleability to double-spend against a bank that dedups by
 signature hash, then verify low-S rejects the particular high-S twin and explain the remaining transaction-identity limitation — the *practical* twin of Part 1's Q5.
-**Prerequisites:** Docker; `ecdsa` + `requests` (either on the host, or run `exploit.py` in a
-throwaway container on the compose network, as the README shows).
+**Prerequisites:** Docker. The supplied `exploit.py` can run inside the existing Compose
+container with its dependencies installed there, as the README shows.
 
 **Environment setup**
 ```bash
@@ -97,7 +97,8 @@ ecdsa-malleability
 script. *Steps:* with `n = 0xFFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFE BAAEDCE6 AF48A03B BFD25E8C
 D0364141` (the SECP256k1 group order), compute `s' = n − s` for your captured `s` (Python:
 `n = ecdsa.SECP256k1.order`). Compute both `txid = sha256(str(r)+str(s))` and
-`txid' = sha256(str(r)+str(s'))` and confirm they differ. State which of `s`, `s'` is **low-S**
+`txid' = sha256(str(r)+str(s'))` and confirm they differ. Python's standard-library `hashlib`
+is enough; installing `ecdsa` on the host is optional. State which of `s`, `s'` is **low-S**
 (`≤ n//2`) — exactly one is. *Deliverable:* your `s'`, the two txids, and which one is low-S.
 
 **Task 3 — Shared core: demonstrate double processing (15 min).** *Goal:* process one authorization twice.
@@ -111,11 +112,12 @@ curl -s -X POST localhost:8102/withdraw -H 'Content-Type: application/json' \
 curl -s -X POST localhost:8102/withdraw -H 'Content-Type: application/json' \
   -d '{"message":"withdraw 100 to attacker","sig_r":"<r>","sig_s":"<n-s>"}'
 ```
-**Extension after the manual controls in Task 4:** run `python exploit.py` (or the container form in the README) as an automated confirmation of the same attack. Its own totals will now start above 100 since the bank's state
-persists across requests — that's expected, not a bug; if you run `exploit.py` first instead,
-the by-hand reproduction can no longer land on `total_withdrawn:200` (a repeat of the *same*
-signature gets `409 replay`, and even a *fresh* one lands on 300/400 because the counter never
-reset), so keep this order.
+**Extension after the manual controls in Task 4:** reset both banks with
+`docker compose down && docker compose up -d`, then run the Compose command in the README
+(or `python exploit.py` after installing its dependencies on the host). The automated check
+expects a fresh `100 → 200` sequence and a fixed-bank first withdrawal without a flag;
+it fails if state from your manual work remains. If you run `exploit.py` before the manual
+work, reset again before Task 3 so your evidence starts at 100.
 *Deliverable:* the flag + your two `curl` commands and the second one's JSON response (must show
 `double_spend_detected` and `total_withdrawn:200`).
 
@@ -197,9 +199,11 @@ week's lab exploits.
    the final sentence arguing it is "better than hashing the message." What can an attacker who
    holds one valid `(r, s)` do to the *signature bytes* without invalidating the signature?)
 2. **Produce the correct, verified version yourself.** Rewrite the two flawed parts (the txid
-   derivation and the "better than hashing the message" justification). Your fix must (a) reject
-   or canonicalize non-low-S signatures **and/or** (b) derive the txid from `(message, pubkey)`
-   (or a chosen application-level nonce) rather than from the signature bytes. Explain in 2–3
+   derivation and the "better than hashing the message" justification). Your fix must derive
+   stable transaction identity from `(message, authenticated pubkey)` when the fixed message
+   represents one authorization, or from a unique nonce/sequence number **inside the signed
+   message** when repeated payment details are allowed. You may also reject or canonicalize
+   non-low-S signatures to stop this particular twin. Explain in 2–3
    sentences why the AI's version processes the *same authorization twice* even though every
    signature it accepts is genuinely valid.
 
@@ -218,18 +222,20 @@ response — and why an eavesdropper (or the verifier) who sees the exchange sti
 you afterward. Avoid just restating jargon ("it's zero-knowledge because it reveals zero
 knowledge") — explain the *mechanism*: you answer a fresh unpredictable challenge in a way only
 the secret-holder could, and a different challenge next time means a recording is useless. Then, in
-one sentence, connect it to Part 1 Q2: *why is a signature basically this same proof, but with the
-challenge replaced by a hash so no live verifier is needed?*
+one sentence, connect it to Part 1 Q2: *how can Fiat–Shamir turn a suitable Schnorr
+identification proof into a Schnorr-type non-interactive construction by replacing the live
+challenge with a hash?* Do not generalize this to every signature scheme.
 
 **B. Prompt Problem.** Write a **single prompt** that asks an AI to explain *why ECDSA signatures
 are malleable (the `(r, n−s)` twin) while EdDSA/Ed25519 signatures are not*. Run it, then critique
 the AI's answer:
-- Does it correctly explain that ECDSA verification depends on `s` only through a value that is
-  unchanged when `s → n − s` (so both are valid), i.e. malleability is inherent to the *scheme*,
+- Does it correctly explain that `s → n − s` negates the ECDSA verification point while leaving
+  its x-coordinate (and therefore `r`) unchanged, so both signatures are valid, i.e. this
+  malleability is inherent to the *scheme*,
   not a bug?
-- Does it correctly state that **Ed25519 fixes this by construction** — the signature encoding is
-  deterministic and the verification equation pins down a unique canonical `S` (via `S < L`
-  checks in RFC 8032), so there is no valid twin?
+- Does it correctly state that RFC 8032 Ed25519 verification requires canonical `S < L`,
+  preventing a corresponding scalar-encoding twin? Deterministic signing helps avoid fresh
+  randomness pitfalls, but is not by itself a replay/idempotency rule.
 - Does it **hallucinate** anything — e.g. claim EdDSA is "immune because it's newer," confuse
   malleability with a nonce-reuse attack (a *different*, key-recovery bug), or invent a wrong
   curve order / wrong BIP number for the low-S rule (it's **BIP-62 / BIP-146**)?

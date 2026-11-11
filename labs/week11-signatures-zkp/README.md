@@ -45,10 +45,10 @@ EUF-CMA, Schnorr identification, the Schnorr/Fiat–Shamir proof-of-knowledge co
   than **EUF-CMA** when malleable signatures are used as transaction identifiers.
 
 ## How it maps to the concept
-The essays (Part 1) cover the *theory*: signatures vs. MACs (Q1), signatures as ZKPs from Schnorr
+The essays (Part 1) cover the *theory*: signatures vs. MACs (Q1), the Schnorr/Fiat–Shamir connection
 (Q2), the RSA/ECDSA/EdDSA comparison (Q3), substitution attacks (Q4), and malleability + MtGox +
 SUF-CMA (Q5). The lab (Part 2) is the **runnable twin of Q5**: instead of only *describing* how malleability can confuse transaction identifiers, you *perform* the analogous error in a toy bank. The exercise does not establish what caused MtGox's losses or demonstrate a Bitcoin consensus double-spend. A demo bank authorizes exactly one
-withdrawal with an ECDSA signature and — like the real exchange — treats a hash of the signature
+withdrawal with an ECDSA signature and treats a hash of the signature
 bytes as the transaction id. You submit a valid signature, then its malleated `(r, n−s)` twin, and
 because the twin hashes to a different "txid," the bank processes the same authorization twice.
 
@@ -60,8 +60,9 @@ Two Flask targets, same endpoints, different acceptance rule:
 | `vulnerable_app.py` | `:8102` | `txid = sha256(str(r)+str(s))`; accepts any valid `(r,s)` | **Yes** |
 | `fixed_app.py` | `:8103` | rejects `s > n//2` first (**low-S / BIP-62**), then dedups | **No** |
 
-**Why it's exciting:** the same signature, mathematically mutated, buys a second withdrawal —
-real exchanges have lost real money to exactly this trick.
+**Why this matters:** the toy bank processes one authorization twice after its signature is
+mathematically mutated. MtGox cited transaction malleability in 2014, but this lab does not
+establish how much, if any, of its losses were caused by that mechanism.
 
 Each bank holds its **own** SECP256k1 keypair, **generated fresh at container startup** (repo
 policy: no private key is ever committed). `GET /sign` is a lab convenience — it signs the one
@@ -97,8 +98,8 @@ exceeds the authorized amount, it returns the flag.
 > ordinary withdrawal appears to be the double-spend and malleability demonstrates
 > nothing. (Reproduced: 300 then 400, both flagged.)
 >
-> `exploit.py` is the *confirmation* of an attack you have already done by hand.
-> If you have already run it, reset the state and start over:
+> `exploit.py` is an automated confirmation **from fresh state** after you have done the
+> manual Tasks 3–4. Reset both banks before running it:
 > ```bash
 > docker compose down && docker compose up -d
 > ```
@@ -109,22 +110,24 @@ exceeds the authorized amount, it returns the flag.
 ```bash
 cd labs/week11-signatures-zkp
 docker compose up -d          # vulnerable_app.py on :8102, fixed_app.py on :8103
-pip install ecdsa requests    # once, on the host
-python exploit.py             # AFTER worksheet Task 3 — see the note above
-                              # defaults to localhost:8102 / localhost:8103 — both ports are published
+# Complete manual Tasks 3–4 first, then reset both banks:
+docker compose down && docker compose up -d
+docker compose exec -e VULN_HOST=vulnerable -e FIXED_HOST=fixed vulnerable python exploit.py
+                              # no host Python packages needed; expects fresh state
 ```
-No Docker network name to get right — both apps publish their ports to the host, so `exploit.py`
-just talks to `localhost`. (If you'd rather not install anything on the host, run it in a
-throwaway container instead: `docker run --rm --network "$(basename "$PWD")_default" -v "$PWD:/w" -w /w
-python:3.12-slim bash -c "pip install --no-cache-dir -q ecdsa requests && VULN_HOST=vulnerable
-FIXED_HOST=fixed python exploit.py"` — this only works if the directory keeps its checkout name,
-since Compose derives the network name from it.)
-Expect two `PASS` lines and exit `0`: a double-spend + flag on `:8102`, a rejected twin (no flag)
-on `:8103`.
+The supplied script runs inside the existing vulnerable container and reaches both services
+by their Compose service names. The two ports are also published to the host for the manual
+`curl` steps. To run the script on the host instead, install `ecdsa` and `requests` there and
+run `python exploit.py` with its default `localhost` targets.
+Expect two `PASS` lines and exit `0`: `100 → 200` with a flag on `:8102`; one legitimate
+`100` withdrawal without a flag, then a rejected twin on `:8103`. If state is not fresh,
+the script exits `1` and tells you to reset.
 
-Per-student flag: `python3 ../../instructor/seed_flags.py env <STUDENT_ID> > .env` before
-`docker compose up` (once this course's `instructor/seed_flags.py` exists — see
-`course-plan-19weeks.md` open decision #4; until then `FLAG_SIG` falls back to a shared placeholder that is the same for everyone).
+Per-student flag, if assigned by the instructor: from the repository root, set `SC_FLAG_SALT`
+and run `python3 instructor/seed_flags.py env <STUDENT_ID> > labs/week11-signatures-zkp/.env`
+before `docker compose up -d`. Without an assigned salt and student flag, `FLAG_SIG` falls back
+to the shared local placeholder; students do not need to generate a personal flag to complete
+this worksheet.
 
 **Evidence artifact (HYBRID note).** This week is HYBRID in the 20-week course but is delivered
 with the **flag pattern** (single `docker-compose.yml`, per-student `FLAG_SIG`): the attributable
@@ -182,7 +185,7 @@ and re-verifying `vulnerable_app.py`/`fixed_app.py`/`exploit.py`, a larger chang
 - Boneh & Shoup, *A Graduate Course in Applied Cryptography*, ch. 8 (digital signatures) & the
   Schnorr / Fiat–Shamir treatment — free online.
 - Bitcoin **BIP-62** (*Dealing with malleability*) and **BIP-146** (*Dealing with signature
-  encoding malleability*) — the low-S rule.
+  encoding malleability*) — historical low-S proposals, not a complete transaction-identity fix.
 - Decker and Wattenhofer, [Bitcoin Transaction Malleability and MtGox](https://arxiv.org/abs/1403.6676) (2014): distinguish the exchange's claim from the paper's measured evidence.
 - [RFC 8235](https://www.rfc-editor.org/rfc/rfc8235.html), Schnorr NIZK proof and its assumptions.
 - NIST FIPS 186-5 — *Digital Signature Standard* (ECDSA, EdDSA).

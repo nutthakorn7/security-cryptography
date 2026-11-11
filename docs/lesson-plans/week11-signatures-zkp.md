@@ -21,7 +21,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
+| 0–10 | Week 10 retrieval quiz/review; recall hybrid encryption before the Week 11 lab. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
 | 20–30 | Start fresh state and obtain a live signature; read the txid derivation. |
 | 30–45 | Create the malleated twin `(r, n−s)` for the same message; record both signature encodings and their transaction identifiers. |

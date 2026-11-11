@@ -17,10 +17,10 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 ## Today
 
-- Signatures vs. MACs; a signature as a **non-interactive ZKP**
+- Signatures vs. MACs; the **Schnorr proof-of-knowledge connection**
 - RSA vs. ECDSA vs. EdDSA — sound math, fragile implementations
 - **ECDSA signature malleability**: `(r, s)` has a valid twin `(r, n−s)`
-- The fix: **low-S / BIP-62** normalization
+- A control for the twin: **low-S**; signed transaction identity still matters
 - 🔓 Game: **Double-Spend the Bank**
 
 <!-- Roadmap, 1 min. Flag the lab up front: two Flask banks (:8102 vulnerable, :8103 fixed), same math bug, different acceptance rule. Students will double-spend a fake withdrawal, then prove the fix closes it. -->
@@ -82,7 +82,7 @@ Victor is convinced Peggy knows `x` — but learns nothing about `x` itself, and
 | | **RSA** | **ECDSA** | **EdDSA (Ed25519)** |
 |---|---|---|---|
 | Hardness | integer factoring | elliptic-curve discrete log | elliptic-curve discrete log |
-| Easy to implement correctly? | padding choices are a minefield (CWE-347-adjacent) | **fragile** — needs a unique, unpredictable nonce `k` every time | deterministic nonce — no `k` to get wrong |
+| Easy to implement correctly? | signatures need the right padding and verification rules | **fragile** — needs a unique, unpredictable nonce `k` every time | deterministic nonce generation avoids a fresh-randomness dependency |
 | Known pitfall | e.g. PKCS#1 v1.5 padding oracles | reused/predictable `k` **leaks the private key** | signature malleability closed by construction |
 
 **Why EdDSA is recommended today:** it removes the human/implementation decision points (`k` generation, encoding) that make RSA and ECDSA go wrong in practice.
@@ -149,10 +149,10 @@ ecdsa-malleability
 
 - 2014: the largest Bitcoin exchange at the time collapsed, citing ~850,000 BTC "missing"
 - Part of the claimed mechanism: attackers **mutated transaction signatures** so a transaction's id changed, making it *look* like a withdrawal hadn't gone through
-- Exchange software that tracked transactions by a **malleable id** reissued/duplicated payouts
-- Bitcoin's own response: **BIP-62 / BIP-146** — standardize a single canonical (low-S) signature per transaction
+- MtGox claimed its withdrawal tracking could treat a changed transaction id as a failed payout and issue another
+- Bitcoin proposals **BIP-62 / BIP-146** describe low-S rules; this addresses one source of malleability, not every change to a transaction identifier
 
-<!-- Historical extension: MtGox claimed transaction malleability caused losses; that claim is not established by this toy lab. Decker/Wattenhofer measured no widespread malleability use before the closure. Discuss https://arxiv.org/abs/1403.6676 and distinguish exchange accounting from Bitcoin consensus. -->
+<!-- Historical extension: MtGox claimed transaction malleability caused losses; that claim is not established by this toy lab. Decker/Wattenhofer measured no widespread malleability use before the closure. Discuss https://arxiv.org/abs/1403.6676 and distinguish exchange accounting from Bitcoin consensus. BIP-62 and BIP-146 are historical proposals; avoid presenting them as a complete deployed fix. -->
 
 ---
 
@@ -164,11 +164,11 @@ ecdsa-malleability
 
 **Lesson: if your system's security depends on signatures being unique, you need SUF-CMA — EUF-CMA alone is not enough.**
 
-<!-- Worksheet Q5(c). This is the precise theoretical name for the bug — write both acronyms on the board and have students say back which one the vulnerable bank silently assumed (SUF-CMA) versus which one ECDSA actually promises (EUF-CMA only). This is also why EdDSA/Ed25519, which IS SUF-CMA-secure by construction (unique canonical `S`), sidesteps this entire class. ~5 min. -->
+<!-- Worksheet Q5(c). This is the precise theoretical name for the bug — write both acronyms on the board and have students say back which one the vulnerable bank silently assumed (SUF-CMA) versus which one ECDSA actually promises (EUF-CMA only). RFC 8032 Ed25519 verification rejects non-canonical S; this avoids the ECDSA twin shown here. Application-level idempotency remains a separate requirement. ~5 min. -->
 
 ---
 
-## The fix: low-S / BIP-62
+## Control for the twin: low-S
 
 `fixed_app.py` adds one check **before** dedup:
 
@@ -181,7 +181,7 @@ if not is_low_s(sig_s, n):
 # ...only now compute txid and dedup
 ```
 
-Exactly one of `{s, n−s}` is ≤ `n/2` — reject the other. Now there is **one** canonical signature per `(message, key)`, so the twin has nowhere to hide.
+Exactly one of `{s, n−s}` is ≤ `n/2` — reject the other. This blocks **this twin**. Fresh ECDSA nonces can still produce other valid low-S signatures for the same `(message, key)`, so a payment system also needs signed transaction identity and replay state.
 
 <!-- Worksheet Task 4. Say plainly: canonicalization, not "better verification," is the fix — the vulnerable app's *signature verification* was never wrong; the *identity* assumption was. Preview the fixed-app subtlety for the next slide: "PASS" ≠ "both rejected." ~5 min. -->
 
@@ -194,7 +194,7 @@ Two identical Flask banks, one rule apart:
 | Bank | Port | Rule | Vulnerable? |
 |---|---|---|---|
 | `vulnerable_app.py` | `:8102` | dedups by `sha256(r,s)` | **Yes** |
-| `fixed_app.py` | `:8103` | rejects high-S first, *then* dedups | No |
+| `fixed_app.py` | `:8103` | rejects the high-S twin, *then* dedups | No, for this twin |
 
 1. `GET /sign` → a valid `(r, s)` for `"withdraw 100 to attacker"`
 2. `POST /withdraw` with `(r, s)` → processed, `total=100`
