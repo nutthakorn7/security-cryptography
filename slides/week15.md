@@ -61,8 +61,8 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 - **Lattice-based** — NIST's **ML-KEM** (Kyber, a KEM) and **ML-DSA** (Dilithium, a signature)
 - **Hash-based** — Lamport, SPHINCS+, XMSS ← **this week**
-- **Code-based**
-- **Multivariate**
+- **Code-based** — Classic McEliece (a code-based KEM candidate)
+- **Multivariate** — UOV (a signature research candidate, not a NIST FIPS standard); historical Rainbow was broken
 - NIST standards (2024): **FIPS 203** (ML-KEM) · **FIPS 204** (ML-DSA) · **FIPS 205** (SLH-DSA / SPHINCS+)
 
 <!-- Name the four families; don't over-teach lattice math here. Distinguish KEM vs signature: ML-KEM secures key exchange (companion hndl/ lab), ML-DSA/SLH-DSA sign. Today builds intuition for hash-based signing via the simplest possible construction: Lamport. ~5 min. -->
@@ -74,7 +74,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 - Private key: **two random preimages per message bit** — `sk[i] = (a_i, b_i)`
 - Public key: **hashes of both** — `pk[i] = (H(a_i), H(b_i))`
 - To sign bit *i*: reveal `a_i` if that bit is 0, `b_i` if it's 1
-- Security rests on **one assumption** — hash preimage resistance. No exotic math, quantum-resistant
+- This toy relies on hash preimage resistance **and one-time key use**; full hash-based schemes also specify the hash properties and key management they need
 
 <!-- Build this on the board for a tiny 4-bit example. Stress: textbook-secure, resting purely on a hash function, which Grover only dents. This is exactly why hash-based signatures are a PQC family. Lamport (1979) is the ancestor of SPHINCS+. ~7 min. -->
 
@@ -96,11 +96,11 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 - Sign `M = 0x00000000` **and** its bitwise complement `~M = 0xFFFFFFFF`
 - They differ in **every bit** → together the two signatures reveal **both preimages, every position**
 - That *is* the complete private key — no brute force, just algebra
-- **CWE-323** — Reusing a Nonce/Key Pair in Encryption (the vulnerable app's exact flaw)
+- **Key-state failure:** the one-time *signing* key is reused; CWE-323 is an encryption analogy, not an exact classification
 
 <!-- The "aha" slide — the whole week's lesson in one line. Ask: "why the complement specifically, not any second message?" (guarantees every bit differs, so nothing is wasted — one signature per bit-value learned). This is exactly Worksheet Task 2. ~6 min. -->
 
-![Two zones, top to bottom. Top: the server holds one Lamport keypair — for a representative bit position, two locked secret preimages are each hashed into a published public-key pair, repeated identically for all thirty-two bit positions; the sign endpoint refuses only the one reserved target message directly. Middle: the same reused key answers two sign requests, message zero and its bitwise complement all-ones, revealing every zero-preimage and every one-preimage with nothing refused. Bottom: the attacker, now holding the complete private key, picks the matching preimage for each bit of the target message it was never allowed to sign, assembles a forged signature, and submits it to the admin endpoint, which accepts it because verification only checks the signature against the published public key, never who asked for it.](img/lamport-key-reuse.svg)
+![Two zones, top to bottom. Top: the server holds one Lamport keypair — for a representative bit position, two locked secret preimages are each hashed into a published public-key pair, repeated identically for all thirty-two bit positions; the sign endpoint refuses only the one reserved target message directly. Middle: the same reused key answers two sign requests, message zero and its bitwise complement all-ones, revealing every zero-preimage and every one-preimage with nothing refused. Bottom: the attacker, now holding the complete private key, picks the matching preimage for each bit of the target message it was never allowed to sign, assembles a forged signature, and submits it to the admin endpoint, which accepts it because verification only checks the signature against the published public key, never who asked for it.](../labs/week15-pqc/img/lamport-key-reuse.svg)
 
 ```sim
 lamport-reuse
@@ -129,9 +129,9 @@ forged = [sig0[i] if bit(admin_msg, i) == 0 else sig1[i] for i in range(32)]
 
 - `fixed_app.py`: the key signs **at most once**; any 2nd `/sign` call → `403`
 - No new math, no bigger keys — just **refuse reuse**
-- Rule is **"one signature, period"** — not "one distinct message" (a 2nd request for the *same* message is refused too)
-- A client retrying a dropped response must **cache the first signature**, never re-sign
-- Still **CWE-323**, not a new class — `verify()`/`/admin` are byte-identical to the vulnerable app; only `sign_endpoint`'s one-time guard changed
+- This demo's conservative rule is **one signing operation per key**; it refuses a 2nd request even for the same message
+- Re-signing the identical bits deterministically would reveal no new preimages, but a signer should return a stored signature for a retry or use a fresh key
+- `verify()` and `/admin` are unchanged; only `sign_endpoint` adds a one-use guard. Signature verification was never the flaw
 
 <!-- The punchline of the week. Ask: "why refuse even a duplicate of the exact same message, not just a different one?" (the rule must be trivial to enforce correctly -- no edge cases). Ties to Worksheet Q6 / Task 5b: "scheme being secure" vs. "scheme being used securely." ~6 min. -->
 
@@ -191,11 +191,11 @@ python exploit.py   # needs Python 3 + `requests` on the host
 ## Key takeaways
 
 - Shor breaks RSA/ECC outright; Grover only dents AES/SHA — mitigated by longer keys
-- Hash-based signatures are **textbook-secure** on one assumption — *if* used strictly one-time
-- Real-system failure: reuse the key **once** and the entire private key falls out — no math needed
+- Hash-based signatures need correct hash properties **and** sound one-time-key management
+- Signing a message and its **bitwise complement** with this toy key reveals the entire private key; arbitrary second messages may reveal only some additional preimages
 - The fix is a **usage rule**, not a bigger algorithm — "textbook-secure primitive, real-system failure"
 
-<!-- Recap, 4 lines, tie explicitly back to the course spine. Cold-call: "name the CWE for the vulnerable app's flaw." (CWE-323). ~2 min. -->
+<!-- Recap, 4 lines, tie explicitly back to the course spine. Ask students to name the key-state error and explain why CWE-323 (encryption) is only analogous here. ~2 min. -->
 
 ---
 

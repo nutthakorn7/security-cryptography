@@ -6,8 +6,7 @@ services:
       - "8120:8120"
     volumes:
       - ./:/lab
-    # Per-student flag: python3 ../../../instructor/seed_flags.py env <STUDENT_ID> > .env
-    # (challenge key: hndl). Until then FLAG_HNDL defaults below.
+    # The downloadable student packet uses a shared placeholder flag.
     environment:
       - FLAG_HNDL=${FLAG_HNDL:-FLAG{harvest_now_decrypt_later}}
     command: >

@@ -6,9 +6,8 @@ services:
       - "8100:8100"
     volumes:
       - ./:/lab
-    # Per-student flag: python3 ../../instructor/seed_flags.py env <STUDENT_ID> > .env
-    # (once this course's seed_flags.py exists; until then FLAG_PQC defaults below).
-    # LAMPORT_SEED is optional and only for reproducible grading; leave unset for random keys.
+    # The student packet uses the shared placeholder flag. LAMPORT_SEED is only for
+    # a controlled instructor reproduction; leave it unset for fresh keys each boot.
     environment:
       - FLAG_PQC=${FLAG_PQC:-FLAG{lamport_one_time_only}}
       - LAMPORT_SEED=${LAMPORT_SEED:-}

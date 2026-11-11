@@ -19,7 +19,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
+| 0–10 | Administer the scored Week 14 retrieval quiz after its lesson; briefly review authentication. The Week 15 quiz waits until Week 16. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
 | 20–35 | Start fresh state and request a signature on the supplied all-zero bit string; relate revealed preimages to public hashes. |
 | 35–60 | Obtain the complementary all-one signature on the vulnerable key; assemble the admin-message signature and record verification. |

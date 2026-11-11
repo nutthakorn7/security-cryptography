@@ -2,6 +2,8 @@
 
 **~10 min · 6 questions · low-stakes** (lowest scores dropped). Individual.
 
+**Schedule:** administer at the start of Week 16, after the Week 15 lesson. Do not use this scored bank before teaching Week 15.
+
 **Name:** ____________  **Student ID:** ________
 
 ## MCQ (5 × 1)
@@ -17,4 +19,4 @@
    a) ML-KEM signs messages, while ML-DSA establishes a session key  b) ML-KEM is the hash-based scheme, ML-DSA the lattice-based one  c) ML-KEM establishes a session key, while ML-DSA produces signatures  d) ML-KEM protects symmetric traffic, while ML-DSA replaces hashing
 
 ## Short answer (1 × 3)
-6. The fixed app on `:8101` refuses **every** second `/sign` — even a repeat request for the *same* message it has already signed. In your own words: why is "one signature, period" the right rule rather than "one distinct message"? Then say what must happen when that signature request is retried, and why the answer cannot be "sign it again".
+6. The fixed app on `:8101` refuses **every** second `/sign` — even a repeat of the *same* message. Would a deterministic Lamport signature on that same message reveal any **new** preimages? Why does this toy server still enforce a one-use rule, and how should a real signer handle a retry without using that one-time key for a new message?

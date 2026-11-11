@@ -54,8 +54,8 @@ concrete category of data for which this threat is real right now.
 hash-based, code-based, multivariate) and give **one example scheme** for each. Note which
 family this week's lab (Lamport) belongs to.
 
-**Q5. Hash-based signatures.** What is a **hash-based signature** (Lamport / SPHINCS+), on what
-single assumption does its security rest, and what is its **main practical limitation** compared
+**Q5. Hash-based signatures.** What is a **hash-based signature** (Lamport / SPHINCS+), which
+hash property and key-use rule matter in this Lamport lab, and what is its **main practical limitation** compared
 to RSA/ECDSA signatures? (Consider signature size and/or the one-time-key constraint.)
 
 **Q6. Why reusing a Lamport key is catastrophic.** Explain precisely why reusing a Lamport
@@ -79,16 +79,18 @@ practices that make a system crypto-agile.
 **Learning goals:** exploit a **reused Lamport one-time key** to recover a full private key and
 forge a signature, then verify that **one-time enforcement** — an *operational* control, not a
 new algorithm — closes the gap. The *practical* twin of Part 2's Q5/Q6.
-**Prerequisites:** Docker; Python 3.12 (or the `requests` package) on the host to run
+**Prerequisites:** Docker; Python 3 with the `requests` package on the host to run
 `exploit.py`.
 
 **Environment setup**
 ```bash
 cd labs/week15-pqc
 docker compose up -d        # vulnerable_app.py on :8100, fixed_app.py on :8101
+python -m pip install requests  # once in your local Python environment
 curl localhost:8100/        # confirm it's up
 curl localhost:8100/pubkey  # inspect the public key + admin message (0xA5A5C3C3)
 ```
+On Windows, use `py` instead of `python`; on Mac, use `python3`.
 
 **Task 0 — Preparation: read the construction (outside the live run).** *Goal:* see the Lamport construction and the bug. *Steps:*
 read `vulnerable_app.py`'s `sign`, `verify`, and `sign_endpoint`. Identify (a) the line that
@@ -116,9 +118,11 @@ of your choice, print both recovered preimages and show both `SHA256(...)` value
 
 **Task 3 — Shared core: forge and test (same 25-minute block as Task 2).** *Goal:* forge a signature on the admin message
 you were **refused** permission to sign. *Steps:* run `python exploit.py`; note the flag. Then
-reproduce the forgery step manually: the admin message is `0xA5A5C3C3` — for each bit, select
-the recovered preimage matching that bit's value, and `POST /admin {sig}` with `curl` to convince
-yourself the script isn't hiding anything. *Deliverable:* the flag + your `curl` command and its
+reproduce the forgery step: the admin message is `0xA5A5C3C3` — for each bit, select
+the recovered preimage matching that bit's value. The helper writes the assembled request to
+`forged_admin.json`; inspect that file, then submit the same bytes with
+`curl.exe -sS -X POST http://localhost:8100/admin -H "Content-Type: application/json" --data-binary @forged_admin.json`
+on Windows, or replace `curl.exe` with `curl` on Mac. *Deliverable:* the flag + your `curl` command and its
 output. Explain in one sentence why the server accepts a signature on a message it *refused to
 sign for you*.
 
@@ -150,10 +154,8 @@ negligible*.) *Deliverable:* 3 short paragraphs, one per sub-question.
   Attach your own execution evidence; personalization is not a prerequisite for full marks.
 - **Explain in your own words** *(graded on your reasoning, not copied text):*
   1. What did you do, and **why did the forgery work** on `:8100`?
-  2. **Why does one-time enforcement actually stop it** on `:8101`? The fixed app refuses *every*
-     second `/sign` — even for the same message. Why is "one signature, period" the right rule,
-     and why can a client that needs to retry a dropped response NOT simply re-request a signature
-     from the same key (what must it do instead)?
+  2. **Why does one-time enforcement stop this attack** on `:8101`? The fixed app refuses *every*
+     second `/sign` — even for the same message. Would deterministically signing that same message reveal any new preimages? Explain why the demo uses a simple one-use rule and how a real signer can serve a retry without signing a new message with the spent key.
 
 ---
 
@@ -259,8 +261,7 @@ An instructor may ask any of these live, at random, to confirm you did the work 
 3. "Point to the one block that differs between `vulnerable_app.py`'s and `fixed_app.py`'s
    `sign_endpoint`, and explain in one sentence why that block — which adds *no new
    cryptography* — is what defeats the whole attack. Then: the fixed app refuses *every* second
-   `/sign`, even for the same message — why is 'one signature, period' the correct rule rather
-   than 'one distinct message'?"
+   `/sign`, even for the same message — does a deterministic repeat reveal new preimages, and why does this server still choose a one-use rule?"
 
 ---
 

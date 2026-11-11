@@ -507,7 +507,7 @@ Vulnerable ใช้ `localhost:8100`; fixed ใช้ `localhost:8101`
 
 **ตรวจผลและส่งใน PDF:** flag ที่ได้จริง, preimages ทั้งสองค่าของอย่างน้อยหนึ่ง bit พร้อมตรวจ SHA-256 เทียบ public key ตามใบงาน, คำสั่งและผล `/admin`, หลักฐาน fixed ปฏิเสธการเซ็นครั้งที่สองด้วย 403 และคำอธิบายว่าเหตุใดคำว่า one-time จึงเป็นข้อกำหนดของ scheme
 
-**ทางเลือก HNDL:** ภายใน `labs/week15-pqc/hndl/` มี companion Lab เรื่อง harvest-now-decrypt-later ใช้เมื่อผู้สอนเลือกมอบหมายเพิ่มหรือให้เลือกแทน ไม่ใช่งานเพิ่มที่ทุกคนต้องทำโดยอัตโนมัติ
+**ทางเลือก HNDL:** ภายใน `labs/week15-pqc/hndl/` มี companion Lab เรื่อง harvest-now-decrypt-later สำหรับฝึกเพิ่มเติมหลังงาน Lamport หลัก ไม่เพิ่มคะแนนและไม่ใช้แทนงาน Lamport
 
 ```bash
 # เริ่มจาก repo root

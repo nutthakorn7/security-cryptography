@@ -3,8 +3,8 @@
 **Topic:** Post-quantum cryptography (PQC) — the quantum threat, the four PQC families, and
 hash-based signatures · **Kind:** LAB
 **Concepts:** Shor vs. Grover, harvest-now-decrypt-later, crypto-agility, Lamport OTS, one-time
-keys, hash-based signatures (SPHINCS+/XMSS) · **Analogous CWE:** CWE-323 (Reusing a Nonce/Key
-Pair in Encryption), CWE-347 (Improper Verification of Cryptographic Signature)
+keys, hash-based signatures (SPHINCS+/XMSS) · **Weakness:** one-time signing-key reuse.
+> **CWE precision:** CWE-323 names nonce/key-pair reuse *in encryption* and is only an analogy here; CWE-347 does not describe this lab because signature verification itself works correctly.
 
 > **Companion confidentiality lab:** [`hndl/`](hndl/) — "Harvest Now, Decrypt Later" + hybrid KEM.
 > This directory is the *signature* half of PQC; `hndl/` is the *key-exchange/confidentiality* half
@@ -13,7 +13,7 @@ Pair in Encryption), CWE-347 (Improper Verification of Cryptographic Signature)
 
 ## 100-minute class and assigned worksheet version
 
-**In class:** 10 min retrieval quiz + 10 min brief explanation + 70 min guided practice + 10 min evidence review/exit = 100 min.
+**In class:** 10 min Week 14 retrieval quiz/review + 10 min brief explanation + 70 min guided practice + 10 min evidence review/exit = 100 min. The scored Week 15 quiz opens in Week 16.
 
 **Shared core — every student:** Collect fresh Lamport signatures in class, assemble the forgery, test it, compare the one-time-enforcement control and explain the confidentiality/signature migration distinction.
 
@@ -48,7 +48,7 @@ Pair in Encryption), CWE-347 (Improper Verification of Cryptographic Signature)
 - Name the **four PQC families** (lattice, hash-based, code-based, multivariate) and what NIST's
   **ML-KEM** (Kyber, a KEM) and **ML-DSA** (Dilithium, a signature) are each *for*.
 - Explain a **hash-based signature** (Lamport → SPHINCS+) and its defining limitation: a Lamport
-  keypair is a **one-time signature (OTS)** — secure *if and only if* it signs one message.
+  keypair is a **one-time signature (OTS)** — its normal security guarantee assumes one signed message. Re-signing the same bit string deterministically reveals no additional preimages, but this toy server uses a conservative one-use policy to avoid key-state errors.
 - **Execute** the key-reuse attack: recover a full Lamport private key from two signatures under
   a reused key (a message and its complement) and forge a signature on a target message.
 - Explain why the fix is **operational, not mathematical** — refuse the second signature — and
@@ -98,13 +98,10 @@ week teaches.
 ```bash
 cd labs/week15-pqc
 docker compose up -d          # vulnerable_app.py on :8100, fixed_app.py on :8101
+python -m pip install requests # once, in your local Python environment
 python exploit.py             # PASS on :8100 (flag), PASS on :8101 (correctly defeated); exit 0
 ```
-Per-student flag: `python3 ../../instructor/seed_flags.py env <STUDENT_ID> > .env` before
-`docker compose up` (once this course's `instructor/seed_flags.py` exists — see the shared
-`software-security` template; add a `"pqc"` entry to its `CHALLENGES` list). Until then
-`FLAG_PQC` falls back to a shared placeholder that is the same for everyone. Set `LAMPORT_SEED=<anything>` to make the
-keypair deterministic for reproducible grading (unset = fresh random key each boot).
+On Windows, use `py` instead of `python`; on Mac, use `python3`. The downloaded student packet has no `instructor/seed_flags.py`: the default flag is a shared lab placeholder, and your own commands, observations and explanation provide attributable evidence. `LAMPORT_SEED` is only for controlled instructor reproduction. Reusing the same deterministic seed across restarts would reuse the Lamport key while resetting the one-use state, so it must not be used as a production or student security control.
 
 **Verified:** `docker compose up -d` followed by `python exploit.py` was run against live
 containers on this machine. Both PASS checks printed and the script exited `0`:
