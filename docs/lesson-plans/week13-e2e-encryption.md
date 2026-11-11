@@ -19,7 +19,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
+| 0–10 | Week 12 retrieval quiz/review; recall previously taught TLS certificate validation. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
 | 20–40 | Run the server-visible-plaintext mode; locate exactly where the server learns the message. |
 | 40–60 | Run the client-side encryption mode; capture ciphertext-only server output and successful recipient decryption. |
@@ -47,9 +47,9 @@ Worksheet 13 is **100 raw points → 2.5 course points**, one of 12 equally weig
 Everyone completes shared 60; finish only the assigned form's 40. In Weeks 1/10 shared work is
 analysis/diagram/proof, with no Docker or flag requirement. Week 12 code/testing belongs in
 shared 60. Preserve and complete the full assigned question text outside class as needed:
-Signal/X3DH/ratchets and PGP key-management questions stay as extended analysis. Do not claim this small demo implements Signal, verified key distribution or forward secrecy.
+Signal's historical X3DH, later PQXDH, ratchets and PGP key-management questions stay as extended analysis. Do not claim this small demo implements Signal, verified key distribution or forward secrecy.
 
-The quiz remains inside the course's 10% quiz/participation component. Reproduction checks and
+Administer the scored Week 13 quiz at the start of Week 14, after this topic is taught; the Week 13 opening checks Week 12. The quiz remains inside the course's 10% quiz/participation component. Reproduction checks and
 short explanations are feedback/authenticity checks within work, with no extra viva score or
 automatic AIR-only gate. Use name/ID and cite tools/sources equally in both forms. Flags are
 accepted only where the target provides them; a personal flag is required only if configured

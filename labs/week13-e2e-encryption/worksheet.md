@@ -1,11 +1,12 @@
 # Worksheet 13 — End-to-End Encryption: TLS Is Not Enough
 
 > **Course:** Cryptography and Network Security (KOSEN69) · **Week 13**
-> **Aligned to:** CWE-311 (Missing Encryption of Sensitive Data), CWE-319 (Cleartext Transmission
-> of Sensitive Information — here, cleartext handling of sensitive data on the relay, even with
-> encrypted transport)
+> **Aligned to:** CWE-311 (Missing Encryption of Sensitive Data) and CWE-532 (Insertion of
+> Sensitive Information into Log File). The Audit-the-AI database example also illustrates
+> CWE-312 (Cleartext Storage of Sensitive Information). CWE-319 concerns cleartext transmission;
+> this exercise assumes encrypted transport in its threat model.
 > **Kind:** Hybrid — a runnable TLS-only-vs-E2EE demo (Part 2a) alongside conceptual content that
-> stays theoretical this week (the root-of-trust / key-distribution problem, Part 2c).
+> stays theoretical this week (the root-of-trust / key-distribution problem, Q2 and Part 2c).
 
 > **Ethics note:** Only run and observe the local containers this lab spins up (`server.py`,
 > `alice.py`, `bob.py`). The lesson is about reading a *provider's own logs* to see what it could
@@ -14,7 +15,7 @@
 
 ## 100-minute class and assigned worksheet version
 
-**In class:** 10 min retrieval quiz + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min.
+**In class:** 10 min Week 12 retrieval/review + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min. The scored Week 13 quiz opens Week 14, after this topic is taught.
 
 **Shared core — every student:** Run the provider-visible and client-encrypted scenarios; compare plaintext/ciphertext server logs and recipient output; explain that the demo does not authenticate the server-relayed recipient public key.
 
@@ -56,11 +57,13 @@ public key; metadata leakage — what stays visible even when the body is encryp
 usability problems. Then give **your own opinion**: if you were to redesign email for E2EE today,
 what would you change and why?
 
-**Q4. How Signal improves on PGP.** Explain how the Signal protocol addresses PGP's weaknesses.
-Cover **TOFU** (trust on first use), the **X3DH** handshake, and the **Double Ratchet** (which
-provides *forward secrecy* — a key compromise today does not expose past messages — and
-*post-compromise security* — the session heals after a compromise). Explain why these properties
-work better for *real, non-expert users* than PGP's "manage your own long-term keyring" model.
+**Q4. How Signal improves on PGP.** Explain how Signal-style messaging addresses PGP's weaknesses.
+Cover first-use trust and **safety-number verification**, asynchronous key agreement
+(**X3DH** historically; **PQXDH** is the later published design), and the **Double Ratchet**.
+Explain *forward secrecy* for already-deleted message keys and *post-compromise recovery* after
+fresh, uncompromised ratchet input. State one limit: retained plaintext, recoverable old keys, or
+an attacker who still controls an endpoint can defeat these protections. Explain why automated key
+management helps non-expert users.
 
 **Q5. Open problems in E2EE.** Pick **one** of: (a) group-messaging fan-out, (b) multi-device key
 sync, or (c) the limits of TOFU and how *Key Transparency* aims to fix them. State what the problem
@@ -96,7 +99,7 @@ port; you read the container logs.
    could read the secret in this mode, and *why the fact that the connection could be HTTPS doesn't
    change that answer*.
 2. Tear down: `Ctrl-C`, then `docker compose -f docker-compose.vulnerable.yml down`.
-3. Run **fixed mode** (true end-to-end encryption):
+3. Run **fixed mode** (client-side encryption with an honest key relay):
    ```bash
    docker compose -f docker-compose.fixed.yml up --build
    ```
@@ -104,21 +107,23 @@ port; you read the container logs.
    - a `SERVER SAW:` line that is now **long base64 gibberish**, NOT the plaintext, and
    - `BOB DECRYPTED: meet at pier 39 at midnight` (bob still recovers the secret client-side).
 
-   Then confirm the plaintext is **absent** from the server's log explicitly:
+   Then inspect the server-only and Bob logs explicitly (works in Terminal and PowerShell):
    ```bash
-   docker compose -f docker-compose.fixed.yml logs server | grep -c "meet at pier 39 at midnight"
+   docker compose -f docker-compose.fixed.yml logs server
+   docker compose -f docker-compose.fixed.yml logs bob
    ```
-   and record that it prints `0` (run the same grep against the vulnerable-mode server log to see
-   it print `1`, if you like the contrast).
+   Record that the server's `SERVER SAW:` payload has no readable secret while Bob's output does.
+   Explain that this observation assumes Alice received Bob's authentic public key; a malicious
+   key-relay server could substitute its own key, which this lab does not prevent.
 4. Tear down: `Ctrl-C`, then `docker compose -f docker-compose.fixed.yml down`.
 
 **Submit:** both captured logs (with your name/student ID and reproducible attribution), your one-line note from step 1, the
-fixed-mode base64 `SERVER SAW:` line, the `BOB DECRYPTED` line, and the `grep -c` output from
+fixed-mode base64 `SERVER SAW:` line, the `BOB DECRYPTED` line, and your server-log check from
 step 3.
 
 ---
 
-## 🤖 Audit the AI (Part 2b — required)
+## 🤖 Audit the AI (Part 2b — AIR-Sec assigned version only)
 
 AI is a power tool you must **distrust** — you are graded on your *critique*, not the AI's answer.
 
@@ -176,29 +181,29 @@ in reassuring language. Your job: find the flaw.
 
 ---
 
-## 🧠 Comprehension & Prompt (Parts 2c–2d — required)
+## 🧠 Comprehension & Prompt (Parts 2c–2d — AIR-Sec assigned version only)
 
-**Part 2c — Explain in Plain English (EiPE).** A non-technical friend says: *"WhatsApp already uses
-HTTPS — the little lock icon — so my messages are already private. Why does 'end-to-end encrypted'
+**Part 2c — Explain in Plain English (EiPE).** A non-technical friend says: *"My web chat uses
+HTTPS — the browser's padlock — so my messages are already private. Why does 'end-to-end encrypted'
 even matter?"* Answer them in **4–6 sentences, in genuinely plain language** (no "TLS handshake,"
 "asymmetric," "RSA," "public key" dropped without first explaining what you mean in ordinary
 words). Cover:
-- What the "lock icon" / HTTPS actually protects (the message while it's *travelling* between their
-  phone and WhatsApp's computers) — and, crucially, what it does **not** protect (the message once
-  it *arrives* at WhatsApp's computers, where it would sit readable if that were all they did).
-- What **end-to-end** encryption adds: the message is scrambled on the sender's phone in a way that
-  **only the recipient's phone can unscramble**, so even WhatsApp's own servers only ever hold
-  gibberish — connect this to the two `SERVER SAW:` lines you captured (plaintext vs. base64).
-- Why this matters in practice: name one concrete thing that becomes impossible for the provider
-  when messages are E2EE (e.g. handing readable messages to whoever asks, scanning them for ads,
-  or leaking them in a breach).
+- What the browser padlock / HTTPS actually protects (the message while it travels between the
+  client and the provider's server) — and what it does **not** protect (the message after it arrives
+  at that server, where it would be readable if transport encryption were all the service used).
+- What **end-to-end** encryption adds: the message is scrambled on the sender's device in a way that
+  **the intended recipient's device can unscramble**, assuming the sender has the right key, so an
+  honest relay holds ciphertext — connect this to the two `SERVER SAW:` lines you captured.
+- Why this matters in practice: name one thing an honest E2EE provider without endpoint keys
+  cannot do with the message body (e.g. hand over readable stored messages), while noting that
+  metadata and endpoint compromise remain separate risks.
 
 **Part 2d — Prompt Problem.** Ask an AI assistant a single prompt along the lines of: *"Explain the
 difference between using HTTPS/TLS for a chat app and making it end-to-end encrypted."* Paste its
 full response, then critique it. At minimum, check whether the AI's answer:
-- Correctly locates *where the plaintext exists* in each case — TLS: readable on the server after
-  the connection terminates; E2EE: only ever plaintext on the two endpoints, ciphertext on the
-  server. An answer that just says "E2EE is more secure" without saying *who is newly excluded from
+- Correctly locates *where the plaintext exists* in each case — TLS-only: readable on the server after
+  the connection terminates; E2EE with authentic recipient keys: message plaintext on the two
+  endpoints, ciphertext payload on the server. An answer that just says "E2EE is more secure" without saying *who is newly excluded from
   reading* has dodged the question.
 - Names the **threat model difference**: TLS defends against a *network eavesdropper*; E2EE
   additionally defends against the *provider itself* (and anyone who compromises or subpoenas it).

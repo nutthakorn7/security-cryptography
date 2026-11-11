@@ -5,7 +5,7 @@ paginate: true
 header: "Cryptography and Network Security · Week 13"
 ---
 
-<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+<!-- Delivery: 100-minute lab-focused session. 10 Week 12 retrieval/review + 10 brief + 60 practice + 15 debrief + 5 evidence. The scored Week 13 quiz opens Week 14, after this lesson. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 13
 ## End-to-End Encryption (TLS is not enough; the server still reads your messages)
@@ -42,8 +42,8 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 | | **Transport encryption (TLS/HTTPS)** | **End-to-end encryption (E2EE)** |
 |---|---|---|
 | Protects data | *in transit* | *from the server operator itself* |
-| Hides plaintext from | a network eavesdropper | the provider running the service |
-| Where plaintext can exist | at every hop, incl. the server | only on the two endpoints |
+| Hides message plaintext from | a network eavesdropper | a provider without endpoint keys, assuming recipient keys are authentic |
+| Where message plaintext can exist | at the TLS-terminating server | at the endpoints; retained chat history is a separate risk |
 
 **The first does not imply the second.** That confusion is the whole lesson.
 
@@ -56,7 +56,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 Alice → **[TLS]** → Server → **[TLS]** → Bob
 
 - The server **decrypts**, holds plaintext, then **re-encrypts** to forward it
-- It is a trusted third party **by construction**, not by accident — app logic, routing, storage all need plaintext at that hop
+- In a TLS-only design it is trusted with plaintext; routing can instead handle ciphertext when clients encrypt first
 - A TLS-only provider can read, log, subpoena-respond-to, scan, or leak every message that passes through
 
 <!-- Draw two TLS tunnels meeting AT the server, not passing through it. This is normal, necessary infrastructure — not a bug in TLS. The point: plaintext genuinely exists at that hop, whether or not anyone misuses it. ~5 min. -->
@@ -66,7 +66,8 @@ Alice → **[TLS]** → Server → **[TLS]** → Bob
 ## The break: a threat-model mismatch, not a broken primitive
 
 - **CWE-311** — Missing Encryption of Sensitive Data
-- **CWE-319** — Cleartext Transmission of Sensitive Information (here: cleartext *storage on the relay*, even though transit was encrypted)
+- **CWE-532** — Insertion of Sensitive Information into Log File (`SERVER SAW:` in vulnerable mode)
+- **CWE-312** — Cleartext Storage of Sensitive Information (the database in the Audit-the-AI example)
 - TLS is not defeated — it's answering a question nobody asked: *"is the wire safe?"* not *"is the operator safe?"*
 
 **Textbook-secure primitive: TLS does exactly what it promises. Real-system failure: assuming that promise covers something it never claimed.**
@@ -79,7 +80,7 @@ Alice → **[TLS]** → Server → **[TLS]** → Bob
 
 - A **fresh AES-256-GCM key** is generated **per message** (fast, symmetric)
 - That key is **wrapped to the recipient's public key with RSA-OAEP** (NIST SP 800-56B) — hybrid encryption
-- Encryption happens on the sender's device; decryption happens on the recipient's device — the server never holds a key that opens either
+- Encryption happens on the sender's device; decryption happens on the recipient's device — this honest relay has no key that opens the payload
 - Same hybrid pattern as Week 10's KEM/DEM — deployed here into an actual messaging shape
 
 <!-- Callback to Week 10's hybrid-encryption slide — recognize the pattern before applying it. Ask "why not just RSA-encrypt the whole message?" (RSA is slow and size-limited; that's exactly why you wrap a fast symmetric key instead). ~5 min. -->
@@ -123,27 +124,26 @@ week13-server  | SERVER SAW: eyJlbmNfa2V5IjogImdQY29aZVcrSUdOSVJt...
 week13-bob     | BOB DECRYPTED: meet at pier 39 at midnight
 ```
 
-`grep -c "meet at pier 39 at midnight"` on the **server** log → **0** (vs. **1** in vulnerable mode).
+Inspect `docker compose -f docker-compose.fixed.yml logs server`: the `SERVER SAW:` payload has no readable secret. `logs bob` still shows successful decryption. This check also works in PowerShell.
 
-<!-- Run the grep live, side by side with the previous slide's evidence. Bob still recovers the secret — E2EE is about who CAN'T read it, not about breaking delivery. Same server binary both times. ~6 min. -->
+<!-- Compare the server-only and Bob logs live. Bob still recovers the secret while this honest relay sees only ciphertext. Same server binary both times. ~6 min. -->
 
 ---
 
-## See it yourself — the provider's own log, live
+## See it yourself — compare your own server logs
 
-- Same choice as the two containers you just ran: what does Alice hand the server?
-- Toy-sized RSA key-wrap + an AES-style cipher, computed for real in the browser — pick a
-  scenario, flip Vulnerable/Fixed, and read the log for yourself
-- A third toggle previews the next slide's gap: what happens if the *server* also controls
-  which public key Alice trusts
+- Run the vulnerable and fixed Compose stacks **on your own machine**, one at a time
+- In both runs, `server.py` logs exactly what Alice sends as `SERVER SAW:`
+- Compare the server-only logs, then check Bob's output to confirm delivery
+- Ask what changes if a malicious server substitutes its own key for Bob's; the lab does not run that attack
 
-![Two lanes, read top to bottom, each showing Alice on the left sending toward Bob on the right through a server box in the middle: the top lane, vulnerable mode, sends the message over TLS to the server, which decrypts, stores, and logs the plaintext in the clear before re-encrypting and forwarding it on to Bob, so the provider itself can read everything; the bottom lane, fixed mode, first has Bob publish his public key which the server relays to Alice, who trusts it blindly, then Alice encrypts the message client-side with a hybrid scheme, AES-256-GCM wrapped in RSA-OAEP, before sending, so the server now stores and logs only opaque base64 ciphertext it structurally cannot decrypt, and only Bob's device recovers the plaintext; a dashed orange warning box at the bottom of the fixed lane flags the one gap neither lane closes, that a malicious server could substitute its own key at the public-key-fetch step, read the plaintext itself, and quietly re-encrypt a working copy to the real Bob so nothing looks wrong, which is the root-of-trust problem this week's lab does not demonstrate.](img/encryption-boundary.svg)
+<!-- The Docker exercise is the live demonstration. Keep the key-substitution attack conceptual and use the next diagram to explain it. ~5 min. -->
 
-```sim
-server-can-read
-```
+---
 
-<!-- The RSA key-wrap and AES-style cipher in this sim are REAL — a genuine ~48-bit RSA modulus (real prime search, real modular exponentiation) and a real keyed tag check, toy-sized only so every intermediate number fits on screen; no verdict is a scripted if/else on which button was clicked. Run it live in Vulnerable mode first, matching what students just watched in the container logs on the previous two slides. Leave the "malicious server substitutes its own key" checkbox OFF for most of this walkthrough — it maps to the very next slide's root-of-trust gap (Worksheet Q2), not to anything the two docker-compose files actually do, so flip it only once you're ready to preview that discussion; flipping it early tends to make students think the lab itself proved a key-substitution attack, which it does not. ~5 min. -->
+## Where the encryption boundary sits
+
+![width:800px Two lanes show Alice sending toward Bob through a server. In the top lane, a TLS-only design terminates encryption at the server, which logs readable plaintext. In the bottom lane, Alice encrypts client-side to the public key the server relays, so this honest relay logs only ciphertext while Bob decrypts. A warning shows the remaining key-trust gap: a malicious server could substitute its own public key, read the message, then re-encrypt it to Bob. The Docker lab does not test that attack.](../labs/week13-e2e-encryption/img/encryption-boundary.svg)
 
 ---
 
@@ -151,7 +151,7 @@ server-can-read
 
 - Alice trusts whatever public key the server hands her
 - A **malicious server could substitute its own key** — a public-key MITM, the messaging cousin of Week 5's Diffie–Hellman MITM
-- This lab proves the **server cannot read** an E2EE message — it does **not** prove Alice is talking to the real Bob
+- This lab shows an **honest key relay without Bob's private key** cannot read this payload; it does **not** prove Alice is talking to the real Bob or protect against a malicious key substitution
 - Stays conceptual this week: Worksheet Q2 and the Audit-the-AI exercise
 
 <!-- Say this explicitly — don't let students walk away overclaiming what the demo showed. Tie back to the Week 5 DH MITM recap for continuity. Ask: "how would Alice know the key really came from Bob?" (out-of-band verification, safety numbers, a CA, a key-transparency log — Q2.) ~5 min. -->
@@ -170,17 +170,17 @@ server-can-read
 
 ## How Signal improves on PGP
 
-- **TOFU** (trust on first use) — key management happens automatically, mostly invisible to the user
-- **X3DH** — an asynchronous handshake; works even if Bob is offline when Alice sends
-- **Double Ratchet** — **forward secrecy** (a key compromise today doesn't expose past messages) + **post-compromise security** (the session heals after a compromise)
+- **First-use trust + safety numbers** — automated key setup, with an option to check identity out of band
+- **X3DH historically; PQXDH later** — asynchronous key agreement while Bob is offline
+- **Double Ratchet** — limits exposure of old deleted message keys and can recover after fresh, uncompromised ratchet input; retained plaintext or ongoing device control defeats these protections
 
-<!-- Worksheet Q4. Contrast with PGP's static long-term keyring: Signal rotates keys continuously and automates the trust decisions a PGP user had to make by hand. Concrete example: if your phone is seized tomorrow, can they read yesterday's messages? With Double Ratchet, no. ~5 min. -->
+<!-- Worksheet Q4. Contrast automated session-key rotation with PGP's user-managed keyring. Do not claim a seized phone cannot reveal old plaintext: chat history or recoverable keys may still be present. Current Signal documentation includes PQXDH; X3DH remains useful historical context. ~5 min. -->
 
 ---
 
 ## 👀 Game — Who's Reading Your Mail?
 
-- Play the messaging **provider**: `tail` your own server's log while a "private" message passes through
+- Play the messaging **provider**: inspect your own server log while a "private" message passes through
 - Watch it sit there in **plaintext**, sender's name and all
 - Flip the client to encrypt **client-side** — watch your own log turn into unreadable ciphertext, while the recipient still decrypts it perfectly
 
@@ -196,9 +196,14 @@ server-can-read
 > 📋 **Worksheet 13** — `labs/week13-e2e-encryption/worksheet.md` · kickoff: `docker compose -f docker-compose.vulnerable.yml up --build`, then the `.fixed.yml` file
 
 - **Part 1 (essays):** TLS vs. E2EE, the root-of-trust problem, why PGP failed, Signal vs. PGP, open problems in E2EE
-- **Part 2a (lab):** capture both modes' logs — plaintext `SERVER SAW` vs. base64 `SERVER SAW`, `BOB DECRYPTED`, and the `grep -c` showing `0`
+- **Part 2a (lab):** capture both modes' logs — plaintext `SERVER SAW` vs. base64 `SERVER SAW`, `BOB DECRYPTED`, and the server-only log check
+
+---
+
+## Assigned written work
+
 - **Assigned AIR-Sec Audit the AI:** critique an AI-written "secure chat backend" that calls itself end-to-end encrypted because it uses HTTPS — same flaw as vulnerable mode, dressed up in reassuring language
-- **Assigned AIR-Sec EiPE + Prompt Problem:** explain WhatsApp's "lock icon" to a non-technical friend; probe an AI on TLS vs. E2EE and check it for hallucinated claims
+- **Assigned AIR-Sec EiPE + Prompt Problem:** explain the browser HTTPS padlock to a non-technical friend; probe an AI on TLS vs. E2EE and check it for false claims
 
 <!-- Mirror W11's lab slide structure. Stress: no host port published, read the container logs, this isn't a browser demo. Audit-the-AI is 20 points for the assigned AIR-Sec version; Conventional students complete their written 40 instead — it's this lecture's exact bug wearing confident prose. Remind: code is unchanged this week, it's a read/run/observe lab, not exploit-and-fix. ~3 min. -->
 
@@ -210,7 +215,7 @@ server-can-read
 - **Textbook-secure primitive, real-system failure:** TLS wasn't broken — it was trusted for something it never promised
 - E2EE closes the gap with hybrid encryption (AES-256-GCM + RSA-OAEP) moved to the **endpoints** — but it still doesn't solve *whose key you're actually encrypting to* (root of trust)
 
-<!-- Recap, 3 lines — say the spine phrase out loud, it threads the course. Cold-call: "name one concrete thing a provider can no longer do once messages are truly E2EE" (hand over readable messages on subpoena, scan them for ads, leak them in a breach). ~2 min. -->
+<!-- Recap, 3 lines. Ask what an honest provider without endpoint keys cannot do with the message body, and what metadata or compromised endpoints can still reveal. ~2 min. -->
 
 ---
 

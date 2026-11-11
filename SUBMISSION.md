@@ -451,11 +451,12 @@ docker compose -f docker-compose.vulnerable.yml down
 docker compose -f docker-compose.fixed.yml up -d --build
 docker compose -f docker-compose.fixed.yml logs -f
 # หลังเห็น BOB DECRYPTED เก็บหลักฐานแล้ว Ctrl-C
-docker compose -f docker-compose.fixed.yml logs server | grep -c "meet at pier 39 at midnight"
+docker compose -f docker-compose.fixed.yml logs server
+docker compose -f docker-compose.fixed.yml logs bob
 docker compose -f docker-compose.fixed.yml down
 ```
 
-**ตรวจผลและส่งใน PDF:** vulnerable มี `SERVER SAW:` เป็นข้อความอ่านได้และ `BOB RECEIVED:`; fixed มี `SERVER SAW:` เป็น ciphertext/base64 แต่ `BOB DECRYPTED:` อ่านข้อความเดิมได้ ผลค้นหา plaintext ใน **server log เท่านั้น** เป็น `0` พร้อมอธิบายว่าใครถือ key และใครเห็น plaintext ในแต่ละโหมด
+**ตรวจผลและส่งใน PDF:** vulnerable มี `SERVER SAW:` เป็นข้อความอ่านได้และ `BOB RECEIVED:`; fixed มี `SERVER SAW:` เป็น ciphertext/base64 แต่ `BOB DECRYPTED:` อ่านข้อความเดิมได้ ตรวจ **server log เท่านั้น** ว่าไม่มี secret ที่อ่านได้ พร้อมอธิบายว่าใครถือ key และใครเห็น plaintext ในแต่ละโหมด คำสั่ง `logs` นี้ใช้ได้ทั้ง Terminal และ PowerShell; ผลรันสมมติว่า Alice ได้ public key ของ Bob จริง ไม่ได้พิสูจน์การป้องกัน server ที่สับเปลี่ยน key
 
 บริการใช้ port `8080` ภายใน Docker ไม่มี host port ให้เปิด browser Demo นี้จำลองขอบเขต TLS-only เทียบ E2EE โดยไม่ได้เปิด TLS จริง และยังเชื่อถือ public key ที่ server ส่งให้ Alice จึงต้องแยกคำถามเรื่องความถูกต้องของ public key ออกจากการซ่อนข้อความใน log
 
