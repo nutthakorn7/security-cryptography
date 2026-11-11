@@ -6,7 +6,7 @@
 
 ## 100-minute class and assigned worksheet version
 
-**In class:** 10 min retrieval quiz + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min.
+**In class:** 10 min retrieval review + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min. The Week 10 scored quiz opens Week 11.
 
 **Shared core — every student:** Trace the hybrid-encryption protocol and key roles; compare correct nonce discipline with a repeated-nonce case. Provide a repeatable diagram, state table or two-message XOR derivation. No Docker target, flag or standalone code submission is required for the shared core.
 
@@ -22,6 +22,14 @@
 | | | | |
 
 *Disclose any AI assistance used anywhere in this worksheet here (tool + what you asked it).*
+
+## Shared core — everyone (60 points)
+
+**1. Protocol and key roles (20).** Draw a diagram or state table for two messages from Bob to Alice. Show who creates and holds each key, what Bob sends once per session, what he sends with each message, and how Alice decrypts both messages.
+
+**2. Secure construction and limits (20).** Compare a unique GCM nonce per message with the same nonce reused under one session key. State how Alice receives the nonce, one trust assumption about Alice's public key, and one limitation of the scheme (for example, whether Alice can tell who sent the messages).
+
+**3. Reproducible reasoning (20).** Use two messages to derive or illustrate what an observer can compute when the same GCM key and nonce are reused. Distinguish the XOR of the plaintexts from either full plaintext, and explain what extra knowledge could reveal message content. Cite your sources and any tools used. A diagram, calculation or state trace is enough; no code is required.
 
 ## Part 2 — Conventional Arm: Essay Questions
 

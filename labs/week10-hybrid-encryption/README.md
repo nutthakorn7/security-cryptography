@@ -7,7 +7,7 @@ Storage Cheat Sheet
 
 ## 100-minute class and assigned worksheet version
 
-**In class:** 10 min retrieval quiz + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min.
+**In class:** 10 min retrieval review + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min. The Week 10 scored quiz opens Week 11.
 
 **Shared core — every student:** Trace the hybrid-encryption protocol and key roles; compare correct nonce discipline with a repeated-nonce case. Provide a repeatable diagram, state table or two-message XOR derivation. No Docker target, flag or standalone code submission is required for the shared core.
 
@@ -18,9 +18,8 @@ Storage Cheat Sheet
 **Evidence:** record reproducible observations or reasoning and your name/student ID. Where the local target prints a shared placeholder flag, record it as observed; a personalized flag or live CTFd account is not a prerequisite. Follow SUBMISSION.md for the announced hand-in channel.
 
 ## This week — what to do
-1. **Before class** — skim the Week 6 recap (AEAD — the previous teaching week; Weeks 7–9 are review and the midterm sittings). No environment setup needed —
-   this week is Python-only, standard library + `cryptography` (already used in earlier weeks).
-2. **Concept preparation and brief explanation (within the 100-minute plan)** — weekly quiz first (~10 min), then the lecture. Slides:
+1. **Before class** — skim the Week 6 recap (AEAD — the previous teaching week; Weeks 7–9 are review and the midterm sittings). The shared core needs no environment setup. AIR-Sec students need Python and the `cryptography` package for the audit task.
+2. **Concept preparation and brief explanation (within the 100-minute plan)** — review prior material first (~10 min), then the brief explanation. Slides:
    `slides/week10.md`.
 3. **Practice and assigned-version work (core in class; extensions outside class)** — complete **Worksheet 10**: the shared analysis core plus only your assigned Conventional or AIR-Sec version; the AIR-Sec task in `audit_the_ai/` retains its proof script and corrected-code deliverables.
 4. **Submit** — shared-core evidence/reasoning plus your assigned 40-point version in the worksheet PDF via [SUBMISSION.md](../../SUBMISSION.md). For AIR-Sec, attach the proof script, its output and the complete `fixed_hybrid_encrypt.py` code in the PDF/worksheet; no separate GitHub code-fix submission is required.
@@ -53,10 +52,9 @@ the moment the recovered plaintext prints.
 ## Why no lab target this week
 
 Nothing here is a "break into a running service" exploit — it's protocol design and
-correctness analysis, same category as `software-security`'s threat-modeling and supply-chain
-weeks. Rather than force an artificial CTF wrapper onto that, this week's hands-on core is an
-**Audit-the-AI** exercise: a plausible, AI-generated-looking hybrid-encryption implementation
-that passes a shallow review and fails a careful one. See `audit_the_ai/README.md`.
+correctness analysis. The shared core is a diagram and nonce-reuse derivation; the assigned
+AIR-Sec arm adds an **Audit-the-AI** exercise with a plausible hybrid-encryption implementation.
+See `audit_the_ai/README.md`.
 
 ## Deliverable
 Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.

@@ -5,7 +5,7 @@ paginate: true
 header: "Cryptography and Network Security · Week 10"
 ---
 
-<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+<!-- Delivery: 100-minute lab-focused session. 10 retrieval review + 10 brief + 60 practice + 15 debrief + 5 evidence. The scored Week 10 quiz opens Week 11. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 10
 ## Asymmetric & Hybrid Encryption
@@ -58,7 +58,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 > Pay RSA's cost once per session, not once per message.
 
-<!-- Worksheet Q2. Draw this as a numbered diagram on the board — Bob's side, the wire, Alice's side. Point out it's exactly how TLS's handshake works: asymmetric once, symmetric for the bulk. ~8 min. -->
+<!-- Worksheet Q2. Draw this as a numbered diagram on the board — Bob's side, the wire, Alice's side. Modern TLS also establishes keys before symmetric AEAD protects application data, but TLS 1.3 uses authenticated ephemeral (EC)DHE rather than RSA key transport. ~8 min. -->
 
 ---
 
@@ -165,9 +165,9 @@ nonce-reuse
 - Two standard disciplines: a fresh CSPRNG-random 96-bit nonce per message, **or** a monotonic counter — pick one, don't mix
 - The nonce isn't secret — it travels with the ciphertext, in the clear
 - Untouched: RSA key size, OAEP padding, the AES-256 session key, per-session key wrapping
-- The bug lives in nonce *discipline*, not in any primitive — the fix stays local to the encrypt call
+- The bug lives in nonce *discipline*: encryption generates and sends a unique nonce; decryption reads it
 
-<!-- Tie to the lab's own constraint: the fix must NOT re-wrap the key per message (that defeats hybrid encryption's whole point). Ask: "why doesn't this fix touch the RSA/OAEP code at all?" — get them to say it out loud before the lab. ~6 min. -->
+<!-- Tie to the lab's own constraint: the fix must NOT re-wrap the key per message. The encryptor must create and send a unique nonce per message; the decryptor must read it. Ask: "why doesn't this fix touch the RSA/OAEP code at all?" ~6 min. -->
 
 ---
 

@@ -19,7 +19,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
+| 0–10 | Retrieval review of Week 5 key exchange and Week 6 AEAD. The Week 10 scored quiz is given at the start of Week 11. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
 | 20–40 | Draw sender/recipient key roles and the KEM or key-wrap plus AEAD data flow. |
 | 40–60 | Work through the supplied reused-GCM-nonce example or reproducible small calculation; show what equality/XOR relation leaks. |
