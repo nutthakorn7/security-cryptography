@@ -94,15 +94,16 @@ silently reduce a student's task time or introduce an unannounced new grade comp
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz and brief |
-| 10–20 | Self-audit checklist and division of work |
+| 0–10 | Scored Week 15 retrieval quiz, then studio brief |
+| 10–20 | Self-audit of the five controls and outstanding tests; divide work |
 | 20–75 | Teams implement/test; instructor schedules focused clarification during the work; practice challenges available |
 | 75–95 | Peer review: each team demonstrates its sharing flow to a partner team |
 | 95–100 | Save remaining fixes and final-deliverable plan |
 
-Every team demonstrates its existing sharing flow to its peer-review partner and the instructor,
-not as a full presentation to the whole class, so no student headcount is assumed. Existing
-practice practical challenges check understanding before the final assessment and add no marks. Team videos
+Every team demonstrates its existing sharing flow to its peer-review partner. The instructor
+schedules short checks with teams during the work block against the five required controls;
+there is no full presentation to the whole class. Existing practice practical challenges
+check understanding before the final assessment and add no marks. Team videos
 are **≤5 minutes**, submitted before Week 19; final report/build/video are graded using the
 project's existing 15%. Remaining clarification happens in Week 20. It never reduces the
 Week 19 timed practical.

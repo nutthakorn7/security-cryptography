@@ -43,12 +43,14 @@
 
 | Field | Value |
 |---|---|
-| KDF chosen | Argon2id / bcrypt / scrypt / PBKDF2 |
-| Parameters | e.g. Argon2id m=…, t=…, p=… / bcrypt cost=… |
+| Encryption-key KDF chosen | Argon2id / scrypt / PBKDF2 |
+| Parameters | e.g. Argon2id m=…, t=…, p=… / scrypt N=…, r=…, p=… / PBKDF2 iterations=… |
 | Where in code | `file:line` |
 | Salt handling | per-user, random, length |
 
-- **Why this is correct:** why these parameters resist offline GPU cracking.
+- **Why this is correct:** why these parameters resist offline guessing, how the salt is stored,
+  and how the KDF output becomes an encryption key of the required length. If you also use bcrypt
+  to verify logins, describe it separately; do not use the stored bcrypt hash as the AEAD key.
 - **Failure mode avoided (Wk2):** why you did **not** use a raw/fast hash (MD5/SHA-256/HMAC-as-KDF) —
   the exact thing that made the Wk2 leaked-DB crack fast.
 
@@ -147,9 +149,10 @@
 
 ---
 
-## Peer-contribution ratings (required — see project/README.md)
-*Each member privately rates every teammate (incl. self): Full / Most / Some / Little + a one-line
-justification. Attach separately or here; the team mark is scaled per member by the averaged rating.*
+## Team contribution summary
+*List each member's work and matching commits in this shared report. Each member's private
+ratings are collected separately by the instructor; do not include ratings in the team report.
+See project/README.md for the peer-contribution policy.*
 
 ---
 
@@ -157,7 +160,7 @@ justification. Attach separately or here; the team mark is scaled per member by 
 
 | Criterion | Pts | Section |
 |---|---|---|
-| Password KDF — slow KDF, correctly parameterized, no raw/fast hash (Wk2) | 13 | §2 |
+| Password-derived encryption key — slow KDF, correctly parameterized, no raw/fast hash (Wk2) | 13 | §2 |
 | AEAD at rest — AES-GCM/ChaCha20-Poly1305, unique nonce, no raw CBC (Wk4/Wk6) | 15 | §3 |
 | Key exchange / wrapping — symmetric key never in the clear (Wk5/Wk10) | 15 | §4 |
 | Digital signatures — real scheme, verified, malleability-safe (Wk3/Wk11) | 15 | §5 |

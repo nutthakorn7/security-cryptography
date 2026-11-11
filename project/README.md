@@ -2,8 +2,8 @@
 
 **Teams of 3 normally, 2 where needed for an uneven class (nested in your House). 15% of the final grade.**
 
-This is a **"build it right," not "find the bug"** project — the inverse of the weekly labs. Every
-week from Wk2–Wk15 hands you a *broken* construction and asks you to break it, then fix it.
+This is a **"build it right," not "find the bug"** project. Several weekly labs gave you a
+broken construction to diagnose and repair; the review and exam weeks used different formats.
 CryptoVault instead asks you to **design and build a correct system from scratch**, composing the
 primitives you fixed all term so that none of the classic failure modes (fast-hash passwords, raw
 CBC, reused nonces, a symmetric key sent in the clear, an unauthenticated channel) reappear in your
@@ -19,9 +19,14 @@ with another registered user without ever exposing it to the server or to the ne
 
 The build must correctly use, **together**:
 
-1. **Password-derived key via a slow KDF** — Argon2id or bcrypt (scrypt/PBKDF2 with a modern work
-   factor is acceptable with justification). A raw or fast hash (MD5/SHA-256/HMAC-as-KDF) is an
-   automatic finding here — that's the exact failure Wk2 (hash-cracking) demonstrated.
+1. **Password-derived encryption key via a slow KDF** — use Argon2id, scrypt or PBKDF2 with a
+   unique salt, explicit output length and justified work factor. A raw or fast hash
+   (MD5/SHA-256, or HKDF/HMAC alone applied to a password) is an automatic finding here — that's
+   the failure Wk2 (hash-cracking) demonstrated. Bcrypt is suitable for password **verification**
+   in a legacy login design, but a bcrypt password hash is not the AEAD key; derive the encryption
+   key separately with a password-based KDF. See the
+   [cryptography.io KDF documentation](https://cryptography.io/en/stable/hazmat/primitives/key-derivation-functions/)
+   and [OWASP password-storage guidance](https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html).
 2. **AEAD for data at rest** — AES-GCM (or ChaCha20-Poly1305) encrypting every stored vault entry,
    with a **fresh, unique nonce per encryption** — never raw CBC, never a fixed or counter-reused
    nonce. This is Wk4 (CBC bit-flip) and Wk6 (CBC padding-oracle / GCM control) applied constructively instead
@@ -93,7 +98,7 @@ graded against the specific failure mode its weekly lab exists to teach.
 
 | Criterion | Pts |
 |---|---|
-| Password KDF — slow KDF (Argon2id/bcrypt), correctly parameterized, no raw/fast hash (Wk2) | 13 |
+| Password-derived encryption key — Argon2id/scrypt/PBKDF2, correctly parameterized, no raw/fast hash (Wk2) | 13 |
 | AEAD at rest — AES-GCM/ChaCha20-Poly1305, verified-unique nonce per encryption, no raw CBC (Wk4/Wk6) | 15 |
 | Key exchange / key wrapping for sharing — symmetric key never transmitted or stored in the clear (Wk5/Wk10) | 15 |
 | Digital signatures — real signature scheme, verified on receipt, malleability-safe (Wk3/Wk11) | 15 |
@@ -105,15 +110,17 @@ graded against the specific failure mode its weekly lab exists to teach.
 total cannot exceed 100 — it lets a team recover points lost elsewhere, but a team that nails the
 100-point rubric does not need it for full marks.
 
-**Deadline and late work:** the final build, report and video are due by 23:59 Thai time (ICT) on
-the Sunday before the Week 19 class. Late work loses 10% of the project score for each day late (a part day counts as a
-day), down to 0.
+**Deadline and late work:** the final build, report and video are due **Sunday 7 March 2027,
+23:59 ICT**, before the Week 19 class. Late work loses 10% of the project score for each day late
+(a part day counts as a day), down to 0; late uploads close Wednesday 17 March 2027, 23:59 ICT.
 
 ## Peer-contribution evaluation (individual fairness)
 
 The project is graded team work, so each member's mark is adjusted for actual contribution:
 - At submission, **each member privately rates every teammate** (including themselves) on a
-  simple scale — e.g. *Full / Most / Some / Little* — with a one-line justification.
+  simple scale — e.g. *Full / Most / Some / Little* — with a one-line justification. Do not put
+  these ratings in the shared team report. The instructor must announce a private collection
+  channel and the exact conversion to an individual mark before collecting ratings.
 - The team mark is **scaled per member** by the averaged rating (typically ×0.8–1.1; an
   unjustified low score is discussed before it's applied).
 - Each member's own commit history corroborates who did what. A "single paste-everything"
@@ -130,7 +137,7 @@ Write up the self-audit and design doc using the fill-in report template
 section-by-section rubric mapping, adapted for CryptoVault: one section per core primitive (design doc
 → KDF → AEAD → key exchange → signatures → transport → end-to-end composition → crypto-agility note →
 conclusion), each mapped to its rubric points and the weekly failure mode it must avoid, plus an
-AI-tool usage disclosure and the peer-contribution ratings.
+AI-tool usage disclosure. Private peer-contribution ratings are collected separately.
 
 All work stays within this course's ethics policy — see [`../ETHICS.md`](../ETHICS.md) (authorized
 targets only; here, that means your own team's app and your own test accounts, never another
