@@ -3,8 +3,8 @@
 > **Course:** Cryptography and Network Security (KOSEN69) · **Week 5**
 > **Aligned to:** RFC 3526 (MODP groups) · CWE-322 (Key Exchange without Entity Authentication),
 > CWE-300 (Channel Accessible by Non-Endpoint)
-> **Kind:** Hybrid — a runnable MITM demo (Part 2) alongside conceptual content that stays
-> theoretical this week (small-subgroup confinement, Part 2b).
+> **Kind:** Hybrid — a runnable MITM demo and short explanations of its two handshakes.
+> Small-subgroup attacks are an optional later-study topic, not assessed this week.
 
 ## How to use this worksheet — 100-minute class, two versions
 
@@ -16,18 +16,17 @@ Each version totals **100**, and neither version requires the other format for m
 | Common criterion | Points | This week's evidence |
 |---|---:|---|
 | Core activity / analysis | 20 | Run both DH topologies and trace the relay's two independent handshakes and interception. |
-| Control comparison and limitations | 20 | Explain what HMAC authentication changes, its pre-shared-key assumption, forward secrecy and the separate input-validation limitation. |
+| Control comparison and limitations | 20 | Explain what the HMAC check changes, the pre-shared-key assumption, and why the session still uses fresh DH. |
 | Evidence and causal reasoning | 20 | Record both modes, both authentication failures and the interception count, and explain the observations rather than submitting a flag alone. |
 
 **Before class:** complete the stated reading and any environment setup; software
 installation and first image downloads are preparation, not extra contact minutes.
 **In class (100 minutes):** 10 quiz/review + 10 brief + 60 shared practice/analysis +
-15 debrief + 5 evidence capture. In Week 1 the opening block is orientation/review,
-not a quiz on material not yet taught. The detailed tasks below are a checklist, not
+15 debrief + 5 evidence capture. The opening quiz reviews Week 4; the Week 5 quiz is
+taken at the start of Week 6. The detailed tasks below are a checklist, not
 additional timed class blocks: work through the core observations in the guided practice,
-draft the explanation in the debrief, then finish detailed calculations/write-up and the
-assigned 40-point format before the published deadline. Keep every original question;
-unassigned-format questions and the labelled appendix are study extensions.
+draft the explanation in the debrief, then finish the assigned 40-point format before
+the published deadline. Questions labelled optional carry no marks.
 
 ## Part 0 — Student Information
 | Name | Student ID | Date | Group |
@@ -37,40 +36,29 @@ unassigned-format questions and the labelled appendix are study extensions.
 
 ---
 
-## Part 1 — Conventional form (40 points; only if Conventional is your assigned form): Essay Questions
+## Part 1 — Conventional form (40 points; only if assigned)
 
-Answer each in your own words (roughly 120–200 words per answer — enough to show you understand
-the mechanism, not so much that you're padding).
+Answer **Q1–Q4 only**, in about 2–4 sentences each. Each question is worth 10 points.
+Use the lab logs and this week's slides; no group-theory calculation is required.
 
-**Q1.** Why do Alice and Bob need a key exchange instead of simply sending a symmetric key
-directly? Explain what risk the key exchange solves.
+**Q1 (10).** Why not send the AES key directly over the open network? What do the public
+values in a DH exchange let Alice and Bob do instead?
 
-**Q2.** In an unauthenticated key exchange, how can an active MITM attacker impersonate both
-sides? Describe the attacker's steps and why Alice/Bob cannot detect it.
+**Q2 (10).** In the vulnerable run, who shares the Alice-side secret, and who shares the
+Bob-side secret? Explain how Relay reads the message without solving a discrete logarithm.
 
-**Q3.** Key exchanges protect against passive attackers but not active ones. Give one real-world
-scenario where this distinction matters.
+**Q3 (10).** Plain, unauthenticated DH protects against an observer who only listens,
+but Relay can actively substitute public values. What does the HMAC check in the fixed
+run stop? Give one condition the fix relies on.
 
-**Q4.** Why must DH choose a very large prime `p` and a generator `g`? What happens if `p` is
-small or non-prime? Explain in terms of the discrete logarithm problem.
+**Q4 (10).** Why does the fixed run still make a fresh DH session key instead of using
+the pre-shared `AUTH_KEY` to encrypt messages? Explain what happens to past recorded
+traffic if `AUTH_KEY` is exposed later, assuming the ephemeral DH secrets were erased.
 
-**Q5.** Explain why the discrete logarithm problem is "hard" and how this hardness enables DH to
-work securely.
-
-**Q6.** ECDH provides the same security as DH but with much smaller keys. Why is this important
-for real protocols like TLS, SSH, or mobile apps? Discuss performance, storage, or bandwidth.
-
-**Q7.** Why is it dangerous to use custom DH parameters or non-standard groups? (weak primes,
-broken standards)
-
-**Q8.** What security problem occurs if an implementation does not validate received public keys
-during DH or ECDH? Explain the attack surface.
-
-**Q9.** Explain the core idea of a small subgroup attack. Why does sending a malicious public key
-allow an attacker to leak private-key bits?
-
-**Q10.** Why do many modern systems choose X25519 instead of classic P-256 or classic DH?
-Consider security design, simplicity, resistance to pitfalls.
+**Optional study questions (ungraded):** Why use a vetted large DH group? What happens
+if a peer's public value is not validated? How do ECDH and X25519 differ from this finite-field
+demo? Small-subgroup attacks are a separate input-validation topic; the running lab does not
+demonstrate one, and no answer about them is required for this worksheet.
 
 ---
 
@@ -81,13 +69,31 @@ not on how well you can prompt an AI. Full run instructions: [`README.md`](READM
 
 ### Part 2a — Shared lab steps and evidence (both versions, 60 points)
 
+**Before class — get to the lab folder.** If you still have the Week 4 course ZIP,
+use it if it contains `labs/week05-key-exchanges`; otherwise download a fresh ZIP:
+open <https://github.com/nutthakorn7/security-cryptography>, choose **Code → Download ZIP**,
+then extract it (Windows: **Extract All**; Mac: double-click). No GitHub account or
+host Python installation is needed. Start Docker Desktop and wait for **Engine running**.
+Open the extracted `security-cryptography-master/labs/week05-key-exchanges` folder
+(there may be two similarly named outer folders after extraction).
+
+- **Windows:** In File Explorer, right-click empty space inside `week05-key-exchanges`
+  and choose **Open in Terminal**. If unavailable, Shift-right-click and choose
+  **Open PowerShell window here**.
+- **Mac:** Open Terminal, type `cd` followed by one space, drag the `week05-key-exchanges`
+  folder into Terminal, then press Enter.
+
+Check your location with `dir` on Windows or `ls` on Mac. You should see
+`docker-compose.vulnerable.yml` and `docker-compose.fixed.yml`. Keep this Terminal
+in the lab folder for every command below. If you closed Docker Desktop since
+preparation, start it again and wait for **Engine running**.
+
 **Setup.** `common.py` gives all three services (`alice.py`, `bob.py`, `relay.py`) a shared
 RFC3526 Group 14 (2048-bit) DH group. Alice is configured to dial `relay`, never `bob` directly —
 that is the premise: an active attacker controls the network path.
 
 1. Run **vulnerable mode**:
    ```bash
-   cd labs/week05-key-exchanges
    docker compose -f docker-compose.vulnerable.yml up --build
    ```
    Capture the full log output. Your required evidence line is:
@@ -109,15 +115,20 @@ that is the premise: an active attacker controls the network path.
    AUTH FAILED - ABORTING
    ```
    (once from `alice`, once from `bob`) and the **absence** of any `RELAY INTERCEPTED` line.
-   Confirm the absence explicitly, e.g.:
-   ```bash
+   Confirm the absence explicitly. On Mac/Linux Terminal:
+   ```sh
    docker compose -f docker-compose.fixed.yml logs | grep -c "RELAY INTERCEPTED"
    ```
-   and record that it prints `0`.
+   On Windows PowerShell:
+   ```powershell
+   (docker compose -f docker-compose.fixed.yml logs | Select-String -SimpleMatch "RELAY INTERCEPTED" | Measure-Object).Count
+   ```
+   Record the `0` result. The example counts lines; it does not prove a trusted
+   Alice–Bob connection succeeds, only that Relay did not log an intercepted message.
 4. Tear down: `Ctrl-C`, then `docker compose -f docker-compose.fixed.yml down`.
 
 **Submit:** both captured logs (identified with your name/student ID), your one-line note from step 1,
-and the `grep -c` output from step 3.
+and the zero-count output from step 3.
 
 ### Part 2a-AIR — Audit the AI (AIR-Sec version only, 20 points)
 
@@ -128,6 +139,8 @@ and the `grep -c` output from step 3.
 > the session key, so a valid message HMAC proves Bob's identity. There is no need
 > to trust a certificate, signature key or pre-shared authentication key first."
 
+Write 1–2 sentences for each numbered item.
+
 1. Quote the claim that fails for the active relay in this lab and explain the difference
    between authenticating data with a negotiated key and authenticating the peer's identity.
 2. Explain what the attacker knows after its two exchanges. Compare the artifact's proposal
@@ -136,20 +149,12 @@ and the `grep -c` output from step 3.
    Discuss the limitation if the authentication key is exposed. Submit your critique and
    corrected explanation; no additional exploit or production protocol implementation is required.
 
-### Part 2b — Explain in Plain English (EiPE): small subgroup attacks (AIR-Sec version only, 10 points)
+### Part 2b — Explain in Plain English (EiPE): the two-secret relay (AIR-Sec only, 10 points)
 
-The lab you just ran demonstrates a **key-substitution** MITM — it does **not** demonstrate a
-small subgroup attack. This section is the conceptual half of this HYBRID week: source Q9 asked
-you to explain the core idea formally; here, explain it **in plain English to someone who has
-never heard of group theory** (no "subgroup," "order," or "discrete log" used without first
-explaining what you mean in ordinary words). In 4–6 sentences, cover:
-- What a malicious DH public key can make the "shared secret" collapse down to (hint: instead of
-  one of a huge number of possible outcomes, only a handful).
-- Why that lets an attacker who sees how Bob responds to several such malicious keys narrow down
-  bits of Bob's private key, one guess-and-check round at a time.
-- Why this is a *different* failure from the MITM you just ran (that one exploited a **missing
-  identity check**; this one would exploit a **missing input-validation check** on the received
-  public key — see source Q8).
+In 3–4 short sentences, explain the vulnerable run to a classmate who has not studied DH.
+Say who shares the first secret, who shares the second, and why Relay can read and forward
+the message. Make clear that Alice and Bob do **not** share either secret directly in this
+attack. Use everyday words; a formula or group-theory explanation is not required.
 
 ### Part 2c — Prompt Problem (AIR-Sec version only, 10 points)
 
@@ -171,8 +176,9 @@ At minimum, check whether the AI's answer:
 - Doesn't hallucinate a mechanism (e.g. inventing a made-up "DH-Auth handshake" or misattributing
   a specific RFC/algorithm it doesn't actually name correctly).
 
-**Submit:** your exact prompt, the AI's full response, and a bullet-by-bullet critique quoting
-the specific sentence(s) that are correct, hand-waved, or wrong.
+**Submit:** your exact prompt, the AI's full response, and one short sentence per check
+identifying what the answer gets right, omits, or gets wrong. Quote a relevant phrase where
+possible; a closing sentence may summarize the biggest correction.
 
 ### Part 2d — Viva Spot-Check (formative/authenticity check; no separate points)
 
@@ -209,8 +215,8 @@ Late work loses 10% of this worksheet's score for each day late (a part day coun
 Uploading or replacing a file after the deadline makes the whole hand-in late.
 
 Submit the common work plus **one** assigned assessment format; do not add the two
-format columns or complete both formats for extra marks. The original questions remain
-available for study. A viva is a formative/authenticity check within the relevant criteria,
+format columns or complete both formats for extra marks. Optional questions carry no marks.
+A viva is a formative/authenticity check within the relevant criteria,
 with feedback or a request to clarify/reproduce evidence; it has no separate points and
 no automatic-zero rule. Grade the demonstrated work against the published criteria.
 

@@ -1,6 +1,6 @@
 # Weekly Quiz — Week 5 (Key Exchanges)
 
-**~10 min · 6 questions · low-stakes** (lowest scores dropped). Individual.
+**Start of Week 6 · ~10 min · 6 questions · low-stakes** (lowest scores dropped). Individual.
 
 **Name:** ____________  **Student ID:** ________
 

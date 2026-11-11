@@ -15,9 +15,10 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 ## Today
 
-**100-minute class:** 10 quiz/review · 10 brief · 60 shared practice · 15 debrief · 5 capture.
+**100-minute class:** 10 Week 4 recap quiz · 10 brief · 60 shared practice · 15 debrief · 5 capture.
 **Assessment:** common 60 + assigned Conventional written 40 **or** AIR-Sec 20/10/10.
-Preparation and detailed write-up are outside the contact block. Week 1 opens with orientation/review.
+Preparation and detailed write-up are outside the contact block. The opening quiz reviews
+Week 4; the Week 5 quiz is taken at the start of Week 6.
 
 <!-- The full deck is a teaching/reference bank, not an additional lecture block.
 Use the core explanation for the 10-minute brief and just-in-time guidance during practice;
@@ -72,15 +73,15 @@ separate points or automatic-zero rule. -->
 - Recovering `a` from `g^a mod p` = the **discrete logarithm problem**
 - No efficient algorithm known for a well-chosen, large prime `p`
 - This week's lab uses **RFC 3526 Group 14**: a standard 2048-bit MODP prime
-- Small or non-prime `p`, or a bad `g`, can make the DLP tractable — never invent your own parameters
+- Use a vetted group; its size and structure matter. Do not invent your own parameters.
 
-<!-- Discrete log hardness is *why* DH resists a passive eavesdropper. Tie to worksheet Q4/Q5 (why p must be large and prime) and Q7 (custom/non-standard groups are dangerous). Point out: this lab's common.py hardcodes RFC 3526 Group 14 — never roll your own.  -->
+<!-- Discrete-log hardness is why DH resists a passive eavesdropper in a vetted group. Detailed parameter and subgroup questions are optional this week. -->
 
 ---
 
 ## But DH answers the wrong question
 
-- DH gives Alice and Bob a secret no **eavesdropper** can compute
+- Plain DH lets each pair of participants establish a secret that a **passive eavesdropper** cannot feasibly compute
 - It gives **neither side a way to check who they just agreed it with**
 - "Whoever answers when I dial Bob's address" ≠ "Bob"
 - That gap is everything an **active** attacker needs
@@ -107,7 +108,7 @@ separate points or automatic-zero rule. -->
 
 1. Relay runs a full DH handshake with Alice — **posing as Bob**
 2. Relay runs a second, completely independent DH handshake with Bob — **posing as Alice**
-3. Relay now holds two different shared secrets: one per side
+3. Alice and Relay share one secret; Bob and Relay share another. Relay alone holds **both**
 4. It decrypts Alice's AES-GCM message with the Alice-side key, logs it, re-encrypts the same plaintext under the Bob-side key, forwards it
 
 <!-- Walk relay.py's handle_mitm() step by step. Key insight for viva prep (worksheet Part 2d, viva Q1): why TWO handshakes, not one? Because relay must be a real, independent DH peer to *each* side — that's what makes both handshakes complete cleanly with no error.  -->
@@ -126,8 +127,8 @@ dh-mitm
 
 - Alice's handshake completes successfully — she has *a* shared secret
 - Bob's handshake completes successfully — he has *a* shared secret
-- Neither is the *same* secret, and neither side ever checks that
-- No MAC, no signature, nothing binds the public key to an identity
+- Alice and Bob do not share the *same* secret, and neither side knows that
+- No independently trusted tag or signature binds the public key to an identity
 - **CWE-322** — Key Exchange without Entity Authentication
 
 <!-- The punchline of the vulnerable run. Both handshakes are individually "textbook correct" DH — the failure is entirely that nobody authenticated *who* was on the other end. This is CWE-322, stated verbatim from the README/worksheet.  -->
@@ -153,7 +154,7 @@ week05-bob   | BOB RECEIVED: the launch code is 4471
 
 ## The fix: authenticate the public key, not the channel
 
-- Each side computes **HMAC-SHA256(AUTH_KEY, public_key_bytes)** and sends the tag alongside its DH public value
+- Each side computes an **HMAC-SHA256 tag** over its DH public value using the pre-shared `AUTH_KEY`
 - The peer verifies the tag **before** deriving any session key
 - `relay` doesn't have `AUTH_KEY` — it can still try the identical substitution, but it can only send a junk tag
 - Verification fails → both sides print `AUTH FAILED - ABORTING` and exit
@@ -164,12 +165,12 @@ week05-bob   | BOB RECEIVED: the launch code is 4471
 
 ## What the fix does *not* give up
 
-- DH still runs fresh, every session — the session key is still **ephemeral**
-- That means **forward secrecy**: if `AUTH_KEY` leaks next year, past captured traffic is still safe
+- DH still runs fresh for each session
+- If the ephemeral DH secrets are erased, a later leak of `AUTH_KEY` alone does not reveal past captured sessions
 - The fix authenticates the exchange — it does **not** replace it
-- Real systems (TLS, SSH) authenticate DH with signatures/certificates, not a shared MAC — same principle: *authenticate the exchange, don't just run it*
+- Real protocols have their own authenticated handshake design; this lab isolates the identity check with a pre-shared MAC key
 
-<!-- Critical nuance students miss: why not just use AUTH_KEY as the encryption key and skip DH entirely (worksheet Part 2d, viva Q3)? Answer: you'd lose forward secrecy — a single leaked AUTH_KEY would retroactively break every past session. HMAC-signing the DH public key gets you authentication AND keeps ephemeral secrecy.  -->
+<!-- Ask why the fixed run still needs fresh DH. Using AUTH_KEY directly as the long-lived encryption key would expose past recorded traffic if it later leaked. With ephemeral DH secrets erased, a later AUTH_KEY leak alone does not reveal old DH session keys. This lab uses an HMAC tag over each public value, not a digital signature. -->
 
 ---
 
@@ -185,17 +186,17 @@ week05-bob   | AUTH FAILED - ABORTING
 - Container log interleaving varies run to run — either line in each relay/AUTH-FAILED pair can print first
 - Zero occurrences of `RELAY INTERCEPTED` — that absence *is* the evidence, regardless of ordering
 
-<!-- Contrast directly with the vulnerable log two slides ago. Same relay.py attempt, same structure, opposite outcome. Have them run `grep -c "RELAY INTERCEPTED"` on the fixed-mode logs and confirm it prints 0 — that's their required lab evidence. Verified by running the stack repeatedly: unlike vulnerable mode, BOTH pairs here (relay-attempted/alice-AUTH-FAILED, and relay-attempted/bob-AUTH-FAILED) flip order between runs with no dominant sequence — it's a genuine race, not just an occasional swap. Also expect CryptographyDeprecationWarning (FFDH) lines interleaved in. Don't grade or worry about line order here; only the two AUTH FAILED lines + zero RELAY INTERCEPTED matter.  -->
+<!-- Contrast directly with the vulnerable log. The worksheet gives a grep command for Mac/Linux and Select-String for PowerShell; both should count 0. Container log order can vary. Grade the two AUTH FAILED lines and zero interception count, not their order. -->
 
 ---
 
-## Not in today's demo — stays conceptual
+## Optional study — not assessed today
 
-- **Weak/non-standard groups** (small or non-prime `p`) — Q7
-- **Missing public-key validation** — this lab's code does **not** validate `peer_y` against the group order — Q8
-- **Small-subgroup confinement attack** — a malicious public key can collapse the "shared secret" to one of only a handful of possible values, letting an attacker leak bits of a private key — Q9 / EiPE Part 2b
+- **Weak/non-standard groups** and **public-key validation** are separate implementation concerns
+- A small-subgroup attack is **not** the key-substitution MITM you ran
+- No group-theory explanation or small-subgroup answer is required for Worksheet 5
 
-<!-- Draw a hard line: today's running demo is ONLY the key-substitution MITM. These three are real, related DH pitfalls but this week's code doesn't exploit them — they're conceptual, covered by essay questions and the EiPE (Explain in Plain English) exercise. Don't let students conflate "no identity check" (what we ran) with "no input validation" (what we didn't).  -->
+<!-- Today's running demo is only the key-substitution MITM. Group validation is a separate topic for optional study; it is absent from the marked questions and EiPE. -->
 
 ---
 
@@ -214,8 +215,8 @@ week05-bob   | AUTH FAILED - ABORTING
 
 - **Common 60:** Run both DH topologies and trace the relay's two independent handshakes and interception.
 - Compare the control/fixed case, explain its limits, and capture your own evidence.
-- **Conventional 40:** the original written questions, if assigned.
-- **AIR-Sec 40:** Audit the AI 20 + EiPE 10 + Prompt Problem 10, if assigned.
+- **Conventional 40:** four short questions on the observed lab and its control, if assigned.
+- **AIR-Sec 40:** Audit the AI 20 + plain-language two-secret explanation 10 + Prompt Problem 10, if assigned.
 - Finish the detailed write-up after class; submit the PDF per SUBMISSION.md.
 - Viva is formative/authenticity feedback within the rubric, with no separate points.
 
@@ -237,4 +238,4 @@ assigned format. Shared demo flags are acceptable if no personal configuration i
 # Questions?
 Next week: Authenticated Encryption (AEAD)
 
-<!-- Cliffhanger: "We just fixed authentication for a key exchange with a bolted-on HMAC. Next week we look at ciphers that build authentication in from the start." Remind them: worksheet + captured logs + identity proof due via Classroom/GitHub per SUBMISSION.md.  -->
+<!-- Cliffhanger: "We just fixed authentication for a key exchange with a bolted-on HMAC. Next week we look at ciphers that build authentication in from the start." Remind them: worksheet PDF and their own captured logs are due at learn.zcr.ai/submit per SUBMISSION.md. -->

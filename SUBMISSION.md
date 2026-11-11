@@ -276,37 +276,39 @@ cd ../..
 
 ## W05 — Key Exchanges: MITM ต่อ Diffie–Hellman
 
-**เรียนรู้อะไร:** สังเกต relay ทำ DH แยกกับ Alice และ Bob เพื่ออ่านและส่งต่อข้อความ เปรียบเทียบกับโหมดที่ Alice/Bob ตรวจ HMAC ของ public key ก่อนสร้าง session key ส่วน small-subgroup attack เป็นงานอธิบายแนวคิดใน worksheet ไม่ใช่การโจมตีที่ demo นี้รัน
+**เรียนรู้อะไร:** สังเกต relay ทำ DH แยกกับ Alice และ Bob เพื่ออ่านและส่งต่อข้อความ เปรียบเทียบกับโหมดที่ Alice/Bob ตรวจ HMAC ของ public key ก่อนสร้าง session key ส่วน small-subgroup attack เป็นหัวข้ออ่านเพิ่มเติม ไม่มีคะแนนและไม่ใช่การโจมตีที่ demo นี้รัน
 
 เอกสาร: [README](labs/week05-key-exchanges/README.md) · [Worksheet](labs/week05-key-exchanges/worksheet.md)
 
-**คำสั่งรันจาก repo root:** ใช้ Docker ทั้งหมด ไม่ต้องรัน Python client บนเครื่อง และไม่มีพอร์ตที่เปิดให้เข้าผ่าน `localhost` เริ่มจาก vulnerable mode:
+**เตรียมก่อนเรียน:** เปิด Docker Desktop ให้ขึ้น **Engine running** แล้วเปิด Terminal/PowerShell ในโฟลเดอร์ `labs/week05-key-exchanges` ตามขั้นตอน Windows/Mac ในใบงาน ใช้ Docker ทั้งหมด ไม่ต้องรัน Python client บนเครื่อง และไม่มีพอร์ตที่เปิดให้เข้าผ่าน `localhost` เริ่มจาก vulnerable mode:
 
 ```bash
-cd labs/week05-key-exchanges
-docker compose -f docker-compose.vulnerable.yml up -d --build
-docker compose -f docker-compose.vulnerable.yml logs -f
+docker compose -f docker-compose.vulnerable.yml up --build
 ```
 
-เมื่อเห็น log ครบ กด **Ctrl-C เพื่อหยุดการติดตาม log เท่านั้น** จากนั้นเก็บภาพหลักฐาน vulnerable ให้ครบ แล้วปิดชุดนี้ก่อนเริ่ม fixed:
+เมื่อเห็น log ครบ ให้เก็บหลักฐาน vulnerable ก่อน กด **Ctrl-C** เพื่อหยุดบริการ แล้วปิดชุดนี้ก่อนเริ่ม fixed:
 
 ```bash
 docker compose -f docker-compose.vulnerable.yml down
-docker compose -f docker-compose.fixed.yml up -d --build
-docker compose -f docker-compose.fixed.yml logs -f
+docker compose -f docker-compose.fixed.yml up --build
 ```
 
-เมื่อเห็นผลของทั้ง Alice และ Bob แล้ว กด **Ctrl-C เพื่อหยุดการติดตาม log เท่านั้น** ตรวจและเก็บหลักฐานคำสั่งต่อไปนี้ **ก่อน** `down`:
+เมื่อเห็นผลของทั้ง Alice และ Bob ให้เก็บหลักฐาน กด **Ctrl-C** แล้วตรวจและเก็บหลักฐานคำสั่งต่อไปนี้ **ก่อน** `down`:
 
-```bash
+```sh
 docker compose -f docker-compose.fixed.yml logs | grep -c "RELAY INTERCEPTED"
 ```
 
-ต้องพิมพ์ `0` เมื่อไม่มีบรรทัดดังกล่าว ทั้งนี้ `grep -c` คืน exit code `1` เมื่อไม่พบข้อความ แม้พิมพ์ `0` ซึ่งเป็นพฤติกรรมปกติสำหรับการตรวจนี้ หลังเก็บหลักฐานทั้งหมดแล้วจึงปิด:
+บน Windows PowerShell ใช้คำสั่งนี้แทน:
+
+```powershell
+(docker compose -f docker-compose.fixed.yml logs | Select-String -SimpleMatch "RELAY INTERCEPTED" | Measure-Object).Count
+```
+
+ต้องพิมพ์ `0` เมื่อไม่มีบรรทัดดังกล่าว ทั้งนี้ `grep -c` บน Mac/Linux คืน exit code `1` เมื่อไม่พบข้อความ แม้พิมพ์ `0` ซึ่งเป็นพฤติกรรมปกติสำหรับการตรวจนี้ หลังเก็บหลักฐานทั้งหมดแล้วจึงปิด:
 
 ```bash
 docker compose -f docker-compose.fixed.yml down
-cd ../..
 ```
 
 **ผลที่ต้องตรวจ:** vulnerable มี log `RELAY: completed independent DH handshake...` สองครั้งก่อน `RELAY INTERCEPTED: ...` และ Bob ได้ข้อความเดียวกัน ส่วน fixed ต้องมี `AUTH FAILED - ABORTING` จาก **ทั้ง Alice และ Bob** ไม่มี `RELAY INTERCEPTED` และการนับข้างต้นได้ `0` การที่ Alice/Bob จบด้วย nonzero ใน fixed mode เป็นผลที่คาดหวังจากการปฏิเสธ MITM
@@ -315,10 +317,10 @@ cd ../..
 
 - log vulnerable แบบเห็นลำดับ handshake ทั้งสอง การดักอ่านข้อความ และข้อความที่ Bob ได้รับ พร้อมคำสั่งและบริบทที่ทำซ้ำได้
 - คำอธิบายหนึ่งบรรทัดตามโจทย์ว่า relay ต้องทำสอง handshake เพราะอะไร
-- log fixed ที่เห็นการปฏิเสธจาก Alice และ Bob พร้อมผล `grep -c` ที่พิมพ์ `0`
-- ส่วนเฉพาะรูปแบบที่ได้รับมอบหมาย: Conventional ตอบ Part 1; AIR-Sec ส่ง Audit-the-AI, EiPE เรื่อง small-subgroup และ Prompt Problem พร้อม prompt/คำตอบ AI เต็มฉบับ/คำวิจารณ์ตามใบงาน ทั้งสองแบบส่งปฏิบัติร่วม 60
+- log fixed ที่เห็นการปฏิเสธจาก Alice และ Bob พร้อมผลนับ `RELAY INTERCEPTED` ที่พิมพ์ `0`
+- ส่วนเฉพาะรูปแบบที่ได้รับมอบหมาย: Conventional ตอบ Q1–Q4 รวม 40 คะแนน; AIR-Sec ส่ง Audit-the-AI 20, EiPE อธิบาย relay ที่ถือสอง secret 10, และ Prompt Problem 10 พร้อม prompt/คำตอบ AI เต็มฉบับ/คำวิจารณ์ตามใบงาน ทั้งสองแบบส่งปฏิบัติร่วม 60 คะแนน
 
-สัปดาห์นี้ส่ง **หลักฐาน log แทน flag** ไม่ต้องสร้างหรือแก้โค้ด fixed เอง คำสั่ง detached ข้างต้นรองรับโครงสร้าง Compose ปัจจุบัน: Alice อาจทำงานจบไปแล้วเมื่อเริ่มดู log แต่ log ยังอ่านได้จนกว่าจะ `down` บริการทั้งหมดสื่อสารใน Docker network
+สัปดาห์นี้ส่ง **หลักฐาน log แทน flag** ไม่ต้องสร้างหรือแก้โค้ด fixed เอง บริการทั้งหมดสื่อสารใน Docker network
 
 ## W06 — AEAD: Padding oracle เทียบกับ AES-GCM
 

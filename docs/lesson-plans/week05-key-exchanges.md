@@ -11,7 +11,7 @@ Distinguish passive secrecy from authenticated key exchange using paired before/
 Prebuild both compose variants; run one at a time. The artifact is a trace, not a FLAG string.
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
-Students may consult the supplied helper after explaining the bounded manual checkpoint. Only
+Students run the supplied Docker demo; no hand calculation or code change is required. Only
 authorized local targets/test data are used. An unavailable environment is handled with a
 prepared trace/code example and documented follow-up, not a fabricated successful result.
 
@@ -19,11 +19,11 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
+| 0–10 | Week 4 recap quiz/review; the Week 5 quiz is taken at the start of Week 6. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
 | 20–40 | Run the unauthenticated exchange and trace the two keys established with the middle party. |
 | 40–60 | Capture the intercepted secret and connect it to the substituted public values. |
-| 60–80 | Run the authenticated control; capture the abort and identify the authenticated transcript/identity binding. |
+| 60–80 | Run the HMAC-authenticated control; capture both aborts and identify the pre-shared-key assumption. |
 | 80–95 | Compare results/control, explain the mechanism and limits, receive feedback; begin the assigned form. |
 | 95–100 | Save evidence and submit the in-class checkpoint. |
 
@@ -44,10 +44,9 @@ Worksheet 5 is **100 raw points → 2.5 course points**, one of 12 equally weigh
 | Prompt Problem | — | 10 |
 | **Total** | **100** | **100** |
 
-Everyone completes shared 60; finish only the assigned form's 40. In Weeks 1/10 shared work is
-analysis/diagram/proof, with no Docker or flag requirement. Week 12 code/testing belongs in
-shared 60. Preserve and complete the full assigned question text outside class as needed:
-Retain group validation, HKDF and protocol-design questions as extended work. Prime p does not remove subgroups: the multiplicative group has order p−1.
+Everyone completes shared 60; finish only the assigned form's 40. The Conventional form has
+four short questions (10 each). AIR-Sec EiPE explains the two-secret relay in plain language.
+Weak-group and subgroup material is optional study, not assessed in Week 5.
 
 The quiz remains inside the course's 10% quiz/participation component. Reproduction checks and
 short explanations are feedback/authenticity checks within work, with no extra viva score or
@@ -57,7 +56,7 @@ and issued, never assumed from a shared default.
 
 ## Instructor checks and reflection
 
-- Check that the vulnerable/control experiment produces distinct, interpretable results before class.
+- Check that the vulnerable/control experiment produces distinct, interpretable results before class; on a supported Windows machine, also test the PowerShell evidence command.
 - Check evidence, code and explanations together; an output string alone is not full understanding.
 - Keep all further-reading questions available; do not turn extension work into an unannounced requirement.
 - Record attendance, time actually taken, environment failures, misconceptions and corrections after teaching.
