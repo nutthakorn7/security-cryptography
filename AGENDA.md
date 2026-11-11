@@ -61,15 +61,25 @@ the assessed work. See [syllabus](syllabus.md) for the full 100% and ability mat
 
 ## Special weeks
 
-### Weeks 7 and 17 — review
+### Week 7 — review
 
 | Minutes | Activity |
 |---|---|
 | 0–20 | Cumulative review quiz (existing 25-point quiz instrument) |
 | 20–35 | Selected Jeopardy clues targeting misconceptions |
 | 35–80 | Two selected mock checkpoints, with working targets already prepared |
-| 80–95 | Explain errors and verify a correction; W7 teams demonstrate the CryptoVault KDF/AEAD milestone |
+| 80–95 | Explain errors and verify a correction; teams demonstrate the CryptoVault KDF/AEAD milestone |
 | 95–100 | Save repair plan and read exam logistics |
+
+### Week 17 — pre-final review
+
+| Minutes | Activity |
+|---|---|
+| 0–30 | Cumulative 25-point review quiz |
+| 30–40 | Four selected Jeopardy clues from taught material |
+| 40–80 | Two bounded mock checkpoints from the W19 signature/TLS/Lamport topics; use locally prepared targets |
+| 80–95 | Explain errors and verify a correction against the private exam evidence rules at a general level |
+| 95–100 | Save repair plan and confirm W18/W19 logistics |
 
 Full boards and mock banks remain available for further practice; they are not all compulsory
 in a 100-minute class. The rehearsal samples the upcoming exam rather than promising every

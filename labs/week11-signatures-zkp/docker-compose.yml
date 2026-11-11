@@ -13,6 +13,11 @@ services:
       bash -c "pip install --no-cache-dir -r requirements.txt &&
                echo '--- vulnerable bank (dedup by signature hash) on :8102 ---' &&
                python vulnerable_app.py"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8102/', timeout=2)"]
+      interval: 2s
+      timeout: 3s
+      retries: 30
 
   fixed:
     image: python:3.12-slim
@@ -27,3 +32,8 @@ services:
       bash -c "pip install --no-cache-dir -r requirements.txt &&
                echo '--- fixed bank (low-S / BIP-62) on :8103 ---' &&
                python fixed_app.py"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8103/', timeout=2)"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

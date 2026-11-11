@@ -101,7 +101,7 @@ exceeds the authorized amount, it returns the flag.
 > `exploit.py` is an automated confirmation **from fresh state** after you have done the
 > manual Tasks 3–4. Reset both banks before running it:
 > ```bash
-> docker compose down && docker compose up -d
+> docker compose down && docker compose up -d --wait
 > ```
 > A fresh container gives the sequence the worksheet asks for: `total_withdrawn:100`
 > on the first submission, then `200` + `double_spend_detected` + the flag on the
@@ -109,9 +109,9 @@ exceeds the authorized amount, it returns the flag.
 
 ```bash
 cd labs/week11-signatures-zkp
-docker compose up -d          # vulnerable_app.py on :8102, fixed_app.py on :8103
+docker compose up -d --wait   # wait for dependencies and both banks on :8102/:8103
 # Complete manual Tasks 3–4 first, then reset both banks:
-docker compose down && docker compose up -d
+docker compose down && docker compose up -d --wait
 docker compose exec -e VULN_HOST=vulnerable -e FIXED_HOST=fixed vulnerable python exploit.py
                               # no host Python packages needed; expects fresh state
 ```
@@ -125,7 +125,7 @@ the script exits `1` and tells you to reset.
 
 Per-student flag, if assigned by the instructor: from the repository root, set `SC_FLAG_SALT`
 and run `python3 instructor/seed_flags.py env <STUDENT_ID> > labs/week11-signatures-zkp/.env`
-before `docker compose up -d`. Without an assigned salt and student flag, `FLAG_SIG` falls back
+before `docker compose up -d --wait`. Without an assigned salt and student flag, `FLAG_SIG` falls back
 to the shared local placeholder; students do not need to generate a personal flag to complete
 this worksheet.
 
@@ -134,8 +134,9 @@ with the **flag pattern** (single `docker-compose.yml`, per-student `FLAG_SIG`):
 evidence artifact is the **captured `FLAG_SIG`** returned by the *vulnerable* bank on the second
 (malleated) withdrawal. The fixed bank rejects that high-S twin without a flag; this does not prove complete idempotency against other fresh valid signatures. If the instructor has activated per-student flag seeding, submit the value issued to you; otherwise record the local shared placeholder with your own execution evidence. No live personalized-flag service is required for the worksheet.
 
-**Verified:** `docker compose up -d` was run on this machine; `exploit.py` ran from a throwaway
-container on the compose network. Real captured output:
+**Verified:** `docker compose up -d --wait --build` was run on this machine; `exploit.py` ran via
+`docker compose exec -T -e VULN_HOST=vulnerable -e FIXED_HOST=fixed vulnerable python exploit.py`.
+Representative captured output (signature values vary by run):
 ```
 === Target 1: VULNERABLE bank (dedup by signature hash) ===
 [*] (vuln) message      = 'withdraw 100 to attacker'

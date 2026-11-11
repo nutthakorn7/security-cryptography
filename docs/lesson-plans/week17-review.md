@@ -2,7 +2,7 @@
 
 **02005104 · Cryptography and Network Security · Year 4 · Semester 2 AY2026 · Lecture**
 
-**Contact time:100 minutes.**
+**Contact time: 100 minutes.**
 
 Emphasize Weeks 10–15 and composition from earlier weeks. Full mock banks remain optional practice. Cryptocurrency/UTXO/BFT legacy bank items are excluded from the current scored exam. HNDL remains optional, without extra compulsory points. No 13th worksheet or final-project Q&A block is created.
 
@@ -10,9 +10,9 @@ Emphasize Weeks 10–15 and composition from earlier weeks. Full mock banks rema
 
 | Minutes | Activity |
 |---|---|
-| 0–20 | Cumulative review quiz (existing 25 point instrument). |
-| 20–35 | Selected Jeopardy clues: malleability vs nonce reuse, certificate trust, E2E limits, PAKE limits, OTS state. |
-| 35–80 | Two bounded mock stations selected from taught topics; prepare state and dependencies before the clock. |
+| 0–30 | Cumulative 25-point review quiz (the student instrument specifies 30 minutes). |
+| 30–40 | Four selected Jeopardy clues: ECDSA malleability, certificate trust, Lamport state and a Week 5 authenticated-DH callback. |
+| 40–80 | Two bounded mock stations from the Week 19 signature/TLS/Lamport topics; allow about 18 minutes each plus transition. Prepare local state and dependencies before the clock. |
 | 80–95 | Explain one failure, test a correction and compare the private-exam evidence requirements at a general level. |
 | 95–100 | Save revision actions and confirm written/practical/video logistics. |
 

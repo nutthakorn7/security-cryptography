@@ -4,7 +4,7 @@
 
 **Contact time:100 minutes.**
 
-The two forms have the same taught-topic blueprint: hybrid 4, signatures 3, TLS/Noise 4, E2E3, authentication 3, PQC 3. All are individual. Raw 100 scales to 10 course points; W19 team practical contributes 15, totaling 25. Unused legacy questions remain private reference; no untaught cryptocurrency section is scored. No additional quiz/lab.
+The two forms have the same cumulative blueprint: 14 questions from Weeks 10–16 (hybrid 3, signatures 2, TLS/Noise 3, E2E 2, authentication 2, PQC 2) and six callbacks, one each from Weeks 1–6. Week 16 capstone integration is assessed through the applied questions rather than a separate topic count. Each form has ten Basic and ten Technical items. All are individual. Raw 100 scales to 10 course points; W19 team practical contributes 15, totaling 25. Unused legacy questions remain private reference; no untaught cryptocurrency section is scored. No additional quiz/lab.
 
 ## In-class run sheet
 
