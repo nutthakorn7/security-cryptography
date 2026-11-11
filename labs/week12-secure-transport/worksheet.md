@@ -1,7 +1,7 @@
 # Worksheet 12 — Secure Transport (TLS): Certificate-Validation-Bypass MITM
 
 > **Course:** Cryptography and Network Security (KOSEN69) · **Week 12**
-> **Aligned to:** RFC 8446 (TLS 1.3), RFC 5280 (X.509 PKI), RFC 6125 (hostname verification) ·
+> **Aligned to:** RFC 9846 (TLS 1.3; supersedes RFC 8446), RFC 5280 (X.509 PKI), RFC 9525 (hostname verification; supersedes RFC 6125) ·
 > CWE-295 (Improper Certificate Validation), CWE-300 (Channel Accessible by Non-Endpoint)
 > **Kind:** Hybrid — a runnable cert-bypass MITM demo (Part 2a) alongside conceptual content that
 > stays theoretical this week (the wider Web PKI trust model, Part 2c).
@@ -36,19 +36,22 @@ layer applies to Part 1.
 why the SSL family failed — cover both concrete *security* weaknesses and *design* problems — and
 describe how TLS 1.3 specifically addresses those weaknesses.
 
-**Q2. Security role of the TLS handshake.** Explain how the TLS handshake prevents a
+**Q2. Security role of a certificate-based TLS handshake.** Explain how this TLS handshake prevents a
 man-in-the-middle attack. Describe the roles of (a) key exchange, (b) server authentication, and
 (c) the `CertificateVerify` message, and explain what an attacker could do if any *one* of those
 three components were missing.
 
-**Q3. Forward secrecy in TLS 1.3.** Explain what forward secrecy is and how TLS 1.3 provides it.
+**Q3. Forward secrecy in TLS 1.3.** Explain what forward secrecy is and how an ephemeral
+(EC)DHE handshake provides it. Note that PSK-only resumption and 0-RTT early data have weaker
+forward-secrecy properties.
 Contrast this with legacy static-RSA key exchange (removed in TLS 1.3) and explain the security
-impact of that older design. Use a real example (e.g. Heartbleed) to illustrate why forward
-secrecy matters.
+impact of that older design. Use a real example (e.g. a long-term key leaked through Heartbleed)
+to illustrate why forward secrecy matters for **past recorded traffic**; distinguish this from
+plaintext that Heartbleed could leak directly from process memory.
 
 **Q4. 0-RTT (early data) trade-off.** TLS 1.3 adds a 0-RTT "early data" mode. Explain the
 performance benefit and the security cost. Why is 0-RTT data *replayable* by an attacker, and why
-should it therefore be restricted to idempotent operations?
+should applications restrict it to operations safe to replay (often idempotent reads)?
 
 **Q5. Web PKI trust model.** Trust on the web rests on Certificate Authorities. Explain the risk
 posed by a *misbehaving or compromised* CA. Then compare three mitigations — **certificate
@@ -99,11 +102,11 @@ directly — that is the premise: an active attacker controls the network path.
    CERT VERIFICATION FAILED - ABORTING
    ```
    from `alice` (with the reason line `ALICE: (reason: self-signed certificate)`), and the
-   **absence** of any `MITM INTERCEPTED` line. Confirm the absence explicitly:
+   **absence** of any `MITM INTERCEPTED` line. Inspect the MITM log explicitly:
    ```bash
-   docker compose -f docker-compose.fixed.yml logs | grep -c "MITM INTERCEPTED"
+   docker compose -f docker-compose.fixed.yml logs mitm
    ```
-   and record that it prints `0`.
+   Record that it reports `intercepted NOTHING` and contains no `MITM INTERCEPTED` line.
 4. Tear down: `Ctrl-C`, then `docker compose -f docker-compose.fixed.yml down -v`.
 5. **Write the fix yourself.** Every other task this week (and most weeks in this course) has you
    confirm a pre-built fix, not write one — this is the exception. Open `alice_student.py`: it is
@@ -117,9 +120,20 @@ directly — that is the premise: an active attacker controls the network path.
    ```
    You're done when you see `CERT VERIFICATION FAILED - ABORTING` (not a Python traceback, and not
    `TLS handshake succeeded`). Tear down: `docker compose -f docker-compose.student-task.yml down -v`.
+6. **Test the trusted peer too.** A client that rejects every certificate would also pass step 5.
+   Run your *same* `alice_student.py` against Bob's CA-signed certificate:
+   ```bash
+   docker compose -f docker-compose.student-task.yml up -d --build bob
+   docker compose -f docker-compose.student-task.yml run --rm --no-deps -e PEER_HOST=bob alice
+   docker compose -f docker-compose.student-task.yml logs bob
+   docker compose -f docker-compose.student-task.yml down -v
+   ```
+   Record `TLS handshake succeeded -- sending secret` from Alice, exit code `0`, and
+   `BOB RECEIVED: the vault code is 7731` from Bob. Explain why the two tests together show
+   that your client both accepts a trusted peer and rejects the impostor.
 
-**Submit:** both captured logs from steps 1 and 3 (with your name/student ID and reproducible attribution), your one-line note
-from step 1, the `grep -c` output from step 3, **and your completed `alice_student.py`** (paste the
+**Submit:** captured logs from steps 1, 3 and 6 (with your name/student ID and reproducible attribution), your one-line note
+from step 1, the MITM log check from step 3, **and your completed `alice_student.py`** (paste the
 diff or the full `build_client_context()` function) with a 2–3 sentence explanation of what each
 line does and why it's necessary — you may be asked to explain it live in the viva.
 

@@ -19,7 +19,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
 - The TLS handshake: what it authenticates — and what it doesn't
 - X.509 certificates & the CA chain of trust
-- Hostname verification (SAN, RFC 6125)
+- Hostname verification (SAN, RFC 9525)
 - Live MITM: a client that skips certificate validation
 - 🎭 Game: **The Impostor's Certificate**
 
@@ -30,18 +30,18 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 ## Recap — Week 11
 
 - A digital signature lets **anyone with the public key** verify a claim — no shared secret needed
-- A signature is also a non-interactive **zero-knowledge proof**: it convinces you the signer knows the private key, without revealing it
-- This week: a certificate **is** a CA's signature over "this key belongs to this name" — watch what happens when nobody checks it
+- Some proof systems connect to particular signature constructions; an ordinary digital signature is **not automatically** a zero-knowledge proof
+- This week: a certificate **contains** a key-and-name claim signed by a CA — watch what happens when the client does not check that signature and trust path
 
-<!-- Bridge from W11. W11 = signatures/ZKP as primitives (unforgeable, but ECDSA's encoding wasn't unique). W12 = signatures as the load-bearing piece of Web PKI — the CA's signature is the ONLY thing that turns a certificate's claim into something checkable. Ask: "why can't a certificate just use a MAC instead of a signature?" (a CA can't hand its verification key to every browser — that's the shared-secret problem signatures solve). ~2 min. -->
+<!-- Bridge from W11. W11 distinguishes Schnorr-type proof connections from the false claim that every signature is a ZKP. W12 uses signatures in Web PKI: a CA signs the certificate claim, and the client checks the signature and trust path. Ask: "why can't a certificate just use a MAC instead of a signature?" (a CA cannot hand a shared verification secret to every browser). ~2 min. -->
 
 ---
 
-## The TLS handshake — three jobs
+## The certificate-based TLS handshake
 
 - **Key exchange** — negotiate a shared session key → confidentiality
-- **Server authentication** — the server presents a certificate claiming an identity
-- **`CertificateVerify`** — server proves it holds the *private key* matching that cert
+- **Server authentication** — the client validates the server's certificate chain and service name
+- **`CertificateVerify`** — in this certificate-based handshake, the server proves it holds the *private key* matching that cert
 - Skip any one of the three and a machine-in-the-middle is back on the table
 
 <!-- Core mental model for the whole lecture — write it on the board. This week's bug lives entirely in job #2: the client never actually checks whether to believe the presented certificate. Preview: today's demo keeps key exchange and CertificateVerify intact — the ONLY thing missing is validating who signed the cert. ~5 min. -->
@@ -62,7 +62,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 ## Hostname verification
 
 - A valid chain of trust still isn't enough — the *name* in the cert must match the name you meant to connect to
-- Check the **SAN** (Subject Alternative Name) — RFC 6125 — not just the legacy CN field
+- Check the **SAN** (Subject Alternative Name) — RFC 9525 supersedes RFC 6125 and does not use the legacy CN field as a service identity
 - In this week's lab, **both** the real and impostor certs carry `CN=bob`, `SAN=DNS:bob` — hostname matching alone cannot tell them apart
 - You need **both**: chain of trust *and* hostname match
 
@@ -75,7 +75,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 | Service | Role | What it does |
 |---|---|---|
 | `gen_certs.py` | init | generates a demo CA, Bob's CA-signed cert, and a **self-signed impostor** (also `CN=bob`) |
-| `bob.py` | legit server | mostly idle — Alice never dials it directly |
+| `bob.py` | legit server | idle in the attack run; the student positive control connects to it |
 | `mitm.py` | attacker | presents the impostor cert; logs `MITM INTERCEPTED: <secret>` on success |
 | `alice.py` | client | dials `mitm`, believing it's `bob`; behavior set by env var `VERIFY` |
 
@@ -140,7 +140,7 @@ cert-bypass
 - `verify=False` (Python `requests`) · `CERT_NONE` (Python `ssl`) · `InsecureSkipVerify` (Go)
 - Almost always copy-pasted to silence an SSL error — "just make it work"
 - **"It's HTTPS, so it's encrypted"** is true — and irrelevant if nobody checked *who* is on the other end
-- This is the single most common real-world TLS mistake — not a CA compromise, not a crypto break
+- This is a real-world TLS client mistake — a CA compromise or cryptographic break is not needed for this attack
 
 <!-- Direct preview of Part 2b (Audit the AI): an AI assistant "fixes" SSL errors for a teammate by adding verify=False and then claims the connection is secure because it's HTTPS. Flag it now so students recognize the trap immediately in the worksheet — same bug, dressed up as confident AI-generated code. ~5 min. -->
 
@@ -149,10 +149,34 @@ cert-bypass
 ## Beyond the demo — this week's essay arm
 
 - Why SSL was retired, what TLS 1.3 changed
-- **Forward secrecy** — each session gets an ephemeral key, so a leaked long-term key can't decrypt *past* traffic (contrast: legacy static-RSA key exchange, removed in TLS 1.3 — see **Heartbleed** as the case for why that mattered)
+- **Forward secrecy** — (EC)DHE keeps past recorded traffic safe after later theft of the server's long-term key; PSK-only resumption and 0-RTT early data have different limits
+- **Heartbleed** — could leak a long-term key and also plaintext directly; forward secrecy protects only against retrospective decryption from the stolen key
 - **0-RTT** — the performance-vs-replay trade-off
 - Mitigations for a **compromised CA**: pinning, revocation (CRL/OCSP), Certificate Transparency
 - TLS vs. the **Noise Protocol Framework**
+
+<!-- The following extension slides give students enough same-week teaching context for the written questions, even if the detailed answers are completed after class. -->
+
+---
+
+## Extension: 0-RTT and replay
+
+- A returning TLS client may send early data with a resumption key before the full handshake finishes
+- It saves latency, but an attacker may replay that early data; the server needs application-level replay controls
+- Use only operations safe to repeat; do not put a payment or other state-changing action in early data
+- 0-RTT data does not have full forward secrecy
+
+---
+
+## Extension: TLS and Noise
+
+| | TLS | Noise Protocol Framework |
+|---|---|---|
+| Identity | Usually certificate and CA validation on the web | Application chooses a pattern and distributes/authenticates keys |
+| Negotiation | Standardized protocol with version and algorithm negotiation | Pattern and algorithms are normally agreed by the application |
+| Trade-off | Broad interoperability and established tooling | Small, purpose-built handshakes; the application owns key trust and upgrade planning |
+
+<!-- Noise is a framework, not one fixed wire protocol. Neither choice automatically authenticates the intended peer: the application must establish trusted identity and key distribution. -->
 
 <!-- These are Part 1's six essay questions — written up individually (150-250 words each), not fully lectured today. Flag them so students know what to read/think about before writing. Worth saying explicitly: a compromised CA would produce a VALIDLY-chained cert and defeat today's exact check — that gap is real and is exactly what Q5 asks about. ~4 min. -->
 
@@ -176,7 +200,7 @@ cert-bypass
 > 📋 **Worksheet 12** — `labs/week12-secure-transport/worksheet.md` · kickoff: `docker compose -f docker-compose.vulnerable.yml up --build`
 
 - **Part 1 (essays):** SSL→TLS, handshake security roles, forward secrecy, 0-RTT, Web PKI, TLS vs Noise
-- **Part 2a:** capture vulnerable + fixed logs, then **write the fix yourself** in `alice_student.py`
+- **Part 2a:** capture vulnerable + fixed logs, **write the fix yourself** in `alice_student.py`, then test trusted Bob too
 - **Assigned AIR-Sec Audit the AI:** critique a `verify=False` "fix" that an AI assistant swears is secure
 - **EiPE + Prompt Problem + viva prep**
 

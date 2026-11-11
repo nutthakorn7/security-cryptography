@@ -39,7 +39,7 @@ Validation), CWE-300 (Channel Accessible by Non-Endpoint)
 - Explain why loading the CA as a trust anchor and keeping `check_hostname=True` defeats that
   MITM — the impostor cert has no chain to the CA, so verification fails **before** any secret is
   sent, with a *trust/issuer* error, not a name mismatch.
-- Recognize the single most common real-world form of this bug: `verify=False` /
+- Recognize a real-world form of this bug: `verify=False` /
   `CERT_NONE` / `InsecureSkipVerify` copy-pasted from a "just make it work" answer (the planted
   flaw you audit in Part 2b).
 
@@ -49,8 +49,8 @@ watch a careless client hand you its secret anyway, "encrypted" the whole time. 
 real certificate validation and watch the exact same impostor cert get rejected before a single
 byte of the secret is sent.
 
-**Why it's exciting:** your forgery sails through TLS's lock icon and green padlock — until one
-line of validation code slams the door in your face.
+**What to observe:** the vulnerable command-line client completes a TLS handshake with the
+impostor; the validating client rejects the same certificate before sending its secret.
 
 ## How this maps to the TLS certificate-validation concept
 
@@ -82,7 +82,7 @@ exits nonzero; the MITM receives no data to intercept.
 *compromised or misbehaving* CA (which *would* produce a validly-chained cert and defeat this
 exact check), certificate pinning, revocation (CRL/OCSP/stapling), or Certificate Transparency.
 Those stay conceptual this week (Part 1 Q5, and Part 2c EiPE). The running demo is specifically
-the *client-skips-validation* bug — the single most common real-world TLS mistake — not a CA
+the *client-skips-validation* bug — a real-world TLS client mistake, not a CA
 compromise.
 
 ## Run it
@@ -98,7 +98,7 @@ do not):
 week12-gencerts  | GEN_CERTS: wrote ca.crt, bob.crt (CN=bob, signed by CA), impostor.crt (CN=bob, self-signed) to /certs
 week12-mitm      | MITM: TLS server listening on 0.0.0.0:8443 (presenting SELF-SIGNED impostor cert, CN=bob)
 week12-alice     | ALICE: connecting to mitm:8443 as if it were 'bob' -- VULNERABLE (no cert check)
-week12-alice     | ALICE: TLS handshake succeeded WITHOUT verifying the server cert -- sending secret to whoever answered
+week12-alice     | ALICE: TLS handshake succeeded WITHOUT verifying the server cert -- sending secret
 week12-alice     | ALICE: sent encrypted message ('the vault code is 7731')
 week12-mitm      | MITM INTERCEPTED: the vault code is 7731
 week12-bob       | BOB: TLS server listening on 0.0.0.0:8443 (presenting CA-signed cert, CN=bob)
@@ -148,12 +148,26 @@ Same expected output as fixed mode above. This is the one lab in the course wher
 fix instead of just confirming a pre-built one — see the worksheet and `alice_student.py`'s
 docstring for exactly what's required.
 
+Then run the **trusted-peer positive control** using your same `alice_student.py`. Start Bob and
+the certificate generator, connect the student client to Bob, and inspect his log:
+```bash
+docker compose -f docker-compose.student-task.yml down -v
+docker compose -f docker-compose.student-task.yml up -d --build bob
+docker compose -f docker-compose.student-task.yml run --rm --no-deps -e PEER_HOST=bob alice
+docker compose -f docker-compose.student-task.yml logs bob
+docker compose -f docker-compose.student-task.yml down -v
+```
+The student client should report `TLS handshake succeeded -- sending secret` and exit `0`;
+Bob should report `BOB RECEIVED: the vault code is 7731`. The negative test alone is insufficient:
+a client that rejects every certificate would also block the impostor but would fail this control.
+
 ## Verified
 
-Both modes were Docker-tested against the actual files in this directory, run fresh from a
-scratchpad copy (OneDrive placeholder files can break `docker build` COPY, so the lab was copied
-to a local scratch dir first) with `docker compose -f <file> up --build --abort-on-container-exit
---exit-code-from alice`, then torn down (`docker compose down -v`) and the built images removed.
+The vulnerable and fixed modes were Docker-tested against these files in a local checkout.
+The shipped student stub was also tested: it fails loudly with `NotImplementedError`.
+A scratch copy with the instructor's answer substituted into `alice_student.py` rejected the
+impostor and accepted Bob using the positive-control commands above. Each stack was torn down
+with `docker compose down -v` after testing. This is a Mac Docker test, not a Windows pilot.
 
 - **Cert chain (pre-flight, `openssl`):** `openssl verify -CAfile ca.crt bob.crt` → `OK`;
   `openssl verify -CAfile ca.crt impostor.crt` → `verification failed` / `self-signed
@@ -166,20 +180,23 @@ to a local scratch dir first) with `docker compose -f <file> up --build --abort-
 - **Fixed:** printed `CERT VERIFICATION FAILED - ABORTING` and `ALICE: (reason: self-signed
   certificate)` from `alice` (exit `1`), the MITM logged `intercepted NOTHING`, and
   `docker compose -f docker-compose.fixed.yml logs | grep -c "MITM INTERCEPTED"` returned `0`.
+- **Student task with a correct context:** rejected the impostor (Alice exit `1`); the same
+  student file connected to Bob with `PEER_HOST=bob`, exited `0`, and Bob logged
+  `BOB RECEIVED: the vault code is 7731`.
 - No private key is committed to the repo; `ca.key`/`bob.key`/`impostor.key` exist only inside the
   ephemeral `certs` Docker volume, are regenerated every run, and are removed by `down -v`.
   (`.gitignore` also excludes `*.pem`/`*.key` as a second line of defense.)
 
 ## Deliverable
 Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.
-Every student supplies the completed certificate-validation code, its explanation and vulnerable/fixed test evidence, plus the W12 commit link/hash.
+Every student supplies the completed certificate-validation code, its explanation, vulnerable/fixed and trusted-peer test evidence, plus the W12 commit link/hash.
 
 ## References
-- RFC 8446, *The Transport Layer Security (TLS) Protocol Version 1.3* — the handshake, key
+- RFC 9846 (supersedes RFC 8446), *The Transport Layer Security (TLS) Protocol Version 1.3* — the handshake, key
   exchange + authentication separation, 0-RTT / early data.
 - RFC 5280, *Internet X.509 Public Key Infrastructure Certificate and CRL Profile* — cert chains,
   `basicConstraints`, revocation.
-- RFC 6125, *Representation and Verification of Domain-Based Application Service Identity* —
+- RFC 9525 (supersedes RFC 6125), *Service Identity in TLS* —
   hostname verification and SubjectAltName (why `SAN=DNS:bob` matters).
 - OWASP, *Transport Layer Security Cheat Sheet* and *Testing for Weak Transport Layer Security* —
   the `verify=False` / disabled-validation anti-pattern.
