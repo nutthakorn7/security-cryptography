@@ -150,9 +150,10 @@
 ---
 
 ## Team contribution summary
-*List each member's work and matching commits in this shared report. Each member's private
-ratings are collected separately by the instructor; do not include ratings in the team report.
-See project/README.md for the peer-contribution policy.*
+*List each member's work and matching commits in this shared report. Each member sends private
+ratings separately through a private comment on the “CryptoVault — Private Peer Contribution
+Ratings” Classroom assignment;
+do not include ratings in the team report. See project/README.md for the rating scale and formula.*
 
 ---
 

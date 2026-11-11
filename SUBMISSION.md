@@ -564,6 +564,10 @@ the W19 practical's 100 minutes.
   takes place in W16/W20; no live project demonstration is added to the W19 exam.
 - The existing optional crypto-agility bonus is +5 raw points capped at 100. HNDL is optional and
   adds no new mandatory marks. See [project/README.md](project/README.md) for the full rubric.
+- Each member sends their own peer-contribution ratings as a **private comment** on the
+  “CryptoVault — Private Peer Contribution Ratings” assignment in Classroom, not in the shared
+  report or a class comment.
+  The published scale and individual-score formula are in [project/README.md](project/README.md).
 
 ---
 

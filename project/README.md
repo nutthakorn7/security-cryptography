@@ -116,15 +116,19 @@ total cannot exceed 100 — it lets a team recover points lost elsewhere, but a 
 
 ## Peer-contribution evaluation (individual fairness)
 
-The project is graded team work, so each member's mark is adjusted for actual contribution:
-- At submission, **each member privately rates every teammate** (including themselves) on a
-  simple scale — e.g. *Full / Most / Some / Little* — with a one-line justification. Do not put
-  these ratings in the shared team report. The instructor must announce a private collection
-  channel and the exact conversion to an individual mark before collecting ratings.
-- The team mark is **scaled per member** by the averaged rating (typically ×0.8–1.1; an
-  unjustified low score is discussed before it's applied).
-- Each member's own commit history corroborates who did what. A "single paste-everything"
-  contribution is a red flag.
+The project is graded team work, with an individual adjustment for documented contribution:
+- At submission, **each member sends a private comment on the “CryptoVault — Private Peer
+  Contribution Ratings” assignment in
+  Classroom**, naming the team and rating themselves and every teammate as *Full / Most / Some /
+  Little*, each with a one-line reason. Do not put ratings in the shared team report or a class
+  comment. The self-rating is used to identify discrepancies, not to calculate the member's mark.
+- For each member, convert **ratings received from teammates** to factors: Full = ×1.1, Most =
+  ×1.0, Some = ×0.9, Little = ×0.8. Average the received factors, then calculate that member's
+  project course points as `min(100, team_raw × average_peer_factor) × 0.15`. The team raw score
+  includes any bonus and is first capped at 100. A missing or unsupported rating is reviewed by
+  the instructor against contribution notes and commit history; no automatic penalty is applied.
+- The instructor discusses a disputed low rating before using it. Each member's commit history
+  corroborates who did what; a "single paste-everything" contribution is a red flag.
 
 This protects diligent students and removes the "carry a free-rider" problem — the reason team
 weight is kept bounded while individual mastery (weekly labs, quizzes, exams) is graded
