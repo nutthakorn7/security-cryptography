@@ -4,17 +4,17 @@
 
 **Contact time:100 minutes.**
 
-Teams 3 normally,2 where uneven;80 task +20 administration minutes. Raw 100 scales to 15 course points. The final written 10 plus practical 15remains 25. This slot has no project demos or Q&A. Project build/report and≤5 minute video are submitted before Week 19 and graded separately within project 15%; clarification occurs in Weeks 16/20. Current instructor-held variants and marking, not public exploit.py alone, assess understanding.
+Teams of 3 normally, 2 where uneven; 80 task +20 administration minutes. Raw 100 scales to 15 course points. The final written 10 plus practical 15 remains 25. This slot has no project demos or Q&A. Project build/report and ≤5-minute video are submitted before Week 19 and graded separately within project 15%; clarification occurs in Weeks 16/20. Current instructor-held variants and marking, not public `exploit.py` alone, assess understanding. Teams download their issued packet and run the TLS target on their own machines; no instructor-hosted service is needed.
 
 ## In-class run sheet
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Teams/identity, rules, private target access and freshness checks. |
+| 0–10 | Teams/identity, rules, issued local packet and freshness checks. Dependencies and Docker images are prepared before the sitting. |
 | 10–35 | Station 1: signature malleability and transaction-identity control (25 task minutes). |
 | 35–60 | Station 2: TLS client-context validation and positive/negative tests (25). |
 | 60–90 | Station 3: Lamport disclosure/forgery and single-use control (30). |
-| 90–100 | Upload team evidence/reasoning and collect the sitting. |
+| 90–100 | Upload one team evidence PDF with code/commands, test output and reasoning; collect the sitting. |
 
 ## Preparation, assessment and reflection
 
