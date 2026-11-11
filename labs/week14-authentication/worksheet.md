@@ -2,14 +2,15 @@
 
 > **Course:** Cryptography and Network Security (KOSEN69) · **Week 14**
 > **Aligned to:** NIST SP 800-63B · OWASP Authentication / Credential Stuffing Cheat Sheets ·
-> CWE-522 (Insufficiently Protected Credentials), CWE-319 (Cleartext Transmission — to the
-> endpoint), CWE-532 (Sensitive Info in Log File)
+> CWE-522 (Insufficiently Protected Credentials), CWE-532 (Sensitive Info in Log File).
+> The demo uses HTTP on an isolated Docker network; CWE-319 applies to that unencrypted transport,
+> not to a server receiving plaintext after TLS termination.
 > **Kind:** Hybrid — a runnable password-sent-vs-never-sent demo (Part 2a) alongside conceptual
 > content that stays theoretical this week (TOTP/FIDO2/SSO comparison, Part 1 + Part 2c EiPE).
 
 ## 100-minute class and assigned worksheet version
 
-**In class:** 10 min retrieval quiz + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min.
+**In class:** 10 min Week 13 retrieval quiz/review + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min. The scored Week 14 quiz opens in Week 15.
 
 **Shared core — every student:** Run password-submission and challenge-response scenarios; capture successful login and the log differences; explain replay protection, verifier theft and the limits of this simplified protocol.
 
@@ -44,9 +45,9 @@ Explain what actually travels on the wire in each case.
 
 **Q4.** What is a PAKE (e.g. SRP, OPAQUE)? Explain mutual authenticated key exchange and resistance to offline guessing from protocol transcripts. Then distinguish that threat from a stolen credential file/full server compromise: what does OPAQUE's pre-computation resistance add, and why can offline guesses remain possible after compromise? Use [RFC 9807 Sections 1 and 10.11](https://www.rfc-editor.org/rfc/rfc9807.html#section-10.11).
 
-**Q5.** How does TOTP (an authenticator app) work? Why is a TOTP code **phishable** while a
-FIDO2/WebAuthn credential is **not**? (Consider what the user types vs. what the authenticator does,
-and what each is bound to.)
+**Q5.** How does TOTP (an authenticator app) work? Why can a lookalike site relay a TOTP code,
+while a correctly implemented FIDO2/WebAuthn sign-in resists that origin-based phishing?
+(Consider what the user types vs. what the authenticator does, and what each is bound to.)
 
 **Q6.** What is credential stuffing? Which single control most reduces its blast radius, and why
 does that control help even when the leaked passwords are genuinely correct for some accounts?
@@ -55,8 +56,9 @@ does that control help even when the leaked passwords are genuinely correct for 
 bcrypt/argon2 **with a per-user salt**, rather than a plain fast hash? What does the salt stop, and
 what does the slow/memory-hard work factor stop?
 
-**Q8.** SSO / OAuth: what does "delegated authentication" buy you (for users and for the relying
-application)? What new single-point-of-failure risk does introducing an identity provider create?
+**Q8.** SSO / OpenID Connect: what does delegated sign-in buy you (for users and for the relying
+application)? What new concentration-of-risk does introducing an identity provider create?
+Distinguish OpenID Connect authentication from OAuth 2.0 authorization.
 
 ---
 
@@ -95,15 +97,19 @@ password `correct-horse-battery`.
    - a `SERVER SAW: nonce=... proof=...` line (the server logged what it *did* receive),
    - `LOGIN OK` from the client (authentication still succeeded), and
    - the **absence** of any `SERVER SAW PASSWORD` line and of the password string itself.
-   Confirm the absence explicitly and record the outputs:
+   Confirm the absence explicitly in the **server log** and record what you see:
    ```bash
-   docker compose -f docker-compose.fixed.yml logs | grep -c "correct-horse-battery"   # record: should be 0
-   docker compose -f docker-compose.fixed.yml logs | grep -c "SERVER SAW PASSWORD"      # record: should be 0
+   docker compose -f docker-compose.fixed.yml logs server
+   docker compose -f docker-compose.fixed.yml logs client
    ```
+   Search the server output visually for `correct-horse-battery` and `SERVER SAW PASSWORD`:
+   neither should appear. The client output must show `LOGIN OK`. These commands work in
+   Windows PowerShell and Mac Terminal. A missing match in a log is evidence only for this run;
+   inspect the code and the honest-scope box before making a broader security claim.
 4. Tear down: `docker compose -f docker-compose.fixed.yml down`.
 
 **Submit:** both captured logs (with your name/student ID and reproducible attribution), your one-line note from step 1, and
-the two `grep -c` outputs from step 3.
+the two log outputs from step 3 and your explicit no-match observation for the server log.
 
 **One-line reflection to include with your logs** *(graded on reasoning, not copied text)*: in the
 fixed mode the client still proves it knows `correct-horse-battery`, yet the server never sees it.
@@ -159,8 +165,8 @@ what you mean in ordinary words). In 4–6 sentences, cover:
   saying the password out loud* where someone could overhear and reuse it? (Hint: the doorman
   shouts a fresh random word each time and you have to combine it with the secret in an agreed
   way.)
-- Why the server can check your answer even though it deliberately **never stored your password** —
-  only a scrambled "verifier" derived from it.
+- Why the fixed-mode server can check your answer while storing a password-derived "verifier"
+  rather than the plaintext password (the demo preloads this verifier).
 - Why an eavesdropper who records one exchange (the random challenge and your answer) **cannot**
   reuse it tomorrow.
 - The honest limit (see README's honest-scope box): this demo proves *only* that the password is
@@ -229,7 +235,8 @@ essay questions, the Audit-the-AI fix, and the detailed lab/viva grading notes.
 - **Personalized/attributable artifact:** the `SERVER SAW PASSWORD: correct-horse-battery` line from
   Part 2a vulnerable mode, submitted **together with** your attributed screenshot or annotated transcript — the identity
   proof is what makes it yours, not the password text (which is a lab constant). For fixed mode, the
-  artifact is the *absence* of that line plus your two `grep -c` outputs showing `0`. Submitting
+  artifact is the *absence* of that line in the fixed-mode server log, together with the
+  server/client log capture and your explicit no-match observation. Submitting
   someone else's captured log without your own attribution is a violation.
 - **Explain in your own words** *(graded on your reasoning, not copied text)*:
   1. In vulnerable mode, **who** ended up with the plaintext password and **why did TLS not

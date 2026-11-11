@@ -21,7 +21,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
+| 0–10 | Administer the scored Week 13 retrieval quiz after its lesson; briefly review Week 13 key trust. The Week 14 quiz waits until Week 15. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
 | 20–40 | Run the ordinary password mode; capture where the raw password reaches the server. |
 | 40–60 | Run the toy challenge-response mode; capture a fresh nonce/proof and successful authentication without raw-password transmission. |

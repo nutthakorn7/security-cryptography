@@ -5,13 +5,13 @@ paginate: true
 header: "Cryptography and Network Security · Week 14"
 ---
 
-<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+<!-- Delivery: 100-minute lab-focused session. 10 Week 13 retrieval quiz + 10 brief + 60 practice + 15 debrief + 5 evidence. The scored Week 14 quiz opens Week 15. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
 
 # Week 14
 ## User Authentication (challenge-response, PAKE, MFA)
 Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
-<!-- Hook: ask "when you type your password into a login form, who actually sees it?" Most students say "nobody, it's HTTPS." Wrong — the server does, in the clear, inside a request handler. Today's spine: the challenge-response math is textbook-sound; "just send the password over TLS" is the real-system failure baked into almost every login form on earth. ~2 min. -->
+<!-- Hook: ask "when you type your password into a login form, who actually sees it?" TLS protects the path, but the receiving server handles the plaintext. Password submission over TLS is a common legitimate design when credentials are handled safely; the deliberate logging in this lab is the flaw. ~2 min. -->
 
 ---
 
@@ -20,16 +20,16 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 - Why sending a password to the server is a risk — **even over TLS**
 - Challenge-response: proving you know a secret without saying it
 - PAKE (SRP, OPAQUE) and what our demo does *not* give you
-- Auth factors, TOTP vs FIDO2, credential stuffing, SSO/OAuth
+- Auth factors, TOTP vs FIDO2, credential stuffing, SSO/OIDC
 - 🗝️ Game: **Never Say the Password**
 
-<!-- Roadmap, 1 min. Flag the lab up front: run the same login demo in vulnerable and fixed mode, grep your own server logs for the password in each. Also flag this is a HYBRID week — half runnable demo, half conceptual essays (TOTP/FIDO2/SSO). ~1 min. -->
+<!-- Roadmap, 1 min. Flag the lab up front: run the same login demo in vulnerable and fixed mode, inspect server and client logs in each, and inspect the fixed-mode request code. Also flag this is a HYBRID week — half runnable demo, half conceptual essays (TOTP/FIDO2/SSO). ~1 min. -->
 
 ---
 
 ## Recap — Week 13
 
-- E2E encryption: the **server** can't read message content, only the endpoints can
+- Week 13's **honest relay** could not read message content; endpoint key trust still mattered
 - Same server, same log line — plaintext vs. ciphertext, purely by *where* encryption happens
 - This week: same question, different secret — can the server even avoid **learning your password**?
 
@@ -44,7 +44,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 - "Log in by sending your password" hands the **plaintext** to the server itself
 - A malicious, compromised, or merely over-logging server has it — TLS never touches this
 
-<!-- The core misconception to kill. Draw it: client --[TLS: encrypted]--> server --[decrypts]--> plaintext in a Python dict. TLS solved the eavesdropper-on-the-wire problem decades ago; it says nothing about what the server *does* with the plaintext once it has it. This is the textbook-secure/real-system-failure split for this week: TLS is textbook-sound crypto; "send the password to the endpoint" is the real-system misuse. ~5 min. -->
+<!-- Draw the boundary: TLS protects the network path; the server decrypts the request and can process its contents. The relevant failure here is logging the plaintext password, not ordinary password submission over TLS. ~5 min. -->
 
 ---
 
@@ -59,36 +59,40 @@ week14-server  | SERVER SAW PASSWORD: correct-horse-battery
 week14-client  | LOGIN OK
 ```
 
-- The plaintext password is now **in the server's request handler** — CWE-522 / CWE-319
-- Already sitting in the server's own log — CWE-532 — that's the `SERVER SAW PASSWORD` line above
+- The plaintext password reaches the **server's request handler** by design
+- The deliberate log line exposes it — **CWE-532** (and insufficient credential protection under CWE-522)
 - Login still "works" — that's what makes this easy to ship and easy to miss
 
-<!-- This is the exact `docker-compose.vulnerable.yml` output from the lab — point at the literal log line they'll capture. Ask: "TLS was doing its job here — so why did the password still leak?" Answer: it leaked *after* TLS did its job, at the endpoint. ~5 min. -->
+<!-- This is the exact `docker-compose.vulnerable.yml` output from the lab — point at the literal log line they'll capture. The lab itself uses HTTP only inside Docker. Hypothetical TLS would protect the path, but the server would still receive plaintext after terminating it. CWE-319 describes unencrypted transport, not this endpoint exposure. ~5 min. -->
 
 ---
 
-## The fix: challenge-response, in three steps
+## Toy alternative: challenge-response in three steps
 
 1. Server sends a fresh random **nonce** (never reused)
 2. Client combines `nonce + password` **locally** → a **proof**
 3. Server checks the proof against a stored **verifier** — never against the password
 
-> The server doesn't ask "what's your password?" — it asks "prove you know it."
+> The server asks for a fresh proof. In this toy protocol, a thief with the stored verifier can answer too.
 
-<!-- Draw the three-step exchange on the board. Emphasize "locally" in step 2 — the combination happens on the client, the password never leaves the machine that typed it. This is the shape every "prove knowledge of a secret without revealing it" protocol uses. ~5 min. -->
+<!-- Draw the three-step exchange on the board. Emphasize "locally" in step 2 — the login request sends no password. This toy proof establishes possession of the verifier or the ability to derive it; it does not establish password-only knowledge against verifier theft. ~5 min. -->
 
 ---
 
 ## How verification works without the plaintext
 
-- Server stores a **verifier** `v = KDF(salt, password)` — computed once, at signup, never the password itself
+- This demo **preloads a verifier** `v = KDF(salt, password)` and a public salt; it has no signup flow
 - Client computes `proof = HMAC(v, nonce)` locally, using the password it just typed
 - Server independently recomputes the same proof from its stored `v` and the nonce it issued, and **compares**
-- Match → `LOGIN OK`. The password never crossed the network, so there was nothing to log
+- Match → `LOGIN OK`. The fixed-mode login request contains no password
 
-![Two lanes read top to bottom, each showing a client on the left, a server in the middle, and a log reader on the right. Top lane, vulnerable mode with PAKE unset: the client sends its actual password to the server, which receives it and prints it verbatim to the server's own log, so the log reader on the right recovers the password in full and gains a standing, reusable credential. Bottom lane, fixed mode with PAKE equals 1: the server first issues the client a fresh single-use nonce, the client locally derives a verifier by hashing the salt and password together and computes a proof by keying an HMAC with that verifier over the nonce, so the password itself never leaves the client, the server then verifies and logs only the nonce and the proof, and a captured proof cannot simply be replayed after its single-use challenge is consumed; however, a log reader who knows the salt can still test password guesses offline; a dashed orange warning box at the bottom flags the one gap this simplified demo does not close, that a leaked copy of the server's stored verifier would be password-equivalent here, while real PAKE security must distinguish transcript guessing from credential-file and full-server compromise.](img/log-boundary.svg)
+<!-- Walk the symmetry: both sides compute the same HMAC, but the fixed-mode server has only a precomputed verifier, not the raw password. Ask: "if an attacker steals v, can they log in as alice directly?" (YES — in THIS demo v is password-equivalent: the thief requests a fresh nonce and computes HMAC(v, nonce). The fresh nonce only stops replay by someone who does NOT hold v. Do not claim OPAQUE prevents all offline guessing after full server compromise; distinguish transcript security and pre-computation resistance (RFC9807 section10.11).) ~6 min. -->
 
-<!-- Walk the symmetry: both sides end up computing the same HMAC, but only the client ever touches the raw password. The server's "knowledge" is entirely mediated through v. Ask: "if an attacker steals the server's database and gets v, can they log in as alice directly?" (YES, trivially — in THIS demo v is password-equivalent: the thief just requests a fresh nonce and computes HMAC(v, nonce), authenticating without ever cracking the password. The fresh nonce only stops replay by someone who does NOT hold v. This is one toy-protocol limitation. Do not claim OPAQUE prevents all offline guessing after full server compromise; distinguish that event from transcript security and pre-computation resistance (RFC9807 section10.11).) ~6 min. -->
+---
+
+## Who sees the secret?
+
+![w:900 Two lanes compare password logging with a fixed-mode nonce and proof exchange. The fixed-mode server log omits the plaintext password, but a stolen verifier permits impersonation and a known-salt transcript permits offline guessing.](../labs/week14-authentication/img/log-boundary.svg)
 
 ```sim
 cred-harvest
@@ -110,19 +114,20 @@ week14-server  | SERVER SAW: nonce=327decaec7e5... proof=40e701177990...
 week14-client  | LOGIN OK
 ```
 
-```bash
-docker compose -f docker-compose.fixed.yml logs | grep -c "correct-horse-battery"   # -> 0
+```text
+docker compose -f docker-compose.fixed.yml logs server
+docker compose -f docker-compose.fixed.yml logs client
 ```
 
-- Same successful login, same demo account — the password string appears **nowhere**
+- Same successful login, same demo account — no password string in the fixed-mode **server log**
 
-<!-- The payoff slide — same LOGIN OK, completely different log content. Have them literally run the grep in lab and watch it return 0. This absence *is* the evidence, not a screenshot of something present. ~4 min. -->
+<!-- The payoff slide — same LOGIN OK, different log content. Have students inspect both logs and the fixed-mode request construction in client.py. Log absence alone is limited evidence and cannot prove what crossed the network. These commands work in PowerShell and Mac Terminal. ~4 min. -->
 
 ---
 
 ## Honest scope — this is NOT a full PAKE
 
-This demo proves exactly **one** property: *the password is never transmitted.*
+This fixed-mode client demonstrates one property: *its login request omits the password.*
 
 A real PAKE adds **mutually authenticated key exchange** and resistance to **offline guessing from protocol transcripts**, under its assumptions.
 
@@ -167,8 +172,8 @@ log.warning("login FAILED for %s (pw=%s)", body["username"],
 
 - **TOTP** (authenticator app): a shared secret + current time → a 6-digit code you **type**
   - Phishable — a fake login page can relay your code to the real site in real time
-- **FIDO2/WebAuthn**: a private key on your device signs a challenge **bound to the origin**
-  - Not phishable — the signature is invalid for any domain but the real one
+- **FIDO2/WebAuthn**: a private key on your device signs a challenge **bound to the relying-party origin**
+  - Resists lookalike-site phishing because a signature for the fake origin will not verify for the real site
 
 <!-- Key contrast: what the user types vs. what the authenticator does, and what each is bound to. TOTP is bound to nothing — you can paste that 6-digit code into any site that asks. FIDO2 is cryptographically bound to the origin, so a phishing clone at a lookalike domain gets a signature that simply doesn't verify. This is Worksheet Q5. ~5 min. -->
 
@@ -178,16 +183,16 @@ log.warning("login FAILED for %s (pw=%s)", body["username"],
 
 - Attacker takes passwords leaked from **breach A**, tries them against **site B**
 - Works because people **reuse** passwords across sites
-- Best single mitigation: **MFA** — a correct, reused password alone no longer logs the attacker in
+- Strong mitigation: **MFA**, preferably phishing-resistant — a correct, reused password alone no longer logs the attacker in
 
 <!-- Worksheet Q6. Ask "why does reusing your own login as the mitigation still help even when the leaked password really is correct for that account?" — because credential stuffing is *automated, password-only* login; add any second factor and the automation breaks even with a 100% correct password. ~3 min. -->
 
 ---
 
-## Delegated authentication: SSO / OAuth
+## Delegated authentication: SSO / OIDC
 
-- User authenticates once with an **identity provider** (Google, institutional SSO…)
-- Relying apps never see the password at all — only a token
+- User authenticates with an **identity provider** (Google, institutional SSO…)
+- In an OIDC sign-in flow, the relying app receives an identity assertion/token, not the IdP password
 - Fewer passwords to phish or reuse — but the IdP becomes a **single point of failure**
 
 <!-- Worksheet Q8. The IdP is now the one account that, if compromised, unlocks everything federated to it — "don't put all your eggs in one basket" cuts both ways. Connect back to mutual authentication from the honest-scope slide: SSO buys you a lot, but concentrates trust. ~4 min. -->
@@ -197,10 +202,10 @@ log.warning("login FAILED for %s (pw=%s)", body["username"],
 ## 🗝️ Signature game — Never Say the Password
 
 - Play server operator: run **vulnerable mode**, watch your own log hand you the plaintext password
-- Flip to **challenge-response mode**, log in successfully, then **grep your own logs** for the password and find nothing
-- Proving you know a secret without ever saying it out loud — the same trick every "Sign in with…" button quietly relies on
+- Flip to **challenge-response mode**, log in successfully, then inspect your server log and request code
+- A "Sign in with…" button usually uses delegated identity (for example OIDC), a different mechanism
 
-<!-- Explain the game before lab: it's not a CTF flag hunt, it's watch-it-happen-yourself. The "win" is the grep returning 0 after a successful login. Emphasize this is *their own* log, on *their own* machine — nobody's trusting a slide, they're trusting their own terminal. ~3 min. -->
+<!-- Explain the game before lab: it's not a CTF flag hunt. The evidence is a successful fixed-mode login, a server log without the plaintext, and code showing that the client request omitted it. Emphasize that the students run the packet on their own machines. ~3 min. -->
 
 ---
 
@@ -211,10 +216,10 @@ log.warning("login FAILED for %s (pw=%s)", body["username"],
 
 > 📋 **Worksheet 14** — `labs/week14-authentication/worksheet.md` · run: `docker compose -f docker-compose.vulnerable.yml up --build --abort-on-container-exit`, then the `.fixed.yml` variant
 
-- Capture both logs: the `SERVER SAW PASSWORD` line (vuln) and its **absence** + `grep -c 0` (fixed)
-- **Assigned AIR-Sec Audit the AI** on the planted logging flaw (Part 2b)
-- **Assigned AIR-Sec EiPE**: explain proof-without-revealing in plain English (Part 2c)
-- **Assigned AIR-Sec Prompt Problem** + formative viva prep (Part 2d–e) — or, for the assigned Conventional version, the 8 essay questions (Part 1), not both versions
+- Capture both modes and inspect the fixed-mode request code and server/client logs
+- **AIR-Sec:** Audit the AI, Explain in Plain English and Prompt Problem
+- **Conventional:** eight assigned essay questions
+- Viva is formative; finish longer responses outside class
 
 <!-- The graded output for this HYBRID week. Remind: this is a read/run/observe lab, not an exploit-and-fix lab — code is unchanged, evidence is captured logs + identity proof. Point to the "Honest scope" box in the README before they write Part 2c/2d so they don't overclaim PAKE properties this demo doesn't have. -->
 
@@ -223,8 +228,8 @@ log.warning("login FAILED for %s (pw=%s)", body["username"],
 ## Key takeaways
 
 - TLS protects the **wire**; it says nothing about what the **endpoint** does with your plaintext
-- Challenge-response proves knowledge of a secret without ever transmitting it
-- "Textbook-secure primitive, real-system failure": challenge-response math is sound — "just use HTTPS and send the password" is the real-system misuse
+- This toy sends no password in the login request but accepts anyone holding its verifier
+- TLS-protected password submission can be appropriate, but the receiving server must protect the credential and avoid logging it
 
 <!-- Recap, 3 lines. Cold-call: "your friend says their login is secure because the login page uses HTTPS — what's missing from that claim?" ~3 min. -->
 

@@ -2,6 +2,8 @@
 
 **~10 min · 6 questions · low-stakes** (lowest scores dropped). Individual.
 
+**Schedule:** administer at the start of Week 15, after the Week 14 lesson. Do not use this scored bank before teaching Week 14.
+
 **Name:** ____________  **Student ID:** ________
 
 ## MCQ (5 × 1)
@@ -17,4 +19,4 @@
    a) a 6-digit TOTP code can be brute-forced within its 30-second window  b) FIDO2 private keys live in hardware, and hardware cannot be phished  c) the FIDO2 signature is bound to the origin, so one made for the fake domain will not verify for the real one  d) the TOTP secret is shared with the server, whereas the FIDO2 private key never is
 
 ## Short answer (1 × 3)
-6. In fixed mode you logged in successfully, yet `grep -c "correct-horse-battery"` over the server's own logs returned **0**. In your own words: (a) why can an attacker who records that entire exchange — the nonce *and* the proof — not reuse it to log in tomorrow? (b) Name **one** thing that attacker could still do if, instead, they stole the server's stored verifier for `alice`.
+6. In fixed mode you logged in successfully, yet searching the server's own logs for `correct-horse-battery` found **no match**. In your own words: (a) why can an attacker who records that entire exchange — the nonce *and* the proof — not reuse it to log in tomorrow? (b) Name **one** thing that attacker could still do if, instead, they stole the server's stored verifier for `alice`.

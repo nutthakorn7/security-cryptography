@@ -478,12 +478,12 @@ docker compose -f docker-compose.vulnerable.yml down
 
 docker compose -f docker-compose.fixed.yml up --build --abort-on-container-exit
 # เก็บผล LOGIN OK และ nonce/proof ก่อนตรวจ log
-docker compose -f docker-compose.fixed.yml logs | grep -c "correct-horse-battery"
-docker compose -f docker-compose.fixed.yml logs | grep -c "SERVER SAW PASSWORD"
+docker compose -f docker-compose.fixed.yml logs server
+docker compose -f docker-compose.fixed.yml logs client
 docker compose -f docker-compose.fixed.yml down
 ```
 
-**ตรวจผลและส่งใน PDF:** vulnerable มี `SERVER SAW PASSWORD:` และ `LOGIN OK`; fixed มี `SERVER SAW: nonce=... proof=...` และ `LOGIN OK` พร้อมผล `grep -c` ทั้งสองรายการเป็น `0` อธิบายว่า password อยู่ฝั่งใด ข้อมูลใดเดินทางผ่าน network และใครเห็นอะไร
+**ตรวจผลและส่งใน PDF:** vulnerable มี `SERVER SAW PASSWORD:` และ `LOGIN OK`; fixed มี `SERVER SAW: nonce=... proof=...` ใน server log และ `LOGIN OK` ใน client log พร้อมระบุว่าไม่พบ password และ `SERVER SAW PASSWORD` ใน server log ของรอบ fixed คำสั่งใช้ได้ทั้ง Mac Terminal และ Windows PowerShell อธิบายว่า password อยู่ฝั่งใด ข้อมูลใดเดินทางผ่าน network และใครเห็นอะไร
 
 โหมด fixed นี้แสดงเพียงว่า **ไม่ได้ส่ง password ตรง ๆ** ไม่ใช่ PAKE สมบูรณ์ และการไม่เห็น password ตัวอักษรใน log ไม่ได้พิสูจน์ว่าผู้ถือ transcript เดารหัสผ่านแบบ offline ไม่ได้ หลีกเลี่ยงการสรุปเกินขอบเขตของ demo บริการใช้ port `8080` ภายใน Docker ไม่มี host port
 
