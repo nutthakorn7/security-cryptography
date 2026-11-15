@@ -8,7 +8,7 @@ Lab/analysis: [`labs/week05-key-exchanges`](../../labs/week05-key-exchanges/READ
 
 Distinguish passive secrecy from authenticated key exchange using paired before/after traces.
 
-Prebuild both compose variants; run one at a time. The artifact is a trace, not a FLAG string.
+Prebuild the image at home (worksheet prep step 5; it needs internet); the two compose variants share it and run one at a time. The artifact is a trace, not a FLAG string.
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
 Students run the supplied Docker demo; no hand calculation or code change is required. Only
@@ -21,11 +21,11 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 |---|---|
 | 0–10 | Week 4 recap quiz/review; the Week 5 quiz is taken at the start of Week 6. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
-| 20–40 | Run the unauthenticated exchange and trace the two keys established with the middle party. |
-| 40–60 | Capture the intercepted secret and connect it to the substituted public values. |
-| 60–80 | Run the HMAC-authenticated control; capture both aborts and identify the pre-shared-key assumption. |
+| 20–40 | A1: start the unauthenticated run, read the filtered log, copy the four key lines and fill in the two-secret sentence (steps 1–4). |
+| 40–60 | A2: run the HMAC control; copy the two "attempted substitution" lines and both `AUTH FAILED` lines, count `0` intercepts (steps 5–9). |
+| 60–80 | A3: read the two tag lines of code, explain why a fresh DH is still used and what the pre-shared `AUTH_KEY` assumption costs (steps 10–12). |
 | 80–95 | Compare results/control, explain the mechanism and limits, receive feedback; begin the assigned form. |
-| 95–100 | Save evidence and submit the in-class checkpoint. |
+| 95–100 | Save evidence (answer-sheet boxes for steps 2, 3, 6, 7, 8, 10, 11, 12); the PDF is due Sunday 6 Dec 2026 23:59 ICT. |
 
 **Core artifact:** Unauthenticated DH interception and authenticated abort.
 
@@ -35,9 +35,9 @@ Worksheet 5 is **100 raw points → 2.5 course points**, one of 12 equally weigh
 
 | Part | Conventional | AIR-Sec |
 |---|---:|---:|
-| Core work / observation | 20 | 20 |
-| Control verification / limitations | 20 | 20 |
-| Reproducible evidence / reasoning | 20 | 20 |
+| A1 — relay reads the message (steps 1–4) | 20 | 20 |
+| A2 — HMAC check stops relay (steps 5–9) | 20 | 20 |
+| A3 — why it works and its limits (steps 10–12) | 20 | 20 |
 | Conventional technical written questions | 40 | — |
 | Audit-the-AI | — | 20 |
 | Explain-in-Plain-English | — | 10 |

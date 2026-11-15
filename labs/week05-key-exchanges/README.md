@@ -11,7 +11,7 @@ Entity Authentication), CWE-300 (Channel Accessible by Non-Endpoint)
 2. **In class (100 minutes)** — 10 quiz/review + 10 brief + 60 shared practice/analysis +
    15 debrief + 5 evidence capture. The opening quiz reviews Week 4; the Week 5 quiz is
    taken at the start of Week 6. Slides: `slides/week05.md`.
-3. **Common work (60 points)** — Run both DH topologies. Trace Relay's two independent handshakes, the intercepted message, and both authentication failures. Explain what the HMAC check changes and why fresh DH is still used.
+3. **Common work (60 points)** — Run both DH topologies. Trace Relay's two independent handshakes, the intercepted message, and both authentication failures. Explain what the HMAC check changes and why fresh DH is still used. The worksheet guides this in 13 numbered steps: A1 relay reads the message (steps 1–4), A2 the HMAC check stops it (5–9), A3 why it works and its limits (10–12).
 4. **Assigned format (40 points)** — complete **either** four short Conventional questions
    **or** AIR-Sec (Audit the AI 20 + EiPE 10 + Prompt Problem 10). Both versions total 100.
    Viva checks support feedback/authenticity within the criteria; they add no separate marks.
