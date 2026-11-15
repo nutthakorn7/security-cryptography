@@ -1,69 +1,53 @@
-# Week 10 — Asymmetric & Hybrid Encryption
+# Week 10 — Hybrid Encryption (lock the key with RSA, lock the messages with AES-GCM)
 
-**Kind:** Conceptual (no Docker target, no flag — same precedent as this course's Week 1 and
-`software-security`'s Weeks 1, 12–13: honestly flag-less, rubric-graded content).
-**References:** NIST SP 800-56A (key establishment), SP 800-38D (GCM) · OWASP Cryptographic
-Storage Cheat Sheet
+**Kind:** Docker lab, guided step by step. No math and no programming for the common 60 points. One container, no open ports,
+local demo only. (Weeks 2–6 and 11–15 follow the same pattern.)
+**References:** NIST SP 800-56A (key establishment), SP 800-38D (GCM, §8.2 nonce uniqueness) · OWASP Cryptographic Storage Cheat Sheet
 
 ## 100-minute class and assigned worksheet version
 
-**In class:** 10 min retrieval review + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min. The Week 10 scored quiz opens Week 11.
+**In class:** 10 min retrieval review + 10 min brief + 60 min lab + 15 min debrief + 5 min evidence capture = 100 min. The Week 10 scored quiz opens Week 11.
 
-**Shared core — every student:** Trace the hybrid-encryption protocol and key roles; compare correct nonce discipline with a repeated-nonce case. Provide a repeatable diagram, state table or two-message XOR derivation. No Docker target, flag or standalone code submission is required for the shared core.
+**Common part — every student (60 points):** three guided tasks with `demo.py`: A1 watch Bob send two messages to Alice (new nonce each time),
+A2 Bob reuses the nonce and Eve reads the secret without any key, A3 new nonces and Eve reads nothing, then compare the two lines of code.
 
-**Preparation and extensions:** Prepare the public-key/AEAD reading and Python environment if using the AIR-Sec task. Complete the assigned version's full essays or code audit, proof and corrected code outside the core block as needed.
+**Assessment:** the common 60 points plus **one assigned version** (40 points): Conventional written questions Q1–Q4, or AIR-Sec Audit-the-AI 20 +
+EiPE 10 + Prompt Problem 10. Both versions total 100. The other version is ungraded practice.
 
-**Assessment:** everyone completes the shared core (60 points) plus **one assigned version** (40 points): Conventional written analysis, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. All questions remain available; complete the assigned version's full questions, using out-of-class time for extended responses. The other version is ungraded reference practice, not an additional requirement. Viva/micro-demo questions are formative checks of the submitted explanation, with no separate points or automatic pass/fail score gate.
-
-**Evidence:** record reproducible observations or reasoning and your name/student ID. Where the local target prints a shared placeholder flag, record it as observed; a personalized flag or live CTFd account is not a prerequisite. Follow SUBMISSION.md for the announced hand-in channel.
+**Evidence:** copy the commands and results from your own machine into the answer sheet, with your name and student ID. The nonces are random per run, so your
+hex numbers differ from your friends'; the `YES` / `NO` answers and the `RESULT` lines are the same. There is no personal flag this week.
 
 ## This week — what to do
-1. **Before class** — skim the Week 6 recap (AEAD — the previous teaching week; Weeks 7–9 are review and the midterm sittings). The shared core needs no environment setup. AIR-Sec students need Python and the `cryptography` package for the audit task.
-2. **Concept preparation and brief explanation (within the 100-minute plan)** — review prior material first (~10 min), then the brief explanation. Slides:
-   `slides/week10.md`.
-3. **Practice and assigned-version work (core in class; extensions outside class)** — complete **Worksheet 10**: the shared analysis core plus only your assigned Conventional or AIR-Sec version; the AIR-Sec task in `audit_the_ai/` retains its proof script and corrected-code deliverables.
-4. **Submit** — shared-core evidence/reasoning plus your assigned 40-point version in the worksheet PDF via [SUBMISSION.md](../../SUBMISSION.md). For AIR-Sec, attach the proof script, its output and the complete `fixed_hybrid_encrypt.py` code in the PDF/worksheet; no separate GitHub code-fix submission is required.
-
-5. **Project** — if your term project sends data between two parties that don't already share a
-   secret, this week's pattern (RSA-OAEP wraps an AES session key) is directly applicable.
+1. **Before class** — Docker Desktop installed and the lab ZIP downloaded (worksheet "ก่อนเริ่ม"). Skim the Week 6 recap (AEAD).
+2. **In class** — follow **Worksheet 10** step by step. Slides: `slides/week10.md`.
+3. **Assigned version** — Conventional answers the four questions in the worksheet; AIR-Sec audits `audit_the_ai/broken_hybrid_encrypt.py`
+   (it runs in the same container) and attaches the proof script, its output and `fixed_hybrid_encrypt.py` in the PDF.
+4. **Submit** — one PDF `Wk10_<StudentID>.pdf` at `learn.zcr.ai/submit` (see [SUBMISSION.md](../../SUBMISSION.md)).
+5. **Project** — if your term project sends data between two parties that do not already share a secret, this week's pattern
+   (a public key locks an AES session key) applies directly.
 
 ## Objectives
-- Explain why asymmetric encryption alone is unsuitable for bulk data (performance + message
-  size limits), and why hybrid encryption exists to solve that.
-- Trace the complete hybrid-encryption flow end to end: key generation, key wrapping, symmetric
-  encryption, transmission, unwrapping, decryption.
-- Explain how a public key lets anyone encrypt to a recipient, while only the holder of the
-  matching private key can decrypt.
-- Explain asymmetric key exchange (how two parties derive a shared secret an eavesdropper
-  cannot compute) and connect it to ECIES as a concrete hybrid scheme built on ECDH.
-- Audit an AI-generated cryptographic implementation for a subtle-but-catastrophic correctness
-  bug that a surface-level review would miss.
+- Explain why RSA alone is not used for bulk data (slow, short messages) and how hybrid encryption solves that.
+- Name who holds which key (Alice: public + private, Bob: session key, Eve: nothing).
+- Explain what a nonce is, and show that reusing one lets Eve read a message without any key.
+- Fix it with a new nonce per message, and say what the scheme still does not give (who sent it, whether the public key is really Alice's).
+- (AIR-Sec) Audit an AI-generated implementation whose only flaw is how the nonce is chosen.
 
-## 🔬 Signature game — "Nonce Detective"
-You're handed a hybrid-encryption implementation that looks textbook-correct — proper RSA-OAEP,
-proper AES-GCM, nothing obviously wrong at a skim. Find the one planted bug, then prove it's real
-by actually recovering leaked plaintext from two intercepted messages, not just pointing at a
-line of code.
-
-**Why it's exciting:** the code passes every "did they use the right primitives" checklist — the
-only way to catch it is to actually think like an attacker, and the payoff is a genuine "aha"
-the moment the recovered plaintext prints.
-
-## Why no lab target this week
-
-Nothing here is a "break into a running service" exploit — it's protocol design and
-correctness analysis. The shared core is a diagram and nonce-reuse derivation; the assigned
-AIR-Sec arm adds an **Audit-the-AI** exercise with a plausible hybrid-encryption implementation.
-See `audit_the_ai/README.md`.
+## Files
+| File | What it is |
+|---|---|
+| `docker-compose.yml`, `requirements.txt` | one container that installs the `cryptography` package and waits |
+| `demo.py` | `good`, `reuse`, `attack good`, `attack reuse` (the helper the worksheet uses) |
+| `audit_the_ai/` | the AIR-Sec audit file and instructions |
+| `img/gcm-nonce-reuse.svg` | picture used on the slides |
 
 ## Deliverable
-Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.
-AIR-Sec retains every original audit deliverable: quoted buggy lines, proof script and output, explanation, and full corrected code attached in the PDF/worksheet. No Docker target or flag is required.
+The common 60 points plus the assigned 40, as in the worksheet rubric. AIR-Sec keeps every audit deliverable: the quoted line, the proof script and output,
+and the corrected code.
 
 ## References
-- NIST SP 800-56A Rev. 3, *Recommendation for Pair-Wise Key-Establishment Schemes Using
-  Discrete Logarithm Cryptography*.
-- NIST SP 800-38D, *Recommendation for Block Cipher Modes of Operation: GCM and GMAC*.
+- NIST SP 800-56A Rev. 3, *Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography*.
+- NIST SP 800-38D, *GCM and GMAC*, §8.2 (the uniqueness requirement on the nonce).
 - https://cheatsheetseries.owasp.org/cheatsheets/Cryptographic_Storage_Cheat_Sheet.html
-- SEC 1: Elliptic Curve Cryptography, §5.1 (ECIES) — Standards for Efficient Cryptography Group.
+- SEC 1: Elliptic Curve Cryptography, §5.1 (ECIES).
 - Joux, *Authentication Failures in NIST version of GCM* (2006).

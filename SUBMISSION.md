@@ -1,4 +1,4 @@
-# คู่มือ Lab Cryptography ทั้ง 10 สัปดาห์และการส่งงาน
+# คู่มือ Lab Cryptography ทั้ง 11 สัปดาห์และการส่งงาน
 
 คู่มือสำหรับนักศึกษา: วิธีรัน Lab หลัก 10 สัปดาห์ หลักฐานที่ต้องเก็บ และช่องทางส่งงาน ใช้สารบัญเลือกสัปดาห์ที่กำลังเรียนได้ทันที
 
@@ -93,8 +93,8 @@ Conventional: ordinary written questions 40. AIR-Sec: Audit-the-AI 20 + Explain-
 whole term unless the instructor announces a change. Write your form in the worksheet's Group field.
 The 12 worksheets
 (W1–6, W10–15) contribute equally at **2.5 course points each**, totalling 30%.
-W1/W10 earn the common 60 through cases, diagrams, experiments or code analysis; no Docker/flag
-is required. Viva verifies understanding within the existing rubric, with no additional marks
+W1 earns the common 60 through cases, diagrams, experiments or code analysis; no Docker/flag
+is required. W10 earns it through a guided Docker lab (no personal flag). Viva verifies understanding within the existing rubric, with no additional marks
 or automatic fail gate. Preparation/extension items remain available outside the in-class core.
 
 ### Flags and evidence, by week type
@@ -106,7 +106,8 @@ Both worksheet formats submit the common practical evidence.
 |---|---|---|
 | W2, W3, W4, W6, W11, W15 | Flag-bearing target | Commands/payloads, actual result and flag where printed, plus fixed/control tests and reasoning |
 | W5, W12, W13, W14 | Protocol/log demonstration | Relevant vulnerable/fixed logs, successful/failed control behaviour and explanation |
-| W1, W10 | Conceptual/case/code analysis | Case/diagram/experiment or code proof and reasoning; no required Docker target or flag |
+| W10 | Guided Docker demo, no personal flag | Commands and results from your own run (`demo.py`), plus the written part for your form |
+| W1 | Conceptual/case/code analysis | Case/diagram/experiment or code proof and reasoning; no required Docker target or flag |
 
 Local targets may print a shared placeholder flag; it is not a personalized attribution mechanism.
 Use any cohort-specific flag only when actually issued by the instructor. These instructions do
@@ -116,9 +117,9 @@ must be your own; a flag alone does not establish that you performed or understo
 
 ---
 
-## คู่มือ Lab ทั้ง 10 สัปดาห์
+## คู่มือ Lab ทั้ง 11 สัปดาห์
 
-คู่มือนี้รวบรวม Lab ที่รันได้ของรายวิชา Cryptography: **W02–W06 และ W11–W15** ใช้คู่กับใบงานประจำสัปดาห์ ไม่ใช่เฉลยหรือใบงานทดแทน ส่วน W01/W10 เป็นกิจกรรมแนวคิด, W07/W17 เป็นทบทวน, W08–09/W18–19 เป็นสอบ W16 เป็น CryptoVault studio และ W20 เป็นคืนผล/สะท้อนการเรียนรู้ จึงไม่ใช่ 10 Lab ในรายการนี้
+คู่มือนี้รวบรวม Lab ที่รันได้ของรายวิชา Cryptography: **W02–W06 และ W10–W15** ใช้คู่กับใบงานประจำสัปดาห์ ไม่ใช่เฉลยหรือใบงานทดแทน ส่วน W01/W10 เป็นกิจกรรมแนวคิด, W07/W17 เป็นทบทวน, W08–09/W18–19 เป็นสอบ W16 เป็น CryptoVault studio และ W20 เป็นคืนผล/สะท้อนการเรียนรู้ จึงไม่ใช่ 10 Lab ในรายการนี้
 
 **กติกาส่งงานที่ใช้:** ส่งใบงาน PDF ทุกสัปดาห์ที่ [ส่งงานบนเว็บ](https://learn.zcr.ai/submit) ชื่อ `Wk<NN>_<StudentID>.pdf` ภายในวันอาทิตย์ 23:59 น. (เวลาไทย) ก่อนวันเรียนของสัปดาห์ถัดไป (กติกา KOSEN) เว้นแต่ผู้สอนประกาศเปลี่ยน วันที่แน่นอนดูได้ในอีเมลรหัสและโพสต์ของสัปดาห์นั้นใน Classroom ส่งช้าหักวันละ 10% ของคะแนนงานนั้น (เกินมาไม่ถึงวันนับเป็นหนึ่งวัน) จนเหลือ 0 เว็บรับงานส่งช้าได้อีก 10 วันหลังกำหนดส่ง การอัปโหลดหรือเปลี่ยนไฟล์หลังกำหนดส่งนับว่าส่งช้า เฉพาะ **W12** มีงานแก้โค้ดที่ต้อง commit/ส่งลิงก์ GitHub เพิ่ม หาก README เก่าระบุ GitHub หรือ Classroom ต่างจากหน้านี้ ให้ยึดหัวข้อ Weekly LAB ด้านบนและประกาศผู้สอน Google Classroom ใช้แจ้งข่าวและสรุปรายสัปดาห์เท่านั้น ไม่ต้องส่งงานที่นั่น ผู้สอนเก็บสำเนางานจากเว็บส่งงานไว้เป็นหลักฐานของรายวิชาเอง
 
@@ -167,6 +168,7 @@ docker info
 | W04 | AES modes: CBC bit-flipping เทียบ GCM | flag + token/ผล reject | PDF |
 | W05 | Key exchange: DH MITM เทียบ authenticated DH | log สองโหมด | PDF |
 | W06 | AEAD: padding oracle เทียบ GCM | flag + plaintext/ผล oracle | PDF |
+| W10 | Hybrid encryption: nonce ใหม่เทียบ nonce ซ้ำ | ผล `demo.py` สี่แบบ + สองบรรทัดโค้ด | PDF |
 | W11 | ECDSA malleability และ ZKP ในใบงาน | flag + signature/รายการถอน | PDF |
 | W12 | TLS certificate validation | log + โค้ด `alice_student.py` | PDF + GitHub |
 | W13 | E2E encryption | server/client log สองโหมด | PDF |
@@ -338,7 +340,7 @@ docker compose exec vulnerable python ask.py vuln end
 docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py
 ```
 
-vulnerable อยู่ที่ `http://localhost:8098` และ fixed อยู่ที่ `http://localhost:8099` รอจน log ขึ้น `Running on http://127.0.0.1:8098` และ `:8099` ครบทั้งสองบรรทัด ส่วนคำสั่ง `curl` ของขั้นดูข้อความลับ และคำสั่ง `ask.py` ทั้งหกแบบอยู่ในใบงานทีละขั้น เก็บหลักฐานให้ครบก่อนปิด:
+vulnerable อยู่ที่ `http://localhost:8098` และ fixed อยู่ที่ `http://localhost:8099` รอจน log ขึ้น `Running on http://127.0.0.1:8098` และ `:8099` ครบทั้งสองบรรทัด ส่วนคำสั่ง `ask.py` ที่เหลืออยู่ในใบงานทีละขั้น เก็บหลักฐานให้ครบก่อนปิด:
 
 Windows: ใช้ `docker compose logs | findstr /C:"Running on"` แทน `grep` และใช้ `curl.exe` แทน `curl` ในใบงาน ทุกครั้งที่เปิด lab ต้องต่ออินเทอร์เน็ต เพราะ container ติดตั้งแพ็กเกจใหม่ทุกครั้งที่เริ่ม ถ้ารอเกิน 2 นาทีแล้วไม่ขึ้น ให้พิมพ์ `docker compose ps -a` และ `docker compose logs` แล้ว screenshot ให้อาจารย์ดู
 
@@ -351,10 +353,39 @@ cd ../..
 
 **หลักฐานส่งใน PDF:**
 
-- ข้อความลับที่เข้ารหัสไว้ของตนเอง (`/secret`) และคำตอบของ `ask.py vuln original`, `vuln start`, `vuln end`
-- ผลสคริปต์ `exploit.py`: ข้อความที่อ่านได้ทีละบล็อก บรรทัด `Recovered plaintext` และบรรทัด `PASS` แรกพร้อม flag
-- คำตอบของ `ask.py fixed original`, `fixed start`, `fixed end` และบรรทัด `PASS` ที่สอง
+- สี่บรรทัดจาก `ask.py vuln start` และ `vuln end` (คำตอบ `200` และ `403`)
+- เจ็ดบรรทัดจาก `exploit.py`: ข้อความที่อ่านได้ทีละบล็อก บรรทัด `Recovered plaintext` บรรทัด `PASS` แรกพร้อม flag และสองบรรทัดของ GCM
+- บรรทัด `answer:` ของ `ask.py fixed original`, `fixed start`, `fixed end`
 - บรรทัดโค้ดที่ใช้ `pkcs7_valid(plaintext)` และ `_aesgcm.decrypt` พร้อมอธิบายด้วยคำของตนเองว่าทำไมคำตอบ `200` / `403` ของ CBC หลุดข้อมูล แต่ GCM ไม่หลุด
+
+## W10 — Hybrid encryption: nonce ใหม่เทียบ nonce ซ้ำ
+
+**เรียนรู้อะไร:** เห็น Bob ส่งข้อความหา Alice ด้วย hybrid encryption (RSA ล็อกกุญแจ AES แล้ว AES-GCM เข้ารหัสข้อความ) แล้วเห็นว่าถ้า Bob ใช้ nonce ซ้ำ Eve ที่ดักฟังอ่านข้อความลับได้โดยไม่มีกุญแจ แต่ถ้า nonce ใหม่ทุกข้อความ Eve อ่านไม่ออก
+
+เอกสาร: [README](labs/week10-hybrid-encryption/README.md) · [Worksheet](labs/week10-hybrid-encryption/worksheet.md)
+
+**คำสั่งรันจาก repo root:** ต้องมี Docker เท่านั้น สคริปต์รันใน container
+
+```bash
+cd labs/week10-hybrid-encryption
+docker compose up -d
+docker compose logs | grep "lab ready"
+docker compose exec lab python demo.py good
+docker compose exec lab python demo.py reuse
+docker compose exec lab python demo.py attack reuse
+docker compose exec lab python demo.py attack good
+```
+
+Windows: ใช้ `docker compose logs | findstr /C:"lab ready"` แทน `grep` ทุกครั้งที่เปิด lab ต้องต่ออินเทอร์เน็ต ไม่มีพอร์ตที่เปิดออกนอกเครื่อง
+
+```bash
+docker compose down
+cd ../..
+```
+
+**ผลที่ต้องตรวจ:** แบบ `good` ได้ `nonces equal? NO` และ Eve ได้ `nothing readable` แบบ `reuse` ได้ `nonces equal? YES` และ Eve อ่านข้อความที่สองได้ (`Secret: FLAG{same_nonce_leaks_it}`) ค่า nonce เป็นเลขสุ่ม ไม่เหมือนกันทุกเครื่อง เป็นเรื่องปกติ
+
+**หลักฐานส่งใน PDF:** สี่บรรทัดจาก `demo.py good`, ห้าบรรทัดจาก `reuse` กับ `attack reuse`, สามบรรทัดจาก `attack good`, สองบรรทัดโค้ด `nonces = ` และคำตอบสั้น ๆ ด้วยคำของตนเองว่าทำไม nonce ซ้ำจึงอันตราย
 
 ## W11 — Signatures & Zero-Knowledge Proofs
 
