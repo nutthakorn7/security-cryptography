@@ -1,63 +1,44 @@
-# Weekly Quiz — Week 7 (Cumulative Review, Weeks 1–6)
+# Weekly Quiz — Cumulative Review (Weeks 1–6)
 
-**Course:** Cryptography and Network Security (KOSEN69) · **~20 min · 10 questions · low-stakes**
-(lowest weekly-quiz scores dropped, per course grading policy). Individual, closed book.
-**Covers:** threat modeling · hash functions · MACs · AES/block-cipher modes · key exchanges ·
-AEAD — one or two questions per week, at the same difficulty as that week's own weekly quiz.
+**Course:** Cryptography and Network Security (KOSEN69) · **~10 min · 6 questions · 8 points · low-stakes**
+Individual, closed book. Covers threat modelling, hashing, MACs, AES modes, key exchange and AEAD, one question each.
 
 **Name:** ____________________  **Student ID:** ____________  **Date:** ________
 
 ---
 
-## MCQ (7 × 1 pt)
+## Multiple choice (5 × 1 pt)
 
-1. *(Wk1 — threat modeling)* A crypto system uses AES-256 (textbook-secure) but hardcodes the key
-   in a public GitHub repo. The **root cause** of the resulting breach is best described as:
-   a) AES-256 being cryptographically weak
-   b) a key-management failure, not an algorithm failure
-   c) the ciphertext being too short
-   d) using symmetric instead of asymmetric encryption
+1. A team encrypts data with AES-256, but the key is written in a file in a public GitHub repository. The data is stolen. The root cause is best described as:
+   a) AES-256 is a weak cipher
+   b) a key-management mistake, not a cipher mistake
+   c) the encrypted data was too short
+   d) symmetric encryption should not be used
 
-2. *(Wk2 — hashing)* The correct way to store user passwords is:
-   a) MD5 b) SHA-256 c) Base64 d) a salted, slow KDF (argon2id/bcrypt)
+2. A random salt, different for every user, mainly stops an attacker from:
+   a) guessing the password of one single user
+   b) reading the hash from the database
+   c) using one table of pre-computed hashes against every user at once
+   d) seeing which users chose the same website
 
-3. *(Wk2 — hashing)* A per-user random **salt** primarily defeats:
-   a) brute-force of a single password b) precomputed rainbow-table attacks across many users
-   c) length-extension attacks d) timing attacks on comparison
+3. You want to check that a message was not changed by someone who does not know a secret key. The right tool is:
+   a) a plain SHA-256 hash of the message, because it is one-way
+   b) base64, because it hides the message
+   c) HMAC with the secret key
+   d) AES-ECB with the secret key
 
-4. *(Wk3 — MACs)* `cookie = username || SHA-256(secret || username)` is forgeable by an attacker
-   who doesn't know `secret` because:
-   a) SHA-256 is reversible b) Merkle-Damgard hashes allow length-extension from a known digest
-   c) the cookie isn't Base64-encoded d) SHA-256 collides too easily
+4. Two blocks of the same plaintext are encrypted with AES-ECB. The two ciphertext blocks are:
+   a) always different, because the key changes
+   b) identical, so patterns in the data can still be seen
+   c) identical only when the key is short
+   d) random, because AES is a secure cipher
 
-5. *(Wk4 — AES modes)* In unauthenticated AES-**CBC**, flipping one bit of ciphertext block
-   `C_{i-1}` will:
-   a) corrupt block `i-1`'s plaintext only b) flip the same bit position in plaintext block `i`
-   in a predictable, attacker-controlled way c) cause decryption to fail with an error
-   d) have no effect on decryption
+5. Plain Diffie-Hellman (no authentication) keeps the key secret from someone who only listens, but not from:
+   a) a slow network
+   b) a weak password
+   c) an attacker who sits in the middle and replaces the public values
+   d) a padding oracle
 
-6. *(Wk5 — key exchanges)* Plain (unauthenticated) Diffie-Hellman protects against a **passive**
-   eavesdropper but not against:
-   a) a slow network b) an active machine-in-the-middle who can intercept and substitute keys
-   c) a weak password d) a padding oracle
+## Short answer (3 pts)
 
-7. *(Wk6 — AEAD)* Of the three ways to combine a cipher and a MAC, the one that is **provably
-   safe** for any secure cipher + any secure MAC is:
-   a) MAC-then-Encrypt b) Encrypt-and-MAC c) Encrypt-then-MAC d) Hash-then-Encrypt
-
-## Short answer (3 × 3 pts)
-
-8. *(Wk1/Wk5 — threat modeling)* Name the **attacker model** (passive vs. active) each of these
-   assumes, and say why the distinction matters: (a) recovering a password from a leaked hash
-   dump, (b) intercepting and relaying a Diffie-Hellman handshake.
-
-9. *(Wk4/Wk6)* In one or two sentences, explain why a **padding oracle** is "malleability
-   weaponized into full decryption" — connect it back to the CBC bit-flip relation
-   `P_i = D(C_i) XOR C_{i-1}` from Week 4.
-
-10. *(Wk2/Wk3 — cumulative)* A developer says: *"I don't store plaintext — I store `HMAC(key,
-    password)`, and HMAC is a real MAC, not a hash-only construction. So this is a safe way to
-    store passwords."* Is a keyed MAC the *right tool* for password storage? In 2–3 sentences,
-    explain what property HMAC gives you here (integrity/authenticity of *known* data) versus
-    what a password store actually needs (resistance to *fast offline guessing* once the data
-    leaks) — and why the fix from Week 2 (a slow, salted KDF) is not the same problem HMAC solves.
+6. In your own words, with no formulas: in the Week 6 lab the CBC server answered 200 or 403 and the script recovered the secret, but the GCM server gave the script nothing. What does AEAD (for example AES-GCM) add that plain CBC does not have, and why does that stop the script?

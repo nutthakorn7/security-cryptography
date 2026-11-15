@@ -65,7 +65,7 @@ the assessed work. See [syllabus](syllabus.md) for the full 100% and ability mat
 
 | Minutes | Activity |
 |---|---|
-| 0–20 | Cumulative review quiz (existing 25-point quiz instrument) |
+| 0–20 | Cumulative review quiz (6 questions, 8 points) |
 | 20–35 | Selected Jeopardy clues targeting misconceptions |
 | 35–80 | Two selected mock checkpoints, with working targets already prepared |
 | 80–95 | Explain errors and verify a correction; teams demonstrate the CryptoVault KDF/AEAD milestone |
