@@ -1,166 +1,59 @@
-# Week 13 — End-to-End Encryption: TLS Is Not Enough (the Server Still Reads Your Messages)
+# Week 13 — End-to-End Encryption: HTTPS is not enough
 
-**Topic (KOSEN68 source):** `Week12_E2E Encryption Questions.docx` · **Kind:** HYBRID
-**Concepts:** transport encryption (TLS/HTTPS) vs. end-to-end encryption (E2EE), the server as a
-trusted third party, hybrid public-key encryption (RSA-OAEP key wrap + AES-GCM), root-of-trust /
-key-distribution problem, Signal vs. PGP · **Analogous CWE:** CWE-311 (Missing Encryption of
-Sensitive Data), CWE-532 (Insertion of Sensitive Information into Log File). The written
-Audit-the-AI example also illustrates CWE-312 (Cleartext Storage of Sensitive Information).
-CWE-319 concerns cleartext *transmission* and does not describe this TLS-only scenario.
+**Kind:** Docker lab, guided step by step. No math and no programming. Local containers only, no open ports; the server, Alice and Bob are small programs on one Docker network.
+**Concepts:** transport encryption (TLS/HTTPS) vs. end-to-end encryption (E2EE), the server as a trusted third party, hybrid public-key encryption (RSA-OAEP key wrap + AES-GCM), the root-of-trust / key-distribution problem, Signal vs. PGP ·
+**Analogous CWE:** CWE-311 (Missing Encryption of Sensitive Data), CWE-532 (Insertion of Sensitive Information into Log File); the Audit-the-AI example also illustrates CWE-312 (Cleartext Storage of Sensitive Information). CWE-319 concerns cleartext *transmission* and does not describe this TLS-only scenario.
 
 ## 100-minute class and assigned worksheet version
 
-**In class:** 10 min Week 12 retrieval/review + 10 min brief explanation + 60 min practice/analysis + 15 min debrief + 5 min evidence capture = 100 min. The scored Week 13 quiz is given at the start of Week 14, after this topic is taught.
+**In class:** 10 min Week 12 retrieval/review + 10 min brief + 60 min lab + 15 min debrief + 5 min evidence = 100 min. The scored Week 13 quiz is given at the start of Week 14.
 
-**Shared core — every student:** Run the provider-visible and client-encrypted scenarios; compare plaintext/ciphertext server logs and recipient output; explain that the demo does not authenticate the server-relayed recipient public key.
+**Common part — every student (60 points):** three guided tasks: A1 the TLS-only mode, where the server logs `SERVER SAW: meet at pier 39 at midnight`; A2 the client-side encryption (E2EE) mode, where the server logs unreadable base64 and Bob prints `BOB DECRYPTED: ...`; A3 find the two lines in `alice.py` that differ (`payload = hybrid_encrypt(...)` vs `payload = SECRET_MESSAGE`) and explain what the lab does **not** prove (Alice trusts the public key the server relays).
 
-**Preparation and extensions:** Prepare images and read the trust-boundary diagram. Complete the full protocol/ratchet essays or AIR-Sec critique/EiPE/Prompt outside the core block as needed.
+**Assessment:** the common 60 points plus **one assigned version** (40 points): Conventional written questions Q1–Q4, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. The other version is ungraded practice.
 
-**Assessment:** everyone completes the shared core (60 points) plus **one assigned version** (40 points): Conventional written analysis, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. All questions remain available; complete the assigned version's full questions, using out-of-class time for extended responses. The other version is ungraded reference practice, not an additional requirement. Viva/micro-demo questions are formative checks of the submitted explanation, with no separate points or automatic pass/fail score gate.
+**Evidence:** copy the commands and results from your own machine into the answer sheet, with your name and student ID. The secret `meet at pier 39 at midnight` is the same for everyone; the base64 text in the E2EE mode differs per run (fresh keys). There is no personal flag this week.
 
-**Evidence:** record reproducible observations or reasoning and your name/student ID. Where the local target prints a shared placeholder flag, record it as observed; a personalized flag or live CTFd account is not a prerequisite. Follow SUBMISSION.md for the announced hand-in channel.
-
-## This week — what to do
-1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security` and
-   this course's earlier weeks); skim the Week 10 recap on asymmetric/hybrid encryption (Week 13
-   is where it gets *deployed* into a real messaging shape).
-2. **Concept preparation and brief explanation (within the 100-minute plan)** — review Week 12 first (~10 min), then the lecture: why "we use HTTPS"
-   answers a different question than "can the provider read my messages," and how Signal-style
-   E2EE closes that gap. Slides: `slides/week13.md`.
-3. **Practice and assigned-version work (core in class; extensions outside class)** — run the demo in both modes below, then complete **Worksheet 13**
-   (`worksheet.md`, shared lab evidence plus the assigned Conventional essays or AIR-Sec Audit-the-AI, EiPE and Prompt Problem).
-4. **Submit** — shared-core evidence/reasoning plus your assigned 40-point version in the worksheet PDF via [SUBMISSION.md](../../SUBMISSION.md). Include the observed flag/log artifact where applicable. Supplied exploit/reference code does not require an unchanged GitHub commit.
+## ✅ This week — what to do
+1. **Before class** — Docker Desktop working, the lab ZIP downloaded, and the image built (worksheet "ก่อนเริ่ม", `docker compose -f docker-compose.vulnerable.yml build`). Skim the Week 10 recap on hybrid encryption.
+2. **In class** — follow **Worksheet 13** step by step. Slides: `slides/week13.md`.
+3. **Assigned version** — Conventional answers four questions; AIR-Sec audits an AI-written "secure chat backend", and writes the EiPE and the Prompt Problem.
+4. **Submit** — one PDF `Wk13_<StudentID>.pdf` at `learn.zcr.ai/submit` (see [SUBMISSION.md](../../SUBMISSION.md)).
 
 ## Objectives
-- Explain the difference between **transport encryption** (TLS/HTTPS — protects data *in transit*
-  between client and server) and **end-to-end encryption** (protects data *from the server
-  operator itself*), and why the first does not imply the second.
-- **Execute and observe** the exact same messaging server relay a secret in two configurations,
-  and read from its own logs whether it could see the plaintext or not.
-- Trace a real E2EE message shape: recipient publishes a public key, sender fetches it and
-  performs **hybrid encryption** (fresh AES-256-GCM key per message, RSA-OAEP-wrapped to the
-  recipient) *client-side* before the message ever reaches the server.
-- Explain why moving the encryption boundary to the endpoints makes the server *structurally*
-  unable to read messages — the guarantee comes from the clients, not from trusting the provider.
-- Recognize related ideas this week's code does *not* fully solve but that Q2–Q5 ask you to reason
-  about: the root-of-trust / key-distribution problem (how does Alice know the public key is
-  really Bob's?), why PGP did not reach mass adoption, and how Signal's safety-number checks,
-  asynchronous key agreement (historically X3DH; later PQXDH), and ratcheting improve on it.
+- Explain why HTTPS/TLS does not stop the **provider** from reading messages (the server terminates TLS and holds plaintext).
+- See the same server code log readable text in one mode and unreadable ciphertext in the other, depending only on what Alice sends.
+- Name where the encryption boundary sits in each mode (the server vs. the sender's device).
+- State what the demo does **not** prove: it does not authenticate the public key relayed by the server, so a malicious relay could substitute its own key.
+- Describe how safety numbers and Signal-style automatic key management address that gap.
 
-## 👀 Signature game — "Who's Reading Your Mail?"
-Play the messaging provider: `tail` your own server's log while a "private" message passes
-through, and watch it sitting there in plaintext, sender's name and all. Then flip the client
-to encrypt client-side before it ever reaches you, and watch your own server log turn into
-unreadable ciphertext while the recipient still decrypts it perfectly.
+## 👀 The two modes
+`server.py` is byte-for-byte the same in both modes; it always prints `SERVER SAW: <payload>`. What changes is `alice.py`.
 
-**Why it's exciting:** watching your own "private" message sit in cleartext in a log file you
-control is the moment end-to-end encryption stops being an abstract slide and becomes personal.
+| Compose file | Alice sends | Server log | Bob |
+|---|---|---|---|
+| `docker-compose.vulnerable.yml` | the raw plaintext | `SERVER SAW: meet at pier 39 at midnight` | `BOB RECEIVED: ...` |
+| `docker-compose.fixed.yml` (`E2E=1`) | ciphertext encrypted to Bob's public key | `SERVER SAW: <long base64>` | `BOB DECRYPTED: ...` |
 
-## How this maps to the E2EE concept
+In the E2EE mode Bob generates an RSA key pair in memory at start and publishes only the public half; Alice fetches it and encrypts client-side (AES-256-GCM, key wrapped with RSA-OAEP). No private key is stored on disk or committed.
 
-One server, two client roles, one shared secret to protect (`meet at pier 39 at midnight`):
+## Run it (what the worksheet does)
 
-| Service | Role | What it does |
-|---|---|---|
-| `server.py` (Flask) | The provider | `POST /pubkey` (bob publishes his public key), `POST /send` (alice posts a message for bob), `GET /pubkey` / `GET /fetch` (retrieval). Whatever it stores, it **logs verbatim**: `SERVER SAW: <payload>`. It is **byte-for-byte the same code in both modes** — it has no idea whether E2EE is on. |
-| `alice.py` | Sender | Sends a message for bob *through the server*. In vulnerable mode she sends the raw plaintext; in fixed mode she fetches bob's public key and encrypts the secret **client-side** before sending. |
-| `bob.py` | Recipient | In vulnerable mode he just fetches and reads the plaintext. In fixed mode he generates an RSA keypair **in memory**, publishes the public half, then fetches the ciphertext and **decrypts client-side**, printing `BOB DECRYPTED: <secret>`. |
-
-The whole lesson lives in one design choice: **the server always logs what it stores, and what it
-stores is whatever Alice chose to hand it.** Nothing about the server changes between the two
-modes. In vulnerable mode Alice hands it the plaintext, so its log leaks the secret. In fixed mode
-Alice hands it ciphertext, so this honest relay's log has no plaintext payload — *even though it
-runs identical code*. Metadata such as message timing and size remains visible. This demonstrates
-the confidentiality boundary of end-to-end encryption when Alice has the correct Bob public key.
-
-This is the point people miss when they say "but it's encrypted, it uses HTTPS." HTTPS/TLS
-encrypts the message *in transit* — on the wire between Alice's phone and the server, and again
-between the server and Bob's phone. But the server **terminates** that TLS: it decrypts, holds the
-plaintext, and re-encrypts to forward it. A provider using TLS-only is exactly the vulnerable mode
-here — it can read, log, subpoena-respond-to, scan, or leak every message. E2EE moves the
-encryption boundary all the way out to the two endpoints so the server only ever holds ciphertext.
-
-**What this lab does *not* show:** the hard part — *how Alice knows the public key she fetched is
-really Bob's and not one the server swapped in* (the root-of-trust / key-distribution problem, and
-the reason real messengers need key verification, such as safety numbers). Here Alice simply trusts the key the server
-hands her, which a malicious server could substitute (a public-key MITM, the messaging cousin of
-Week 5's Diffie-Hellman MITM). That stays conceptual this week (Worksheet Q2, and Part 2c EiPE) —
-the running demo is specifically *provider-visible plaintext versus client-side ciphertext*, not key
-authentication. Do not claim this lab proves Alice is talking to the real Bob or that a malicious
-provider cannot read messages. It shows that this server, acting as an honest key relay and lacking
-Bob's private key, cannot read the plaintext payload in the fixed run.
-
-## Run it
-
-There is **no host port published** — the three services talk to each other on an internal Docker
-network (`labnet`) on port `8080`. You never point a browser at this; you read the container logs.
-
-Vulnerable mode — TLS-only provider that can read everything:
 ```bash
 cd labs/week13-e2e-encryption
-docker compose -f docker-compose.vulnerable.yml up --build
-```
-Expected log lines (interleaving/ports/IPs vary run to run; the container names and message text
-do not). Flask's own request-access lines are omitted here for clarity:
-```
-week13-server  | SERVER: listening on 0.0.0.0:8080 (E2E=False)
-week13-alice   | ALICE: starting (E2E=False), server at http://server:8080
-week13-alice   | ALICE: sending the raw plaintext (no E2EE)
-week13-server  | SERVER SAW: meet at pier 39 at midnight
-week13-alice   | ALICE: message sent
-week13-bob     | BOB: waiting for a message (no E2EE)
-week13-bob     | BOB RECEIVED: meet at pier 39 at midnight
-```
-`alice` and `bob` are one-shot and exit `0` once done; `server` is a long-running service — stop
-the stack with `Ctrl-C` (or, if you started it with `-d`, `docker compose ... down`) then tear it
-down:
-```bash
-docker compose -f docker-compose.vulnerable.yml down
-```
-The line `SERVER SAW: meet at pier 39 at midnight` is the whole point: the provider stored and
-logged your plaintext. **This captured leak line is the attributable evidence
-artifact for this HYBRID week (in place of a CTF flag)** — see the worksheet's Evidence &
-Integrity section for how your attribution makes it *yours*.
-
-Fixed mode — client-side encryption with an honest key relay; the server sees ciphertext:
-```bash
-docker compose -f docker-compose.fixed.yml up --build
-```
-Expected log lines:
-```
-week13-server  | SERVER: listening on 0.0.0.0:8080 (E2E=True)
-week13-bob     | BOB: published my public key, waiting for a message
-week13-alice   | ALICE: encrypted the secret to bob's public key (client-side)
-week13-server  | SERVER SAW: eyJlbmNfa2V5IjogImdQY29aZVcrSUdOSVJt...  (long base64, truncated)
-week13-alice   | ALICE: message sent
-week13-bob     | BOB DECRYPTED: meet at pier 39 at midnight
-```
-Two evidence facts here, both required: (1) the `SERVER SAW:` line now contains only **base64
-gibberish**, NOT the plaintext; and (2) `bob` still recovers the secret — `BOB DECRYPTED: meet at
-pier 39 at midnight` — proving the message got through end-to-end while the server never saw it.
-The plaintext string **does not appear in this mode's server log**. Before tearing down, inspect
-the server-only log and record that its `SERVER SAW:` payload is ciphertext, while Bob's log shows
-successful decryption:
-```bash
+docker compose -f docker-compose.vulnerable.yml build
+docker compose -f docker-compose.vulnerable.yml up -d --build
+docker compose -f docker-compose.vulnerable.yml logs server
+docker compose -f docker-compose.vulnerable.yml logs bob
+docker compose -f docker-compose.fixed.yml up -d --build
 docker compose -f docker-compose.fixed.yml logs server
 docker compose -f docker-compose.fixed.yml logs bob
-```
-This log check works in Terminal and PowerShell. It is evidence for this run, not a proof that a
-malicious server could not replace Bob's public key. Tear down the same way:
-```bash
+docker compose -f docker-compose.fixed.yml run --rm --entrypoint grep alice -n "payload = " alice.py
+docker compose -f docker-compose.vulnerable.yml down
 docker compose -f docker-compose.fixed.yml down
 ```
 
-Which compose file you point `-f` at is the **only** thing that selects the mode (`E2E` is baked
-into each file's `environment:` block — unset for vulnerable, `"1"` for fixed). No environment
-variables need to be set by hand.
-
-**Note — no real TLS is implemented here.** Vulnerable mode *models* "HTTPS in transit but the
-provider stores plaintext"; there is no literal TLS certificate in the lab (adding one would not
-change the lesson — the server still terminates it and holds plaintext). The takeaway is precisely
-that TLS and E2EE are *different guarantees*, which is why we don't need to implement TLS to
-demonstrate the gap. No private key is shipped in this repo either: bob's RSA keypair is generated
-**in memory at container startup** (`common.generate_rsa_keypair`) and never written to disk.
+Switching from the first mode to the second without a `down` in between works (verified); the older `up --build` plus `logs -f` flow with Ctrl-C also still works. The server log contains HTTP request lines too: look for the `SERVER SAW` line.
 
 ## Verified
 
@@ -193,7 +86,7 @@ excerpts below are the **real captured output**, not a description.
   verification; nothing was left running.
 
 ## Deliverable
-Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.
+The common 60 points plus the assigned 40, as in the worksheet rubric.
 
 ## References
 - Signal Protocol documentation — historical X3DH, PQXDH and the Double Ratchet:
