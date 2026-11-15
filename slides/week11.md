@@ -5,35 +5,35 @@ paginate: true
 header: "Cryptography and Network Security · Week 11"
 ---
 
-<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 70 practice + 10 evidence/feedback. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+<!-- Delivery: 100-minute lab session. 10 retrieval review + 10 brief + 70 practice + 10 evidence. Short talk, then the lab (bank.py). Everyone completes the common 60 plus the assigned Conventional 40 or AIR-Sec 20/10/10. The viva is formative, no extra points. -->
 
 # Week 11
-## Digital Signatures & Zero-Knowledge Proofs (ECDSA Signature Malleability)
+## Digital signatures — the "twin" signature that pays the bank twice
 Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
-<!-- Hook: ask "if I hand you a signature `(r, s)` that verifies True, can you produce a SECOND, DIFFERENT-looking valid signature for the exact same message and key, with no idea what the private key is?" Answer: yes, for ECDSA, in one line of arithmetic. That's today. Title note: the objective/README call this "signature malleability," not nonce reuse (nonce reuse is a different, key-recovery bug) — say that distinction out loud up front so students don't conflate the two ECDSA pitfalls. ~2 min. -->
+<!-- Hook: ask "if I give you a valid signature (r, s), can you make a second, different-looking valid signature for the same message, without the private key?" Let them guess. The lab shows you can, in one subtraction. -->
 
 ---
 
 ## Today
 
-- Signatures vs. MACs; the **Schnorr proof-of-knowledge connection**
-- RSA vs. ECDSA vs. EdDSA — sound math, fragile implementations
-- **ECDSA signature malleability**: `(r, s)` has a valid twin `(r, n−s)`
-- A control for the twin: **low-S**; signed transaction identity still matters
-- 🔓 Game: **Double-Spend the Bank**
+- Signatures vs. MACs, and a **zero-knowledge** idea (Schnorr)
+- ECDSA signature **malleability**: `(r, s)` has a valid twin `(r, n−s)`
+- A bank that uses the **signature** as the transaction id pays twice
+- The fix, **low-S**, and what it still does not solve
+- 🔓 **Lab:** double-spend the vulnerable bank, then try the fixed one
 
-<!-- Roadmap, 1 min. Flag the lab up front: two Flask banks (:8102 vulnerable, :8103 fixed), same math bug, different acceptance rule. Students will double-spend a fake withdrawal, then prove the fix closes it. -->
+<!-- Roadmap. Spine line to say out loud: "a valid signature does not mean the same transaction". Most of the class is the lab. -->
 
 ---
 
 ## Recap — Week 10
 
-- Asymmetric crypto (RSA/ECC) solves key-distribution — but is slow
-- **Hybrid encryption**: use asymmetric to wrap a fast symmetric key (KEM/DEM)
-- Same spine as always: textbook-sound primitive, real systems still misuse it
+- **Hybrid encryption:** RSA locks a key, AES-GCM locks the messages
+- A **nonce** must never repeat, or Eve reads without a key
+- Today: **signatures** prove who sent something, and one design choice around them can break a bank
 
-<!-- Bridge from W10. W10 = encryption (confidentiality) using asymmetric keys. W11 = the OTHER thing asymmetric keys do — prove authenticity via signatures — and its own way of getting misused. Ask: "encryption answers 'can only you read this'; what question does a signature answer?" (answer: "did you write this, and can anyone check?"). ~2 min. -->
+<!-- Bridge. Week 10 was confidentiality, this week is authenticity. -->
 
 ---
 
@@ -42,196 +42,113 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 | | **MAC** | **Digital signature** |
 |---|---|---|
 | Create with | shared secret key | **private** key |
-| Verify with | *same* shared key | **public** key |
+| Verify with | the *same* shared key | **public** key |
 | Who can verify? | only key-holders | **anyone** with the public key |
 
-**Why this matters for PKI:** a signature lets a stranger who never met you verify your claim — a MAC can't, because verifying it requires the same secret that created it.
+**Why PKI uses signatures:** a stranger can verify your claim with your public key. A MAC cannot do that, because checking it needs the secret that creates it.
 
-<!-- Ties to worksheet Q1. Ask: "why can't a MAC secure HTTPS certificates?" (a CA can't share its signing key with every browser — that key would leak instantly). Signatures = asymmetric trust at scale; MACs = symmetric trust between two parties who already share a secret. ~5 min. -->
+<!-- Worksheet Q1. Ask: "why can't a MAC secure HTTPS certificates?" A CA cannot hand its signing key to every browser. -->
 
 ---
 
-## Schnorr identification and proof of knowledge
+## Proving you know a secret (Schnorr)
 
-**Schnorr identification protocol** — Peggy proves she knows secret `x` (her private key) without revealing it:
+Peggy proves she knows a secret `x` **without sending it**:
 
-1. Peggy sends a **commitment** (a random value derived from a fresh secret)
+1. Peggy sends a **commitment** (from a fresh random value)
 2. Victor sends a random **challenge**
-3. Peggy answers with a **response** that only the holder of `x` could compute correctly
+3. Peggy sends a **response** that only the holder of `x` can compute
 
-Victor is convinced Peggy knows `x` — but learns nothing about `x` itself, and a recorded transcript is useless to replay (next time the challenge is different).
+- Victor becomes sure Peggy knows `x`, and learns nothing about `x`
+- A recording is **useless**: next time the challenge is different
 
-<!-- Worksheet Q2 / EiPE task. Draw it as three arrows on the board: commit → challenge → response. Stress *why* it's zero-knowledge: a fresh random challenge each run means Peggy must genuinely know the secret to answer correctly every time — but Victor never sees the secret, and can't reuse the transcript to impersonate Peggy later. ~6 min. -->
-
----
-
-## Fiat–Shamir: turning the proof into a signature
-
-- Problem: Schnorr needs Victor **live**, sending a fresh challenge
-- Fiat–Shamir trick: replace Victor's random challenge with `hash(commitment, message)`
-- Now Peggy can compute the whole proof **alone**, offline, and attach it to a message
-
-**Connection:** Fiat–Shamir can turn suitable identification/proof systems into non-interactive Schnorr-type constructions under explicit assumptions, with the public statement, commitment and message/context bound into the challenge. This is not a blanket theorem that every signature scheme (including ECDSA) is a zero-knowledge proof. See [RFC 8235](https://www.rfc-editor.org/rfc/rfc8235.html).
-
-<!-- Worksheet Q2(b)(c). The "aha": hashing removes the live verifier because a hash is unpredictable *and* bound to the message — nobody can pre-compute a fake response before knowing what they're "committing" to. This is the conceptual bridge from ZKP theory to the ECDSA math on the next two slides. ~5 min. -->
+<!-- Worksheet Q4 and the AIR-Sec EiPE. Three arrows on the board. Fiat-Shamir (replace the live challenge with a hash) is only a one-line mention here and an optional question. Do not generalise it to every signature scheme. -->
 
 ---
 
-## RSA vs. ECDSA vs. EdDSA
+## The break: the signature has a twin
 
-| | **RSA** | **ECDSA** | **EdDSA (Ed25519)** |
-|---|---|---|---|
-| Hardness | integer factoring | elliptic-curve discrete log | elliptic-curve discrete log |
-| Easy to implement correctly? | signatures need the right padding and verification rules | **fragile** — needs a unique, unpredictable nonce `k` every time | deterministic nonce generation avoids a fresh-randomness dependency |
-| Known pitfall | e.g. PKCS#1 v1.5 padding oracles | reused/predictable `k` **leaks the private key** | signature malleability closed by construction |
+**Every valid ECDSA signature `(r, s)` has a valid twin `(r, n − s)`**
 
-**Why EdDSA is recommended today:** it removes the human/implementation decision points (`k` generation, encoding) that make RSA and ECDSA go wrong in practice.
+- Same message, same key, still **verifies True**, but **different numbers**
+- Nobody needs the private key to make it: only the public number `n`
+- A textbook-secure primitive (nobody can forge a **new** message) with a real-system failure: the signature is **not unique**
 
-<!-- Worksheet Q3. Name-drop the Sony PS3 disaster (reused ECDSA `k` → recovered the signing key) as the nonce-reuse pitfall — then say clearly: "that is NOT today's bug." Today's ECDSA problem lives one level up: even with a perfectly random, never-reused `k`, the *signature encoding itself* isn't unique. That's malleability, coming up next. ~5 min. -->
+<!-- CWE-347 and CWE-345. Worksheet steps 1 and 2: bank.py vuln sign prints the twin and the two different txids. ECDSA is not broken: the twin signs the SAME message. The mistake is treating the signature as the identity of the transaction. -->
 
 ---
 
-## Inside an ECDSA signature
+## Where it bites
 
-- Signer picks a fresh random nonce `k`, computes point `R = k·G`, and lets `r = R.x mod n`
-- Computes `s = k⁻¹ (hash(msg) + r·privkey) mod n`
-- Signature = the pair **`(r, s)`**; `n` = the curve's group order (SECP256k1 here)
-- Verification checks an equation built from `r`, `s`, the message hash, and the public key
-
-This math is textbook-sound: nobody can forge `(r, s)` without the private key. **But nothing here says `(r, s)` is the *only* valid pair for this message.**
-
-<!-- Set up the punchline deliberately — don't give away the twin yet. Ask: "the verification equation uses `s` — does it use `s` directly, or `s` squared, or `s` combined some other way?" (It only ever appears via `s⁻¹` inside the equation, and `s⁻¹` and `(n−s)⁻¹` turn out to satisfy the SAME check with a sign flip.) Draw the equation if the class is math-comfortable; otherwise just flag "watch what happens to `s`." ~5 min. -->
-
----
-
-## The break: signature malleability
-
-**Every valid ECDSA signature `(r, s)` has a valid twin `(r, n − s)`** — same message, same key, verifies True, but *different bytes*.
-
-- **CWE-347** — Improper Verification of Cryptographic Signature
-- **CWE-345** — Insufficient Verification of Data Authenticity
-- Textbook-secure primitive: unforgeable. Real-system failure: **not unique**.
+A bank allows **one** withdrawal. To avoid paying twice it remembers a **txid**:
 
 ```python
-n = ecdsa.SECP256k1.order
-s_twin = n - s      # a second, different, still-valid signature
-```
-
-<!-- The core lesson slide — say the spine line explicitly: "textbook-secure primitive, real-system failure." ECDSA is not broken as a signature scheme (EUF-CMA holds — nobody can forge a signature on a NEW message). The failure is a system-design assumption: someone assumed "a valid signature" implies "a unique identifier." ~6 min. -->
-
----
-
-## Where it bites: dedup by signature hash
-
-A bank authorizes **one** withdrawal, signed with ECDSA. To stop double-processing, it computes a transaction id from the signature:
-
-```python
-txid = sha256(str(r) + str(s))          # vulnerable_app.py
+txid = sha256(str(r) + str(s))      # vulnerable_app.py
 if txid in seen: reject()
-seen.add(txid); process(withdrawal)
+seen.add(txid); pay()
 ```
 
-`(r, s)` and `(r, n−s)` are the *same authorization* mathematically — but hash to **two different txids**. Submit both → the bank processes it **twice**.
+- Same signature again ⇒ same txid ⇒ `409`, caught ✅
+- The **twin** ⇒ a **new** txid ⇒ paid again ❌ (`total_withdrawn` 200)
 
-<!-- This is exactly `vulnerable_app.py`'s `txid_of`/`withdraw` — the line students must quote in Lab Task 0. Point out: it isn't that the signature verification is broken — every check passes. It's that `sha256(r,s)` was the WRONG thing to treat as a unique transaction identity. Ask: "what should the txid have been derived from instead?" (message + pubkey, or an app-level nonce). ~6 min. -->
+![One authorized withdrawal produces two valid-looking transaction ids. The attacker holds a valid signature (r, s) and computes its twin (r, n minus s) with only the public curve order n. Both verify against the same message and key, but they hash to two different transaction ids, so the bank processes the same authorization twice.](img/signature-malleability.svg)
 
-![One authorized withdrawal produces two valid-looking transaction ids. Top: the attacker holds a valid signature (r, s) and, using only the public curve order n, computes its twin (r, n minus s) — no private key needed, both verify true against the same message and key. Bottom: the bank computes a transaction id as a hash of the signature bytes; because (r, s) and (r, n minus s) are different bytes, they hash to two different ids, so the bank's seen-set never recognizes the second submission as a duplicate and processes the same authorized withdrawal twice.](img/signature-malleability.svg)
+<!-- Worksheet steps 4 and 5. This is exactly the line the students see in vulnerable_app.py. Every check passes: the signature is valid both times. -->
 
 ```sim
 ecdsa-malleability
 ```
 
-<!-- The sim computes n − s with real BigInt arithmetic against the real secp256k1 order and hashes both preimages with real SHA-256 — the digests match vulnerable_app.py's txid_of exactly. It also runs both spellings against a second, low-S-normalized bank live, so students see the fix (not just the break) before Task 2. Run it here, before the game — sliding between the two sample signatures is faster than the board math alone for landing "same key, same message, different bytes." ~4 min. -->
+<!-- The sim computes n − s with real arithmetic and hashes both ids with real SHA-256. Use it for 3 to 4 minutes before the lab. -->
 
 ---
 
-## Case study: MtGox
-
-- 2014: the largest Bitcoin exchange at the time collapsed, citing ~850,000 BTC "missing"
-- Part of the claimed mechanism: attackers **mutated transaction signatures** so a transaction's id changed, making it *look* like a withdrawal hadn't gone through
-- MtGox claimed its withdrawal tracking could treat a changed transaction id as a failed payout and issue another
-- Bitcoin proposals **BIP-62 / BIP-146** describe low-S rules; this addresses one source of malleability, not every change to a transaction identifier
-
-<!-- Historical extension: MtGox claimed transaction malleability caused losses; that claim is not established by this toy lab. Decker/Wattenhofer measured no widespread malleability use before the closure. Discuss https://arxiv.org/abs/1403.6676 and distinguish exchange accounting from Bitcoin consensus. BIP-62 and BIP-146 are historical proposals; avoid presenting them as a complete deployed fix. -->
-
----
-
-## SUF-CMA vs. EUF-CMA
-
-- **EUF-CMA** (existential unforgeability): attacker cannot produce a valid signature on any **new message**. ECDSA satisfies this.
-- **SUF-CMA** (*strong* unforgeability): attacker cannot produce **any new valid signature** either — not even a different encoding of an *already-signed* message.
-- Malleability is exactly an EUF-CMA-safe, **SUF-CMA-violating** scheme: same message, new valid signature bytes.
-
-**Lesson: if your system's security depends on signatures being unique, you need SUF-CMA — EUF-CMA alone is not enough.**
-
-<!-- Worksheet Q5(c). This is the precise theoretical name for the bug — write both acronyms on the board and have students say back which one the vulnerable bank silently assumed (SUF-CMA) versus which one ECDSA actually promises (EUF-CMA only). RFC 8032 Ed25519 verification rejects non-canonical S; this avoids the ECDSA twin shown here. Application-level idempotency remains a separate requirement. ~5 min. -->
-
----
-
-## Control for the twin: low-S
-
-`fixed_app.py` adds one check **before** dedup:
+## The fix: low-S
 
 ```python
-def is_low_s(s, n):
-    return s <= n // 2
-
-if not is_low_s(sig_s, n):
-    return 403  # "non-canonical signature: s must be <= n/2"
-# ...only now compute txid and dedup
+if not is_low_s(s):      # fixed_app.py
+    return 403           # BIP-62 / BIP-146
 ```
 
-Exactly one of `{s, n−s}` is ≤ `n/2` — reject the other. This blocks **this twin**. Fresh ECDSA nonces can still produce other valid low-S signatures for the same `(message, key)`, so a payment system also needs signed transaction identity and replay state.
+- Of `(r, s)` and `(r, n−s)`, **exactly one** has a small `s` (low-S)
+- The bank accepts only that one: the twin gets **`403`**
+- Worksheet steps 7 to 9: `fixed pay twin` → `403`
 
-<!-- Worksheet Task 4. Say plainly: canonicalization, not "better verification," is the fix — the vulnerable app's *signature verification* was never wrong; the *identity* assumption was. Preview the fixed-app subtlety for the next slide: "PASS" ≠ "both rejected." ~5 min. -->
-
----
-
-## 🔓 Game — Double-Spend the Bank
-
-Two identical Flask banks, one rule apart:
-
-| Bank | Port | Rule | Vulnerable? |
-|---|---|---|---|
-| `vulnerable_app.py` | `:8102` | dedups by `sha256(r,s)` | **Yes** |
-| `fixed_app.py` | `:8103` | rejects the high-S twin, *then* dedups | No, for this twin |
-
-1. `GET /sign` → a valid `(r, s)` for `"withdraw 100 to attacker"`
-2. `POST /withdraw` with `(r, s)` → processed, `total=100`
-3. Compute the twin `(r, n−s)` → `POST` again → processed **again**, `total=200` → **flag** on `:8102`
-4. Same sequence on `:8103` → first accepted, twin **403** → no flag (PASS = *not* both-rejected)
-
-<!-- Explain the game before lab, and flag the tricky pass condition explicitly — the fixed bank must still accept the FIRST, legitimate withdrawal; only the malleated twin should be rejected. Students who see "both rejected" and call it a pass have misread the spec. `exploit.py` automates it; Task 2 has them hand-compute `s' = n − s` first so the math isn't a black box. ~3 min. -->
+<!-- Worksheet steps 7, 8, 9. In the lab the fixed bank's /sign always returns the low-S form, so the first withdrawal works and the twin fails. -->
 
 ---
 
-## Lab today — Worksheet 11
+## Low-S is not the whole fix
 
-**Shared practical/analysis core: 60 points for everyone.** Complete only your assigned **Conventional written 40** or **AIR-Sec Audit 20 + EiPE 10 + Prompt 10**. Each version totals 100; viva is formative. Full questions remain in the worksheet, with extensions outside the 100-minute class.
+- Low-S stops **this** twin only
+- Signing the same message again gives a **new** valid low-S signature, so a bank that still hashes the signature **pays again**
+- A better transaction id: the **message + public key**, or a **unique number inside the signed message**
 
-
-> 📋 **Worksheet 11** — `labs/week11-signatures-zkp/worksheet.md` · kickoff: `docker compose up -d`
-
-- **Part 1 (essays):** signatures vs. MACs, Schnorr/Fiat–Shamir as ZKP, RSA/ECDSA/EdDSA, substitution attacks, malleability + MtGox + SUF-CMA
-- **Part 2 (lab):** capture the flag on `:8102`, confirm the `403` rejection on `:8103`
-- **Assigned AIR-Sec Audit the AI:** critique a plausible-looking `process()` that dedups by signature hash — same bug, live in front of you
-- **Assigned AIR-Sec EiPE + Prompt Problem:** explain ZKP in plain English; probe an AI on *why* ECDSA is malleable and EdDSA isn't
-
-<!-- The graded output — mirror the structure students already know from earlier weeks (essays + lab + Audit-the-AI + EiPE/Prompt). Call out that Audit-the-AI is required only for the assigned AIR-Sec version — it's the same flaw as the lab, presented as confident-sounding AI code, and it's worth 20 of 100 points. Point to `docker compose up -d` and remind them both ports publish to localhost, no network-name juggling needed. ~3 min. -->
+<!-- Worksheet step 10 (the optional second fixed sign + pay original shows total 200 and a flag on the fixed bank). MtGox: the historical claim that malleability caused the collapse is disputed (Decker and Wattenhofer measured much less impact), so do not say it caused the collapse. -->
 
 ---
 
-## Key takeaways
+## 🔓 Lab today — what to do
 
-- ECDSA's math is sound — unforgeable (**EUF-CMA**) — but not unique (**not SUF-CMA**)
-- **Textbook-secure primitive, real-system failure:** the bug was trusting `sha256(r,s)` as an identity, not the signature check itself
-- The reference control rejects the high-S **twin**; application transaction identity/idempotency is still needed because fresh valid low-S signatures are possible
+| Bank | Port | Twin signature |
+|---|---|---|
+| `vuln` | `:8102` | **accepted** (pays twice) |
+| `fixed` | `:8103` | **rejected** (`403`) |
 
-<!-- Recap, 3 lines — say the spine phrase out loud one more time, it's the thread across the 20-week course. Cold-call: "if I dedup by `(message, pubkey)` instead of `sha256(r,s)`, does the malleability bug still let me double-spend?" (No — that's the other valid defense from Q5(d).) ~2 min. -->
+- **Everyone (common 60):** A1 get a signature and its twin · A2 pay with the original, replay it, pay with the twin · A3 the fixed bank says no, then find the `is_low_s` line
+- **Your form (40):** student ID ends **odd** → Conventional · **even** → AIR-Sec
+- **Answer sheet:** Classroom → Week 11 → file for your form → type in the grey boxes → File → Download → PDF
+- Hand in `Wk11_<StudentID>.pdf` at `learn.zcr.ai/submit`
+
+<!-- Exact commands are in the worksheet. Do the whole lab without restarting: a restart gives each bank a new key and a zero balance. Start Docker early and wait for "Running on" 8102 and 8103. -->
 
 ---
 
-# Questions?
-Next week: (see course roadmap)
+## Takeaway
 
-<!-- Close with the viva-style question bank from the worksheet as a preview of what instructors may spot-check live: "point to the one line that decides transaction identity," "which of s or n−s does the fixed bank accept, and why." Use each student's own execution evidence; record the local placeholder unless per-student seeding is announced. No live CTFd or personalized flag is required. -->
+- Every valid ECDSA signature has a **twin**: valid, different, no key needed
+- A signature is **not** the identity of a transaction: do not use it as the id
+- **Low-S** closes this twin, but the id should come from the **signed message**
+- Next week: **TLS** (certificates and signatures at work)
+
+<!-- Land the spine: "a valid signature does not mean the same transaction". Cold-call: "what did the vulnerable bank use as the transaction id, and why did the twin get through?" Remind them the CryptoVault milestone is reviewed in the feedback block. -->

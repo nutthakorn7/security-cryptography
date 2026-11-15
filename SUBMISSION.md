@@ -169,7 +169,7 @@ docker info
 | W05 | Key exchange: DH MITM เทียบ authenticated DH | log สองโหมด | PDF |
 | W06 | AEAD: padding oracle เทียบ GCM | flag + plaintext/ผล oracle | PDF |
 | W10 | Hybrid encryption: nonce ใหม่เทียบ nonce ซ้ำ | ผล `demo.py` สี่แบบ + สองบรรทัดโค้ด | PDF |
-| W11 | ECDSA malleability และ ZKP ในใบงาน | flag + signature/รายการถอน | PDF |
+| W11 | ECDSA ลายเซ็นแฝด: ถอนซ้ำเทียบ low-S | flag + ผล `bank.py` | PDF |
 | W12 | TLS certificate validation | log + โค้ด `alice_student.py` | PDF + GitHub |
 | W13 | E2E encryption | server/client log สองโหมด | PDF |
 | W14 | Authentication: password เทียบ challenge-response | log สองโหมด | PDF |
@@ -387,34 +387,39 @@ cd ../..
 
 **หลักฐานส่งใน PDF:** สี่บรรทัดจาก `demo.py good`, ห้าบรรทัดจาก `reuse` กับ `attack reuse`, สามบรรทัดจาก `attack good`, สองบรรทัดโค้ด `nonces = ` และคำตอบสั้น ๆ ด้วยคำของตนเองว่าทำไม nonce ซ้ำจึงอันตราย
 
-## W11 — Signatures & Zero-Knowledge Proofs
+## W11 — Signatures: ลายเซ็นแฝด `(r, n−s)` ถอนเงินซ้ำ
 
-**ทำอะไร:** ทดลอง ECDSA signature malleability ว่า authorization เดิมถูกนับซ้ำได้อย่างไร เมื่อระบบแยกรายการจาก hash ของลายเซ็น แล้วเปรียบเทียบ reference ที่ปฏิเสธ high-S twin ส่วน ZKP เป็นกิจกรรมอธิบายในใบงาน
+**ทำอะไร:** ทดลองว่าลายเซ็น ECDSA มี "ลายเซ็นแฝด" ที่ใช้ได้เหมือนกัน และธนาคารจำลองที่ใช้ hash ของลายเซ็นเป็นเลขรายการจะจ่ายซ้ำ แล้วเปรียบเทียบกับธนาคารที่ปฏิเสธ high-S ส่วน ZKP (Schnorr) เป็นกิจกรรมอธิบายในใบงาน
 
 [อ่านใบงาน W11](labs/week11-signatures-zkp/worksheet.md) · [README W11](labs/week11-signatures-zkp/README.md)
 
-**รันจาก repo root:**
+**คำสั่งรันจาก repo root:** ต้องมี Docker เท่านั้น สคริปต์ `bank.py` รันใน container ทำให้ไม่ต้องลง Python และไม่ต้องใช้ `curl`
 
 ```bash
 cd labs/week11-signatures-zkp
 docker compose up -d
+docker compose logs | grep "Running on"
+docker compose exec vulnerable python bank.py vuln sign
+docker compose exec vulnerable python bank.py vuln pay original
+docker compose exec vulnerable python bank.py vuln pay original
+docker compose exec vulnerable python bank.py vuln pay twin
+docker compose exec vulnerable python bank.py fixed sign
+docker compose exec vulnerable python bank.py fixed pay original
+docker compose exec vulnerable python bank.py fixed pay twin
 ```
 
-ทำ Tasks 1–3 ในใบงานด้วยมือก่อน `exploit.py` โดยเริ่มจาก container ใหม่ เก็บคำสั่งและ JSON ที่แสดงยอด `100` แล้ว `200` จากคู่ลายเซ็นตามโจทย์ จากนั้นเริ่ม state ใหม่ก่อนตรวจซ้ำอัตโนมัติ:
+Vulnerable ใช้ `localhost:8102`; fixed ใช้ `localhost:8103` ทำทุกขั้นต่อเนื่องโดยไม่เปิด lab ใหม่คั่นกลาง เพราะยอดถอนและกุญแจจะถูกรีเซ็ต Windows: ใช้ `docker compose logs | findstr /C:"Running on"` แทน `grep` ทุกครั้งที่เปิด lab ต้องต่ออินเทอร์เน็ต
 
 ```bash
 docker compose down
-docker compose up -d
-python exploit.py
-# เก็บผล vulnerable และ fixed ก่อนหยุด
-docker compose down
+cd ../..
 ```
 
-Vulnerable ใช้ `localhost:8102`; fixed ใช้ `localhost:8103` อย่ารันสคริปต์ก่อนชุดหลักฐานด้วยมือ เพราะยอดถอนและรายการที่เคยใช้จะอยู่จน container หยุด
+**ผลที่ต้องตรวจ:** `vuln pay original` ครั้งแรกได้ `200` ยอดรวม `100`, ส่งซ้ำได้ `409`, `vuln pay twin` ได้ `200` ยอดรวม `200` พร้อม `double_spend_detected` และ flag ส่วน `fixed pay original` ได้ `200` ยอดรวม `100` และ `fixed pay twin` ได้ `403`
 
-**ตรวจผลและส่งใน PDF:** คู่ `(r,s)` กับ `(r,n-s)`, การคำนวณ `s'` และ txid ทั้งสอง, คำสั่ง `curl`/JSON ที่แสดง `total_withdrawn:200` และ `double_spend_detected`, flag ที่ได้จริง และผล fixed รับ low-S ครั้งแรกแต่ปฏิเสธ high-S twin ด้วย 403 พร้อมคำอธิบาย
+**หลักฐานส่งใน PDF:** สามบรรทัดจาก `vuln sign`, สามบรรทัด `answer:` ของ `vuln pay`, สองบรรทัด `answer:` ของ `fixed pay`, สองบรรทัดโค้ด `is_low_s` และคำตอบสั้น ๆ ด้วยคำของตนเอง
 
-**ขอบเขตที่ต้องอธิบาย:** low-S เลือกหนึ่งตัวจากคู่ลายเซ็น `(r,s)`/`(r,n-s)` ไม่ได้ทำให้ข้อความกับ key หนึ่งคู่มีลายเซ็นที่ถูกต้องได้เพียงค่าเดียวตลอดไป การทดลองนี้เริ่มจาก authorization หนึ่งรายการตามโจทย์
+**ขอบเขตที่ต้องอธิบาย:** low-S กัน**ลายเซ็นแฝดคู่นี้** แต่ไม่ได้ทำให้ข้อความกับ key หนึ่งคู่มีลายเซ็นที่ถูกต้องได้เพียงค่าเดียว เลขรายการจึงควรมาจากข้อความที่เซ็น ไม่ใช่จากลายเซ็น
 
 ## W12 — Secure Transport / TLS
 

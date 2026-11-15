@@ -74,7 +74,7 @@ security-cryptography/
 │   ├── week06-aead/               ← LAB — CBC padding-oracle attack
 │   ├── week07-review/             ← pre-midterm review (no lab, no flag)
 │   ├── week10-hybrid-encryption/  ← LAB — GCM nonce reuse (Bob, Alice and Eve; Docker demo)
-│   ├── week11-signatures-zkp/     ← HYBRID — ECDSA signature-malleability double-spend
+│   ├── week11-signatures-zkp/     ← LAB — ECDSA twin signature double-spend (bank.py, Docker)
 │   ├── week12-secure-transport/   ← HYBRID — cert-validation-bypass MITM
 │   ├── week13-e2e-encryption/     ← HYBRID — TLS-only vs. E2E chat server (server-log evidence)
 │   ├── week14-authentication/     ← HYBRID — plaintext-password vs. challenge-response demo

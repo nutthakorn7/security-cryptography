@@ -1,169 +1,83 @@
-# Week 11 — Digital Signatures & Zero-Knowledge Proofs
+# Week 11 — Digital Signatures (the "twin" signature that pays the bank twice)
 
-**Topic (KOSEN68 source):** `Week10_Signatures Questions.docx` · **Kind:** HYBRID
-(lab-style flag demo + conceptual ZKP content)
-**Concepts:** digital signatures vs. MACs, ECDSA/EdDSA, signature malleability, SUF-CMA vs.
-EUF-CMA, Schnorr identification, the Schnorr/Fiat–Shamir proof-of-knowledge connection ·
-**Analogous CWE:** CWE-347 (Improper Verification of Cryptographic Signature), CWE-345
-(Insufficient Verification of Data Authenticity)
+**Kind:** Docker lab, guided step by step. No math and no programming for the common 60 points. Two local containers, ports `8102` and `8103`, local demo only.
+**Concepts:** digital signatures vs. MACs, ECDSA signature malleability (the twin `(r, n−s)`), low-S, signed transaction identity, the Schnorr proof of knowledge ·
+**Analogous CWE:** CWE-347 (Improper Verification of Cryptographic Signature), CWE-345 (Insufficient Verification of Data Authenticity)
 
 ## 100-minute class and assigned worksheet version
 
-**In class:** 10 min retrieval quiz + 10 min brief explanation + 70 min guided practice + 10 min evidence review/exit = 100 min.
+**In class:** 10 min retrieval quiz + 10 min brief + 70 min lab + 10 min evidence = 100 min.
 
-**Shared core — every student:** Obtain a fresh signature in class; compute its twin and transaction identifiers; submit the original/twin to the vulnerable bank; verify a legitimate fixed-bank withdrawal succeeds and its high-S twin fails; explain the control's limits.
+**Common part — every student (60 points):** three guided tasks with `bank.py`: A1 get a signature and see its twin, A2 pay with the original, replay it (`409`), pay with the twin (the bank pays twice and shows the flag), A3 the fixed bank rejects the twin (`403`), then find the `is_low_s` line and explain what low-S does and does not fix.
 
-**Preparation and extensions:** Before class, prepare images/dependencies and read the topology only. Do not collect live signatures before class or reuse signatures across a restart. Complete the long signature/ZKP analysis and the assigned version-specific work outside the core block.
+**Assessment:** the common 60 points plus **one assigned version** (40 points): Conventional written questions Q1–Q4, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. The other version is ungraded practice.
 
-**70-minute practice:** fresh signature 10; twin calculation 15; two vulnerable withdrawals 15; fixed positive/negative controls 15; reasoning 15. Start the manual vulnerable withdrawals against fresh state before any automated exploit. Each bank has its own key: obtain a separate signature from the fixed bank. A restart invalidates previously captured signatures.
-
-
-**Assessment:** everyone completes the shared core (60 points) plus **one assigned version** (40 points): Conventional written analysis, or AIR-Sec Audit-the-AI 20 + EiPE 10 + Prompt Problem 10. Both versions total 100. All questions remain available; complete the assigned version's full questions, using out-of-class time for extended responses. The other version is ungraded reference practice, not an additional requirement. Viva/micro-demo questions are formative checks of the submitted explanation, with no separate points or automatic pass/fail score gate.
-
-**Evidence:** record reproducible observations or reasoning and your name/student ID. Where the local target prints a shared placeholder flag, record it as observed; a personalized flag or live CTFd account is not a prerequisite. Follow SUBMISSION.md for the announced hand-in channel.
+**Evidence:** copy the commands and results from your own machine into the answer sheet, with your name and student ID. Signatures are random per run; the status codes (`200`, `409`, `403`), the totals (`100`, `200`) and the flag are the same for everyone. There is no personal flag this week.
 
 ## ✅ This week — what to do
-1. **Before class** — Docker Desktop working (same Docker-first setup as `software-security`);
-   skim last week's recap (Week 10 — hybrid encryption).
-2. **Concept preparation and brief explanation (within the 100-minute plan)** — signatures vs. MACs; RSA/ECDSA/EdDSA; the Schnorr identification
-   protocol and the Fiat–Shamir transform (challenge → hash) that turns a zero-knowledge *proof
-   of knowledge* into a *signature*; why an ECDSA signature `(r, s)` has a valid twin `(r, n−s)`
-   (malleability). Slides: `slides/week11.md`.
-3. **Practice and assigned-version work (core in class; extensions outside class)** — play the signature game below, capture your flag, then complete
-   **Worksheet 11** (`worksheet.md`, shared practical plus the assigned Conventional essays or AIR-Sec tasks). Kickoff:
-   `docker compose up`.
-4. **Submit** — shared-core evidence/reasoning plus your assigned 40-point version in the worksheet PDF via [SUBMISSION.md](../../SUBMISSION.md). Include the observed flag/log artifact where applicable. Supplied exploit/reference code does not require an unchanged GitHub commit.
+1. **Before class** — Docker Desktop working and the lab ZIP downloaded (worksheet "ก่อนเริ่ม"). Skim last week's recap (Week 10, hybrid encryption).
+2. **In class** — follow **Worksheet 11** step by step. Do the whole lab **without restarting** (a restart gives each bank a new key and a zero balance). Slides: `slides/week11.md`.
+3. **Assigned version** — Conventional answers the four questions in the worksheet; AIR-Sec audits the AI's dedup code, and writes the EiPE and the Prompt Problem.
+4. **Submit** — one PDF `Wk11_<StudentID>.pdf` at `learn.zcr.ai/submit` (see [SUBMISSION.md](../../SUBMISSION.md)).
 
 ## Objectives
-- Explain the difference between a digital signature and a MAC (asymmetric vs. symmetric key,
-  *anyone* can verify vs. only key-holders), and why signatures — not MACs — underpin public PKI.
-- Define **signature malleability** and demonstrate it against ECDSA: given a valid signature
-  `(r, s)`, produce the valid twin `(r, n − s)` (same message, same key, different bytes).
-- Exploit a system that deduplicates transactions **by signature hash** to process one authorized
-  withdrawal **twice** (an illustrative bank-accounting double processing), and explain why **low-S** rejects the malleated twin while application-level transaction identity is still needed.
-- Explain the **Schnorr proof-of-knowledge / Fiat–Shamir connection** to Schnorr-type signatures, without treating every digital-signature scheme as a zero-knowledge proof, and why **SUF-CMA** (strong unforgeability) is a stronger goal
-  than **EUF-CMA** when malleable signatures are used as transaction identifiers.
+- Explain the difference between a digital signature and a MAC, and why signatures underpin public PKI.
+- See that every valid ECDSA signature `(r, s)` has a valid twin `(r, n − s)` (same message, same key, different numbers).
+- Show that a bank that identifies transactions by a hash of the **signature** pays one authorization twice, while an exact replay is caught.
+- See that the **low-S** rule rejects this twin, and explain why the transaction id should still come from the signed message.
+- Describe the Schnorr proof of knowledge (commitment, challenge, response) in plain words.
 
-## How it maps to the concept
-The essays (Part 1) cover the *theory*: signatures vs. MACs (Q1), the Schnorr/Fiat–Shamir connection
-(Q2), the RSA/ECDSA/EdDSA comparison (Q3), substitution attacks (Q4), and malleability + MtGox +
-SUF-CMA (Q5). The lab (Part 2) is the **runnable twin of Q5**: instead of only *describing* how malleability can confuse transaction identifiers, you *perform* the analogous error in a toy bank. The exercise does not establish what caused MtGox's losses or demonstrate a Bitcoin consensus double-spend. A demo bank authorizes exactly one
-withdrawal with an ECDSA signature and treats a hash of the signature
-bytes as the transaction id. You submit a valid signature, then its malleated `(r, n−s)` twin, and
-because the twin hashes to a different "txid," the bank processes the same authorization twice.
+## 🔓 The two banks
 
-## 🔓 Signature game — "Double-Spend the Bank"
-Two Flask targets, same endpoints, different acceptance rule:
-
-| Service | Port | Dedup / validity rule | Vulnerable to `(r, n−s)` malleability? |
+| Service | Port | Dedup / validity rule | Twin `(r, n−s)` |
 |---|---|---|---|
-| `vulnerable_app.py` | `:8102` | `txid = sha256(str(r)+str(s))`; accepts any valid `(r,s)` | **Yes** |
-| `fixed_app.py` | `:8103` | rejects `s > n//2` first (**low-S / BIP-62**), then dedups | **No** |
+| `vulnerable_app.py` | `:8102` | `txid = sha256(str(r)+str(s))`; accepts any valid `(r, s)` | **accepted** (pays twice) |
+| `fixed_app.py` | `:8103` | rejects `s > n//2` first (**low-S / BIP-62**), then dedups the same way | **rejected** (`403`) |
 
-**Why this matters:** the toy bank processes one authorization twice after its signature is
-mathematically mutated. MtGox cited transaction malleability in 2014, but this lab does not
-establish how much, if any, of its losses were caused by that mechanism.
+Each bank holds its **own** SECP256k1 keypair, generated fresh at container start (no private key is ever committed). `GET /sign` is a lab convenience that signs the one fixed message `withdraw 100 to attacker`. The owner authorized **one** withdrawal of 100; when the total exceeds 100 the bank returns the flag.
 
-Each bank holds its **own** SECP256k1 keypair, **generated fresh at container startup** (repo
-policy: no private key is ever committed). `GET /sign` is a lab convenience — it signs the one
-fixed message `"withdraw 100 to attacker"` with that bank's key so you can obtain a starting
-`(r, s)` without owning the key. `POST /withdraw {message, sig_r, sig_s}` verifies the signature,
-deduplicates, and processes the withdrawal; when the total moved from a single authorization
-exceeds the authorized amount, it returns the flag.
+The fixed bank stops this twin only. A second fresh low-S signature for the same message still passes its signature-hash dedup (worksheet step 10 shows it), so a real system should take the transaction id from the signed message, not from the signature.
 
-1. **Get a signature:** `GET /sign` on `:8102` → a valid `(r, s)` for the withdraw message.
-2. **Withdraw once:** `POST /withdraw` with `(r, s)` → processed, `total_withdrawn = 100`.
-3. **Malleate & double-spend:** compute the twin `(r, n − s)` (`n = SECP256k1 order`) — a
-   *different* byte string, so a *different* txid, but still a valid signature for the *same*
-   message and key. `POST /withdraw` with `(r, n − s)` → processed **again** →
-   `total_withdrawn = 200 > 100` authorized → **flag**.
-4. **Confirm the fix:** run the identical `(r, s)` then `(r, n − s)` sequence against `:8103`.
-   The low-S first submission is accepted (one legitimate withdrawal); the high-S twin is
-   **rejected (403)** — no double-process, **no flag**. That is the empirical proof that low-S
-   normalization ≠ "just verify the signature."
+## Files
+| File | What it is |
+|---|---|
+| `docker-compose.yml`, `requirements.txt` | the two banks (installs `flask`, `requests`, `ecdsa`) |
+| `bank.py` | the student helper: `vuln\|fixed sign`, `vuln\|fixed pay original\|twin` (standard library only, runs in the container) |
+| `vulnerable_app.py`, `fixed_app.py` | the two banks |
+| `exploit.py` | the automated confirmation (instructor / optional), see below |
+| `img/signature-malleability.svg` | picture used on the slides |
 
-> **Why "PASS" on the fixed app is *not* "both rejected".** With low-S enforced, the *legitimate*
-> withdrawal must still succeed — only the malleated twin is rejected. So the fixed-app PASS
-> condition is precisely: **first submission accepted, malleated twin rejected, flag never
-> returned.**
-
-## Run it
-
-> **Do the worksheet's Task 3 *before* you run `exploit.py`, or tear down first.**
-> The bank's `_total_withdrawn` and `_seen_txids` are module-level globals in
-> `vulnerable_app.py`: they never reset while the container is up. `exploit.py`
-> spends the one authorization, and after it has run the by-hand reproduction
-> Task 3 grades cannot happen — the very first `curl` you send comes back
-> `total_withdrawn:300, double_spend_detected:true` **with the flag**, so a single
-> ordinary withdrawal appears to be the double-spend and malleability demonstrates
-> nothing. (Reproduced: 300 then 400, both flagged.)
->
-> `exploit.py` is an automated confirmation **from fresh state** after you have done the
-> manual Tasks 3–4. Reset both banks before running it:
-> ```bash
-> docker compose down && docker compose up -d --wait
-> ```
-> A fresh container gives the sequence the worksheet asks for: `total_withdrawn:100`
-> on the first submission, then `200` + `double_spend_detected` + the flag on the
-> malleated twin.
+## Run it (what the worksheet does)
 
 ```bash
 cd labs/week11-signatures-zkp
-docker compose up -d --wait   # wait for dependencies and both banks on :8102/:8103
-# Complete manual Tasks 3–4 first, then reset both banks:
+docker compose up -d
+docker compose exec vulnerable python bank.py vuln sign
+docker compose exec vulnerable python bank.py vuln pay original
+docker compose exec vulnerable python bank.py vuln pay original   # 409 replay
+docker compose exec vulnerable python bank.py vuln pay twin       # 200, total 200, flag
+docker compose exec vulnerable python bank.py fixed sign
+docker compose exec vulnerable python bank.py fixed pay original  # 200, total 100
+docker compose exec vulnerable python bank.py fixed pay twin      # 403
+docker compose down
+```
+
+`bank.py sign` saves the signature in `/tmp` inside the container so `pay` can use it; after a restart run `sign` again.
+
+## Automated check (`exploit.py`, optional)
+`exploit.py` runs the same story from **fresh state** and prints two `PASS` lines. Because the banks keep their totals in memory, run it only after `docker compose down && docker compose up -d --wait`, never after the manual steps:
+
+```bash
 docker compose down && docker compose up -d --wait
 docker compose exec -e VULN_HOST=vulnerable -e FIXED_HOST=fixed vulnerable python exploit.py
-                              # no host Python packages needed; expects fresh state
 ```
-The supplied script runs inside the existing vulnerable container and reaches both services
-by their Compose service names. The two ports are also published to the host for the manual
-`curl` steps. To run the script on the host instead, install `ecdsa` and `requests` there and
-run `python exploit.py` with its default `localhost` targets.
-Expect two `PASS` lines and exit `0`: `100 → 200` with a flag on `:8102`; one legitimate
-`100` withdrawal without a flag, then a rejected twin on `:8103`. If state is not fresh,
-the script exits `1` and tells you to reset.
 
-Per-student flag, if assigned by the instructor: from the repository root, set `SC_FLAG_SALT`
-and run `python3 instructor/seed_flags.py env <STUDENT_ID> > labs/week11-signatures-zkp/.env`
-before `docker compose up -d --wait`. Without an assigned salt and student flag, `FLAG_SIG` falls back
-to the shared local placeholder; students do not need to generate a personal flag to complete
-this worksheet.
+Expect `100 → 200` with a flag on `:8102`, and one accepted withdrawal then a rejected twin (`403`, no flag) on `:8103`. Per-student flag, if the instructor assigns one: set `SC_FLAG_SALT` and run `python3 instructor/seed_flags.py env <STUDENT_ID> > labs/week11-signatures-zkp/.env` before `docker compose up -d --wait`; otherwise `FLAG_SIG` is the shared local placeholder.
 
-**Evidence artifact (HYBRID note).** This week is HYBRID in the 20-week course but is delivered
-with the **flag pattern** (single `docker-compose.yml`, per-student `FLAG_SIG`): the attributable
-evidence artifact is the **captured `FLAG_SIG`** returned by the *vulnerable* bank on the second
-(malleated) withdrawal. The fixed bank rejects that high-S twin without a flag; this does not prove complete idempotency against other fresh valid signatures. If the instructor has activated per-student flag seeding, submit the value issued to you; otherwise record the local shared placeholder with your own execution evidence. No live personalized-flag service is required for the worksheet.
-
-**Verified:** `docker compose up -d --wait --build` was run on this machine; `exploit.py` ran via
-`docker compose exec -T -e VULN_HOST=vulnerable -e FIXED_HOST=fixed vulnerable python exploit.py`.
-Representative captured output (signature values vary by run):
-```
-=== Target 1: VULNERABLE bank (dedup by signature hash) ===
-[*] (vuln) message      = 'withdraw 100 to attacker'
-[*] (vuln) s   (low-S)  = 13056399202723869400706208410144883875844706484262026735256855771853935945737   low-S? True
-[*] (vuln) n-s (twin)   = 102735690034592326022864776598543023976992857794812877647348307369664225548600   low-S? False
-[*] (vuln) txid(r,s)    = 9a6b38dd0d220e24
-[*] (vuln) txid(r,n-s)  = 5350b66936e15245   (different txid, same transaction)
-[*] (vuln) submit (r,s)     -> 200 {"amount":100,"status":"processed","total_withdrawn":100,...}
-[*] (vuln) submit (r,n-s)   -> 200 {"amount":100,"double_spend_detected":true,
-                                    "flag":"FLAG{...}","total_withdrawn":200,...}
-PASS: malleated twin double-spent on vulnerable app (:8102) -- total_withdrawn=200, flag = FLAG{...}
-
-=== Target 2: FIXED bank (low-S / BIP-62 enforcement) ===
-[*] (fixed) submit (r,s)     -> 200 {"total_withdrawn":100,...}
-[*] (fixed) submit (r,n-s)   -> 403 {"error":"non-canonical signature: s must be <= n/2 (BIP-62 low-S)"}
-PASS: malleated twin correctly REJECTED by fixed app (:8103) -- first withdrawal accepted, high-S twin -> 403, no flag
-```
-Exit code `0`. `FLAG_SIG=FLAG{sig_override_test123} docker compose up` was also confirmed to
-propagate the override into the captured flag. Negative controls confirmed: a bad signature
-(`r=s=1`) → `403`; an **exact byte-for-byte replay** of the same `(r, s)` → `409` (the dedup set
-*does* stop identical replays — only the malleated *different-bytes* twin slips through); a wrong
-`message` → `400`. **The concrete `r`, `s`, and txids differ every run** (fresh keypair per boot +
-random ECDSA nonce `k`) — only the default **flag** text is stable; attribution comes from your own recorded execution; do not expect to
-reproduce the exact numbers above.
+**Verified 15 Nov 2026:** every command of the worksheet was run in order from a stopped lab; a second `fixed sign` + `fixed pay original` returns total `200` with the flag (low-S alone is not a full fix). Signatures and txids differ every run (fresh keypair per boot and a random nonce `k`); the flag text is stable. An exact replay of the same `(r, s)` returns `409`; a bad signature returns `403`; a wrong message returns `400`.
 
 ## Deliverable
-Complete the shared core (60 points) and only the assigned version (40 points), as listed in the worksheet rubric. Include reproducible evidence/reasoning in your worksheet PDF. All unassigned-version questions remain available for ungraded practice.
+The common 60 points plus the assigned 40, as in the worksheet rubric. AIR-Sec keeps every deliverable of its form.
 
 ## Known dependency risk (accepted, not fixed)
 This lab's `ecdsa` dependency carries **CVE-2024-23342 / GHSA-wj6h-64fc-37mp** (a "Minerva" timing
