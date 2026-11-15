@@ -13,9 +13,9 @@ Students pull the image before class; the scripts run inside the container, so n
 Project: no CryptoVault milestone this week; the KDF + AEAD-at-rest vault is due in Week 7.
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
-Students run the supplied helpers (`ask.py`, `exploit.py`) in worksheet steps 3–5, 8 and 11–14; no manual byte work is asked. Only
+Students run the supplied helpers (`ask.py`, `exploit.py`) in worksheet steps 2, 5, 7 and 9; no manual byte work is asked. Only
 authorized local targets/test data are used. An unavailable environment is handled with a
-prepared trace/code example and documented follow-up, not a fabricated successful result. Without Docker, steps 8 and 14 can use the simulator at `learn.zcr.ai/sim/padding-oracle` (a toy cipher, not real AES).
+prepared trace/code example and documented follow-up, not a fabricated successful result. Without Docker, step 5 can use the simulator at `learn.zcr.ai/sim/padding-oracle` (a toy cipher, not real AES).
 
 ## In-class run sheet
 
@@ -23,13 +23,13 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 |---|---|
 | 0–10 | Retrieval quiz on Week 5; recall previously taught material. |
 | 10–20 | Brief: padding, the `200` / `403` yes/no, why it is a leak; safety scope and expected evidence. |
-| 20–35 | A1: fetch the secret, ask the CBC server about the original, a letter changed at the start and a letter changed near the end; record `200`, `200`, `403`. |
-| 35–60 | A2: read the picture, run the supplied `exploit.py` inside the container, record the three blocks, the recovered secret and the flag. |
-| 60–80 | A3: ask the GCM server the same three questions (`200`, `403`, `403`), see the script find no signal, compare the CBC and GCM code lines and explain why the tag check gives nothing away. |
+| 20–35 | A1: read the padding picture, ask the CBC server about a letter changed at the start and one near the end; record `200`, `403`. |
+| 35–60 | A2: read the guess-the-byte picture, run the supplied `exploit.py` inside the container (CBC and GCM in one run), record the recovered secret, the flag and the GCM no-signal line. |
+| 60–80 | A3: ask the GCM server three questions (`200`, `403`, `403`), compare the CBC and GCM code lines and explain why the tag check gives nothing away. |
 | 80–95 | Compare results/control and explain the confidentiality/integrity difference and the limits of GCM (ignored tag error, repeated nonce, other leaking messages); receive feedback; begin the assigned form. |
-| 95–100 | Save evidence (answer-sheet boxes for steps 1–17) and note what is left; the PDF is due Sunday 13 Dec 2026 23:59 ICT. |
+| 95–100 | Save evidence (answer-sheet boxes for steps 2–10) and note what is left; the PDF is due Sunday 13 Dec 2026 23:59 ICT. |
 
-**Core artifact:** Three CBC answers (`200`, `200`, `403`), the secret recovered from them, and three GCM answers (`200`, `403`, `403`) with no recovery.
+**Core artifact:** Two CBC answers (`200`, `403`), the secret recovered from them, and three GCM answers (`200`, `403`, `403`) with no recovery.
 
 ## Assessment and after-class work
 
@@ -37,9 +37,9 @@ Worksheet 6 is **100 raw points → 2.5 course points**, one of 12 equally weigh
 
 | Part | Conventional | AIR-Sec |
 |---|---:|---:|
-| A1 — what the CBC server gives away (steps 1–6) | 20 | 20 |
-| A2 — script reads the secret without the key (steps 8–10) | 20 | 20 |
-| A3 — GCM gives nothing away + reasoning (steps 11–17) | 20 | 20 |
+| A1 — what the CBC server gives away (steps 2–3) | 20 | 20 |
+| A2 — script reads the secret without the key (steps 5–6) | 20 | 20 |
+| A3 — GCM gives nothing away + reasoning (steps 7–10) | 20 | 20 |
 | Conventional technical written questions | 40 | — |
 | Audit-the-AI | — | 20 |
 | Explain-in-Plain-English | — | 10 |
