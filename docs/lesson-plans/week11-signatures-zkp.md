@@ -1,19 +1,19 @@
 # Lesson Plan — Week 11: Signatures, ZKP and ECDSA malleability
 
 **02005104 · Cryptography and Network Security · Year 4 · Semester 2 AY2026 · Lecture**
-**Contact time: 100 minutes.** Kind: HYBRID.
+**Contact time: 100 minutes.** Kind: Docker lab (guided, two containers).
 Lab/analysis: [`labs/week11-signatures-zkp`](../../labs/week11-signatures-zkp/README.md) · slides: `slides/week11.md`.
 
 ## Objectives and preparation
 
-Construct (r,n−s) for the same signed message and distinguish signature-byte identity from transaction identity.
+See that (r, n−s) is a second valid signature for the same message and distinguish signature-byte identity from transaction identity.
 
 Prebuild images, but acquire the signature after the current server starts: restarting changes the key/state. Run the manual original/twin pair before any automated exploit, then reset before a rerun.
 
 Project: teams submit the CryptoVault sharing-flow draft (Week 11 milestone) before class; the instructor reviews it in the final feedback block.
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
-Students may consult the supplied helper after explaining the bounded manual checkpoint. Only
+Students run the supplied helper (`bank.py`) in worksheet steps 2, 5, 7 and 9; the twin is calculated by the helper, no manual arithmetic or `curl` is asked. Only
 authorized local targets/test data are used. An unavailable environment is handled with a
 prepared trace/code example and documented follow-up, not a fabricated successful result.
 
@@ -23,14 +23,14 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 |---|---|
 | 0–10 | Week 10 retrieval quiz/review; recall hybrid encryption before the Week 11 lab. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
-| 20–30 | Start fresh state and obtain a live signature; read the txid derivation. |
-| 30–45 | Create the malleated twin `(r, n−s)` for the same message; record both signature encodings and their transaction identifiers. |
-| 45–60 | Submit the original and the twin to the vulnerable service; record the duplicate authorization effect. |
-| 60–75 | Run the fixed service's positive/negative controls from fresh state; show which low-S form is accepted and why the twin is rejected. |
+| 20–30 | A1: start fresh state, run `bank.py vuln sign`, record the signature, its twin and the two different txids. |
+| 30–45 | A1 fill-in, then read how the bank deduplicates (txid from the signature hash). |
+| 45–60 | A2: `vuln pay original`, the same again (`409`), then `vuln pay twin` (`200`, total 200, flag). |
+| 60–75 | A3: `fixed sign`, `fixed pay original` (`200`) and `fixed pay twin` (`403`); find the `is_low_s` line. |
 | 75–90 | Explain the results: a protocol-level deduplication alternative and the boundary between malleability and nonce-reuse key recovery. |
 | 90–100 | Save before/after evidence, give concise reasoning and submit the checkpoint; instructor feedback on the CryptoVault sharing-flow draft (Week 11 milestone). |
 
-**Core artifact:** A signature twin, repeated authorization and canonicalization control.
+**Core artifact:** the signature and its twin, the `409` replay, the repeated authorization (total 200 + flag) and the fixed bank's `403`.
 
 ## Assessment and after-class work
 
@@ -38,19 +38,19 @@ Worksheet 11 is **100 raw points → 2.5 course points**, one of 12 equally weig
 
 | Part | Conventional | AIR-Sec |
 |---|---:|---:|
-| Core work / observation | 20 | 20 |
-| Control verification / limitations | 20 | 20 |
-| Reproducible evidence / reasoning | 20 | 20 |
+| A1 signature and its twin (steps 2–3) | 20 | 20 |
+| A2 double processing at the vulnerable bank (steps 5–6) | 20 | 20 |
+| A3 fixed bank, low-S and its limits (steps 7–10) | 20 | 20 |
 | Conventional technical written questions | 40 | — |
 | Audit-the-AI | — | 20 |
 | Explain-in-Plain-English | — | 10 |
 | Prompt Problem | — | 10 |
 | **Total** | **100** | **100** |
 
-Everyone completes shared 60; finish only the assigned form's 40. In Weeks 1/10 shared work is
-analysis/diagram/proof, with no Docker or flag requirement. Week 12 code/testing belongs in
+Everyone completes shared 60; finish only the assigned form's 40. Shared work is
+a guided Docker lab with no personal flag (Weeks 1 and 10 were analysis / guided demo). Week 12 code/testing belongs in
 shared 60. Preserve and complete the full assigned question text outside class as needed:
-Keep full Schnorr/Fiat–Shamir, EUF-CMA/SUF-CMA and nonce-reuse discussion outside the bounded core. This lab demonstrates malleability, not private-key recovery. Low-S canonicalizes only the twin pair; fresh signing randomness can produce other valid low-S signatures. Application replay/idempotency still needs an authenticated transaction ID or nonce and suitable spent-state.
+Schnorr is marked in Conventional Q4 (plain words); RSA/ECDSA/EdDSA, substitution attacks, SUF-CMA and Fiat–Shamir stay as optional questions outside the bounded core. This lab demonstrates malleability, not private-key recovery. Low-S canonicalizes only the twin pair; fresh signing randomness can produce other valid low-S signatures. Application replay/idempotency still needs an authenticated transaction ID or nonce and suitable spent-state.
 
 The quiz remains inside the course's 10% quiz/participation component. Reproduction checks and
 short explanations are feedback/authenticity checks within work, with no extra viva score or
