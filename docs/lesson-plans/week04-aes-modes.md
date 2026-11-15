@@ -13,7 +13,7 @@ Students pull the image before class; the script runs inside the container, so n
 Project: the Week 4 milestone forms the CryptoVault team and submits the design plan (KDF + AEAD-at-rest). Teams review the plan in class before submitting it; do not assume a design was submitted earlier.
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
-Students run the supplied helper (`exploit.py`) in worksheet step 8; no manual byte work is asked. Only
+Students run the supplied helper (`exploit.py`) in worksheet step 5; no manual byte work is asked. Only
 authorized local targets/test data are used. An unavailable environment is handled with a
 prepared trace/code example and documented follow-up, not a fabricated successful result.
 
@@ -27,7 +27,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 | 35–60 | A2: read the picture, run the supplied `exploit.py` inside the container, record `guest` becoming `admin` and the flag. |
 | 60–80 | A3: make the same one-letter change to the GCM token, see `invalid or tampered token`, compare the CBC and GCM code lines and explain why the tag check refuses it. |
 | 80–95 | Compare results/control and explain the confidentiality/integrity difference; teams confirm membership and review their CryptoVault design plan with instructor feedback before submitting it. |
-| 95–100 | Save evidence (answer-sheet boxes for steps 1–17) and note what is left; the PDF is due Sunday 29 Nov 2026 23:59 ICT. |
+| 95–100 | Save evidence (answer-sheet boxes for steps 1–11) and note what is left; the PDF is due Sunday 29 Nov 2026 23:59 ICT. |
 
 **Core artifact:** A changed CBC token that the server accepts (`guest` → `admin`) and a changed GCM token that it refuses.
 
@@ -37,9 +37,9 @@ Worksheet 4 is **100 raw points → 2.5 course points**, one of 12 equally weigh
 
 | Part | Conventional | AIR-Sec |
 |---|---:|---:|
-| A1 — encrypted is not tamper-proof (steps 1–6) | 20 | 20 |
-| A2 — script changes the token to admin (steps 8–10) | 20 | 20 |
-| A3 — GCM notices + reasoning (steps 12–17) | 20 | 20 |
+| A1 — encrypted is not tamper-proof (steps 1–3) | 20 | 20 |
+| A2 — script changes the token to admin (steps 4–6) | 20 | 20 |
+| A3 — GCM notices + reasoning (steps 7–11) | 20 | 20 |
 | Conventional technical written questions | 40 | — |
 | Audit-the-AI | — | 20 |
 | Explain-in-Plain-English | — | 10 |
