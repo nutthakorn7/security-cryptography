@@ -43,7 +43,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 - Common rule (PKCS#7): pad with the **number of bytes added**, repeated
 - After decrypting, the server **checks the padding**
 
-<!-- Worksheet step 2. RFC 5652 §6.3 defines this padding: k − (length mod k) bytes, each with that value, and a full block when the length is already a multiple of k. Our message is 34 bytes, so 14 bytes of 0x0e. Say: "padding is not a security feature, it only fills the block". -->
+<!-- Worksheet step 1. RFC 5652 §6.3 defines this padding: k − (length mod k) bytes, each with that value, and a full block when the length is already a multiple of k. Our message is 34 bytes, so 14 bytes of 0x0e. Say: "padding is not a security feature, it only fills the block". -->
 
 ---
 
@@ -60,7 +60,7 @@ return jsonify({"error": "bad padding"}), 403
 - The server **never shows the secret**, but `200` vs `403` is a **yes/no question**
 - That is a **padding oracle** (CWE-204: different answers reveal inside information)
 
-<!-- Worksheet steps 3-5: ask.py original (200), start (200), end (403). The answer depends on WHERE the letter was changed. Not leaking the plaintext is not the same as leaking nothing. CWE-204 (Observable Response Discrepancy) is the right label; CWE-208 is for timing differences. -->
+<!-- Worksheet step 2: ask.py start (200), end (403). The answer depends on WHERE the letter was changed. Not leaking the plaintext is not the same as leaking nothing. CWE-204 (Observable Response Discrepancy) is the right label; CWE-208 is for timing differences. -->
 
 ---
 
@@ -76,7 +76,7 @@ return jsonify({"error": "bad padding"}), 403
 padding-oracle
 ```
 
-<!-- Worksheet step 7 and 8. The helper (exploit.py) does the work; students never compute it. The optional Extension at the end of Part 2 has the formula for the curious: D(C_t)[15] = guess XOR 0x01, with a neighbour-byte re-check for the false positive. The sim uses a toy cipher, not real AES, with the same CBC and padding checks; say so out loud. -->
+<!-- Worksheet steps 4 and 5. The helper (exploit.py) does the work; students never compute it. The optional Extension at the end of Part 2 has the formula for the curious: D(C_t)[15] = guess XOR 0x01, with a neighbour-byte re-check for the false positive. The sim uses a toy cipher, not real AES, with the same CBC and padding checks; say so out loud. -->
 
 ---
 
@@ -98,7 +98,7 @@ padding-oracle
 - Change a letter at the start or at the end: **the same `403`**
 - Nothing to ask, **nothing to learn**
 
-<!-- Worksheet steps 11-14: ask.py fixed original (200), start (403), end (403), and the helper getting no signal. -->
+<!-- Worksheet step 7: ask.py fixed original (200), start (403), end (403); step 5 already showed the helper getting no signal from GCM. -->
 
 ---
 
@@ -115,7 +115,7 @@ padding-oracle
 
 ## GCM is not magic
 
-- Ignore the tag error and carry on, and GCM protects nothing (Week 4, step 17)
+- Ignore the tag error and carry on, and GCM protects nothing (Week 4, step 11)
 - Reuse a **nonce** with the same key, and data leaks and tags can be forged (Week 4)
 - Other different answers still leak: "user not found" vs "wrong password" (CWE-204)
 
