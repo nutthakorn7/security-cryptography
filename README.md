@@ -75,7 +75,7 @@ security-cryptography/
 │   ├── week07-review/             ← pre-midterm review (no lab, no flag)
 │   ├── week10-hybrid-encryption/  ← LAB — GCM nonce reuse (Bob, Alice and Eve; Docker demo)
 │   ├── week11-signatures-zkp/     ← LAB — ECDSA twin signature double-spend (bank.py, Docker)
-│   ├── week12-secure-transport/   ← HYBRID — cert-validation-bypass MITM
+│   ├── week12-secure-transport/   ← LAB — cert-validation-bypass MITM (Docker, student fix)
 │   ├── week13-e2e-encryption/     ← HYBRID — TLS-only vs. E2E chat server (server-log evidence)
 │   ├── week14-authentication/     ← HYBRID — plaintext-password vs. challenge-response demo
 │   ├── week15-pqc/                ← LAB — Lamport OTS key-reuse private-key recovery

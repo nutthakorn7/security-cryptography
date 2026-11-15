@@ -427,35 +427,28 @@ cd ../..
 
 [อ่านใบงาน W12](labs/week12-secure-transport/worksheet.md) · [README W12](labs/week12-secure-transport/README.md)
 
-**รันจาก repo root — vulnerable:**
+**รันจาก repo root (ต่อเนื่องกัน ไม่ต้องปิดคั่น):**
 
 ```bash
 cd labs/week12-secure-transport
-docker compose -f docker-compose.vulnerable.yml up -d --build
-docker compose -f docker-compose.vulnerable.yml logs -f
-# หลัง client ทำงานและเก็บหลักฐานแล้ว กด Ctrl-C หยุดดู log
-docker compose -f docker-compose.vulnerable.yml down -v
+docker compose -f docker-compose.vulnerable.yml build
+docker compose -f docker-compose.vulnerable.yml run --rm alice
+docker compose -f docker-compose.vulnerable.yml logs mitm
+docker compose -f docker-compose.fixed.yml run --rm alice
+docker compose -f docker-compose.fixed.yml logs mitm
 ```
 
-**เทียบ fixed:**
-
-```bash
-docker compose -f docker-compose.fixed.yml up -d --build
-docker compose -f docker-compose.fixed.yml logs -f
-# เมื่อเห็นผลปฏิเสธ certificate แล้ว กด Ctrl-C
-docker compose -f docker-compose.fixed.yml logs | grep -c "MITM INTERCEPTED"
-# เก็บหลักฐานก่อนล้าง demo certificates
-docker compose -f docker-compose.fixed.yml down -v
-```
-
-**งานโค้ด:** สร้าง branch `wk12` ใน fork ของตนเอง แล้วเขียน `build_client_context()` ใน `alice_student.py` ตามใบงานและ docstring ให้เชื่อถือ demo CA ที่กำหนดและตรวจ hostname จากนั้นทดสอบ:
+**งานโค้ด:** สร้าง branch `wk12` ใน fork ของตนเอง แล้วแก้ `build_client_context()` ใน `alice_student.py` (3 บรรทัด ดูตัวอย่างบรรทัดที่ถูกในใบงานขั้นที่ 7) จากนั้นทดสอบกับผู้แอบอ้างและกับ Bob ตัวจริง แล้วบันทึก commit:
 
 ```bash
 git switch -c wk12
-# แก้ alice_student.py ด้วย editor ก่อนรันชุดนี้
-docker compose -f docker-compose.student-task.yml up -d --build
-docker compose -f docker-compose.student-task.yml logs -f
-# เก็บหลักฐาน client ปฏิเสธ certificate แล้ว กด Ctrl-C
+# แก้ alice_student.py ด้วย editor แล้วกดบันทึกก่อนรันชุดนี้
+docker compose -f docker-compose.student-task.yml run --rm --build alice
+docker compose -f docker-compose.student-task.yml up -d bob
+docker compose -f docker-compose.student-task.yml run --rm --no-deps -e PEER_HOST=bob alice
+# เก็บหลักฐานทั้งสองผลก่อนล้าง demo certificates
+docker compose -f docker-compose.vulnerable.yml down -v
+docker compose -f docker-compose.fixed.yml down -v
 docker compose -f docker-compose.student-task.yml down -v
 git add alice_student.py
 git commit -m "Complete W12 certificate validation"
@@ -465,7 +458,7 @@ git push -u origin wk12
 
 ถ้ามี branch `wk12` อยู่แล้ว ใช้ `git switch wk12` แทนการสร้างซ้ำ เปิด PR หรือแนบ commit link ตาม Weekly LAB ด้านบน `down -v` ในชุดนี้ลบ volume certificate ที่สร้างสำหรับ Lab เพื่อไม่ให้ certificate เก่าค้างข้ามโหมด เก็บหลักฐานก่อนลบเสมอ
 
-**ตรวจผลและส่ง:** PDF ต้องมี vulnerable log `MITM INTERCEPTED:` ที่อ่านข้อความได้, fixed/student log `CERT VERIFICATION FAILED - ABORTING` พร้อมเหตุผล certificate ไม่ได้รับความเชื่อถือ, ผลนับ `MITM INTERCEPTED` เป็น `0` ใน fixed, คำอธิบายว่า encryption อย่างเดียวไม่ยืนยันตัวตน server และ diff/ฟังก์ชันที่เขียนพร้อมอธิบายแต่ละบรรทัด ใส่ commit hash และลิงก์ PR/commit ของ `alice_student.py` ใน PDF ด้วย
+**ตรวจผลและส่ง:** PDF ต้องมี vulnerable log `MITM INTERCEPTED:` ที่อ่านข้อความได้, fixed/student log `CERT VERIFICATION FAILED - ABORTING` พร้อมเหตุผล certificate ไม่ได้รับความเชื่อถือ (และ log ของ Eve ใน fixed ที่เขียนว่า `intercepted NOTHING`), ผลทดสอบกับ Bob ตัวจริงที่ขึ้น `TLS handshake succeeded`, คำอธิบายว่า encryption อย่างเดียวไม่ยืนยันตัวตน server และ diff/ฟังก์ชันที่เขียนพร้อมอธิบายแต่ละบรรทัด ใส่ commit hash และลิงก์ PR/commit ของ `alice_student.py` ใน PDF ด้วย
 
 TLS port `8443` อยู่ภายใน Docker network ไม่ต้องเปิด browser ที่ port นี้บนเครื่อง การที่ client ออกด้วย exit 1 หลังปฏิเสธ certificate เป็นผลที่คาดหมาย ต้องดูข้อความปฏิเสธที่ระบุไว้ ไม่ใช่ยอมรับ Python traceback หรือปิด validation เพื่อให้ login ผ่าน
 
