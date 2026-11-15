@@ -2,7 +2,7 @@
 
 **02005104 Cryptography and Network Security** — Year 4, 1 credit, Semester 2 AY2026.
 Lecture format with practical work in class: **20 weeks × 100 minutes**. The 12 teaching
-worksheets are W1–6 and W10–15; ten have runnable labs and W1/W10 use case/code analysis.
+worksheets are W1–6 and W10–15; eleven have runnable labs and W1 uses case/code analysis.
 W16 is the CryptoVault studio, W7/W17 are review, W8/W9/W18/W19 are exams, and W20 is feedback.
 
 Both worksheet formats share **practical work 60/100**. The remaining **40/100** is either
@@ -19,7 +19,7 @@ These local materials do not establish the deployment or personalized-flag statu
 
 ## Quick start
 
-[คู่มือ Lab Cryptography ทั้ง 10 สัปดาห์และการส่งงาน](SUBMISSION.md) — คำสั่งรัน ผลที่ต้องตรวจ และรายการหลักฐานส่งงานสำหรับนักศึกษา
+[คู่มือ Lab Cryptography ทั้ง 11 สัปดาห์และการส่งงาน](SUBMISSION.md) — คำสั่งรัน ผลที่ต้องตรวจ และรายการหลักฐานส่งงานสำหรับนักศึกษา
 
 ```bash
 git clone <this-repo-url>
@@ -73,7 +73,7 @@ security-cryptography/
 │   ├── week05-key-exchanges/      ← HYBRID — unauthenticated DH MITM
 │   ├── week06-aead/               ← LAB — CBC padding-oracle attack
 │   ├── week07-review/             ← pre-midterm review (no lab, no flag)
-│   ├── week10-hybrid-encryption/  ← CONCEPTUAL — Audit-the-AI (no Docker target)
+│   ├── week10-hybrid-encryption/  ← LAB — GCM nonce reuse (Bob, Alice and Eve; Docker demo)
 │   ├── week11-signatures-zkp/     ← HYBRID — ECDSA signature-malleability double-spend
 │   ├── week12-secure-transport/   ← HYBRID — cert-validation-bypass MITM
 │   ├── week13-e2e-encryption/     ← HYBRID — TLS-only vs. E2E chat server (server-log evidence)
