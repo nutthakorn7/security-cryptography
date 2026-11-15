@@ -468,20 +468,19 @@ TLS port `8443` อยู่ภายใน Docker network ไม่ต้อง
 
 [อ่านใบงาน W13](labs/week13-e2e-encryption/worksheet.md) · [README W13](labs/week13-e2e-encryption/README.md)
 
-**รันจาก repo root:**
+**รันจาก repo root:** ต้องมี Docker เท่านั้น ไม่ต้องเขียนโค้ด ทำต่อเนื่องกันได้โดยไม่ต้อง `down` คั่นกลาง
 
 ```bash
 cd labs/week13-e2e-encryption
+docker compose -f docker-compose.vulnerable.yml build
 docker compose -f docker-compose.vulnerable.yml up -d --build
-docker compose -f docker-compose.vulnerable.yml logs -f
-# หลังเห็น SERVER SAW และ BOB RECEIVED เก็บหลักฐานแล้ว Ctrl-C
-docker compose -f docker-compose.vulnerable.yml down
-
+docker compose -f docker-compose.vulnerable.yml logs server
+docker compose -f docker-compose.vulnerable.yml logs bob
 docker compose -f docker-compose.fixed.yml up -d --build
-docker compose -f docker-compose.fixed.yml logs -f
-# หลังเห็น BOB DECRYPTED เก็บหลักฐานแล้ว Ctrl-C
 docker compose -f docker-compose.fixed.yml logs server
 docker compose -f docker-compose.fixed.yml logs bob
+docker compose -f docker-compose.fixed.yml run --rm --entrypoint grep alice -n "payload = " alice.py
+docker compose -f docker-compose.vulnerable.yml down
 docker compose -f docker-compose.fixed.yml down
 ```
 
