@@ -21,6 +21,8 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 - The fix: **HMAC**
 - 🔓 **Lab:** try to change a signed cookie, see a forgery work, then watch HMAC stop it
 
+**Timing (100 min):** 10 quiz · 10 brief · 60 lab · 15 feedback · 5 save evidence
+
 <!-- Roadmap. Say the spine line out loud: "the math is fine; the way it was used is not" — the same shape as Week 2. Most of the class is the lab, not these slides. -->
 
 ---
@@ -56,7 +58,7 @@ A **MAC** is a short tag made with a **secret key**. It gives you:
 - **Integrity** — the data wasn't changed
 - **Authenticity** — it came from someone who knows the key
 
-<!-- This is worksheet Q1: the hash-only cookie has no secret, so tampering is undetectable. Ask: "what's missing?" → a key. Thai: MAC = รหัสยืนยันความถูกต้องของข้อความ. -->
+<!-- This is worksheet Q1: the hash-only cookie has no secret, so tampering is undetectable. Ask: "what's missing?" → a key. Plain words for the class: a MAC is a short code that only someone with the key can make, so it proves the message was not changed. -->
 
 ---
 
@@ -143,7 +145,8 @@ if sig != expected:      # plain comparison — in BOTH apps
 - **Everyone (common 60):** A1 change a cookie by hand · A2 run the forgery, get the flag · A3 show HMAC stops it
 - **Your form (40):** student ID ends **odd** → AIR-Sec · **even** → Conventional
 - **Answer sheet:** Classroom → Week 03 → open the file for your form, type in the grey boxes, then File → Download → PDF
-- Hand in `Wk03_<StudentID>.pdf` at `learn.zcr.ai/submit`
+- Hand in `Wk03_<StudentID>.pdf` at `learn.zcr.ai/submit` with the code from your KMITL email, by **Sun 22 Nov, 23:59**
+- **Windows:** type `curl.exe`, not `curl`. Do not run `docker compose down` until your evidence is saved
 
 <!-- Exact commands are in the worksheet — one known-good path, copy and run. The shared demo flag is fine. Start Docker early; wait for "Running on http://127.0.0.1" with :8092 and :8093 in the logs. On Windows, use curl.exe. -->
 
@@ -154,6 +157,7 @@ if sig != expected:      # plain comparison — in BOTH apps
 - SHA-256 is sound — the **misuse** `SHA256(secret + data)` is what breaks
 - A MAC needs the right construction: use **HMAC**, not a home-made mix
 - HMAC does not fix comparison timing or replay — those are separate jobs
+- Exit question (say it in plain words): *what did the attacker get from the SHA-256 digest?*
 - Next week: **AES** — why encryption without authentication fails
 
 <!-- Land the spine: "textbook-secure primitive, real-system failure". Cold-call: "SHA-256 isn't broken, so what went wrong in :8092?" Remind: Docker + laptop ready for next week too. -->
