@@ -141,7 +141,7 @@ if sig != expected:      # plain comparison — in BOTH apps
 | fixed | `:8093` | `HMAC-SHA256(secret, data)` | **No** |
 
 - **Everyone (common 60):** A1 change a cookie by hand · A2 run the forgery, get the flag · A3 show HMAC stops it
-- **Your form (40):** student ID ends **odd** → Conventional · **even** → AIR-Sec
+- **Your form (40):** student ID ends **odd** → AIR-Sec · **even** → Conventional
 - **Answer sheet:** Classroom → Week 03 → open the file for your form, type in the grey boxes, then File → Download → PDF
 - Hand in `Wk03_<StudentID>.pdf` at `learn.zcr.ai/submit`
 

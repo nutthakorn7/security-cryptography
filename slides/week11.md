@@ -136,7 +136,7 @@ if not is_low_s(s):      # fixed_app.py
 | `fixed` | `:8103` | **rejected** (`403`) |
 
 - **Everyone (common 60):** A1 get a signature and its twin · A2 pay with the original, replay it, pay with the twin · A3 the fixed bank says no, then find the `is_low_s` line
-- **Your form (40):** student ID ends **odd** → Conventional · **even** → AIR-Sec
+- **Your form (40):** student ID ends **odd** → AIR-Sec · **even** → Conventional
 - **Answer sheet:** Classroom → Week 11 → file for your form → type in the grey boxes → File → Download → PDF
 - Hand in `Wk11_<StudentID>.pdf` at `learn.zcr.ai/submit`
 

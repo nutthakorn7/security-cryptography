@@ -138,7 +138,7 @@ AUTH FAILED - ABORTING          (bob)
 | fixed | tag check | **nothing** — both sides stop |
 
 - **Everyone (common 60):** A1 watch `relay` read the message · A2 run the tag check, see `AUTH FAILED` · A3 explain why it works and what it needs
-- **Your form (40):** student ID ends **odd** → Conventional · **even** → AIR-Sec
+- **Your form (40):** student ID ends **odd** → AIR-Sec · **even** → Conventional
 - **Answer sheet:** Classroom → Week 05 → open the file for your form, type in the grey boxes, then File → Download → PDF
 - Hand in `Wk05_<StudentID>.pdf` at `learn.zcr.ai/submit`
 
