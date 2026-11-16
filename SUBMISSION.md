@@ -89,8 +89,11 @@ docstring), verify it against `docker-compose.student-task.yml`, then:
 Common: main task/observations 20 + controls/tests/limitations 20 + reproducible evidence/reasoning 20.
 Conventional: ordinary written questions 40. AIR-Sec: Audit-the-AI 20 + Explain-in-Plain-English 10
 + Prompt Problem 10. Complete one assigned 40-point section, not both.
-**Your form is set by the last digit of your student ID: odd = Conventional, even = AIR-Sec**, for the
-whole term unless the instructor announces a change. Write your form in the worksheet's Group field.
+**Your form is set by the last digit of your student ID, and the mapping alternates every week from Week 3.**
+In Weeks 1, 2, 4, 6, 10, 12 and 14 (and every even-numbered week) odd = Conventional and even = AIR-Sec; in Weeks 3, 5, 11, 13 and 15
+(every odd-numbered week from Week 3) odd = AIR-Sec and even = Conventional. Each week's worksheet and Classroom post state that
+week's mapping, and the answer-sheet files are named by form (`WkNN_Answer_Sheet_Conventional`, `WkNN_Answer_Sheet_AIR-Sec`).
+Write your form in the worksheet's Group field.
 The 12 worksheets
 (W1–6, W10–15) contribute equally at **2.5 course points each**, totalling 30%.
 W1 earns the common 60 through cases, diagrams, experiments or code analysis; no Docker/flag

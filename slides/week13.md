@@ -113,7 +113,7 @@ week13-bob    | BOB DECRYPTED: meet at pier 39 at midnight
 | `fixed` | encrypted text | **unreadable** |
 
 - **Everyone (common 60):** A1 the server reads · A2 the server cannot read · A3 find the two differing lines and name the limit
-- **Your form (40):** student ID ends **odd** → Conventional · **even** → AIR-Sec
+- **Your form (40):** student ID ends **odd** → AIR-Sec · **even** → Conventional
 - **Answer sheet:** Classroom → Week 13 → file for your form → type in the grey boxes → File → Download → PDF
 - Hand in `Wk13_<StudentID>.pdf` at `learn.zcr.ai/submit`
 
