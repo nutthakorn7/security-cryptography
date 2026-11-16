@@ -107,7 +107,7 @@ cbc-bitflip
 - Changed token → tags differ → **rejected** (`403`)
 - A matching tag means **not changed**; an old valid token sent again still passes (needs a different defence)
 
-<!-- Say "tag" = seal. Do not go into GHASH. The tag also covers any extra authenticated data (none in this lab) and depends on the nonce; a matching tag shows the data was not changed, it does not stop replay. TLS 1.3 removed CBC and keeps only authenticated (AEAD) algorithms such as AES-GCM: RFC 8446 §1.2. It only helps if the program really obeys the check (worksheet step 17 and optional Q10). -->
+<!-- Say "tag" = seal. Do not go into GHASH. The tag also covers any extra authenticated data (none in this lab) and depends on the nonce; a matching tag shows the data was not changed, it does not stop replay. TLS 1.3 removed CBC and keeps only authenticated (AEAD) algorithms such as AES-GCM: RFC 8446 §1.2. It only helps if the program really obeys the check (worksheet Step 11 and optional Q10). -->
 
 ---
 
