@@ -43,7 +43,7 @@ CWE-319 describes that unencrypted transport, not a server receiving plaintext a
   using its preloaded `v = KDF(salt, password)`. A thief with `v` can impersonate the client.
 - Distinguish the three authentication factors (know / have / are) and reason about TOTP,
   FIDO2/WebAuthn, credential stuffing, and delegated authentication (SSO/OIDC) — the conceptual
-  half of this HYBRID week (Part 1 essays + Part 2 EiPE).
+  half of this HYBRID week (Conventional Q4 on paper; optional Q5–Q8 for early finishers).
 - **Understand the honest limits of this demo** (see the box below): the fixed side proves only
   *"password never transmitted."* It is **not** a full PAKE.
 
