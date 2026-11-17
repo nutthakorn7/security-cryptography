@@ -70,11 +70,12 @@ week except one. Most weeks you *confirm* the fix works and *explain why* — yo
 
 **Do it (Week 12 only — the one week with a real code-writing task):** in addition to the above,
 `alice_student.py` ships with its one fix function stubbed as `raise NotImplementedError`. Write
-the real implementation yourself (see that lab's worksheet Part 2a step 5 and the file's own
-docstring), verify it against `docker-compose.student-task.yml`, then:
+the real implementation yourself (see Step 7 of that lab's worksheet for the right code, Step 8 for
+the 3-line fix, and the file's own docstring), verify it against `docker-compose.student-task.yml`, then:
 1. In your fork, create a branch `wk12`.
-2. Commit your completed `alice_student.py` to that branch and note the **commit hash** in the
-   worksheet, alongside your explanation of what each line does.
+2. Commit your completed `alice_student.py` to that branch, push it, and paste the **commit link**
+   (https://github.com/YOUR-NAME/security-cryptography/commit/HASH) in the grey box of Step 12 of
+   your answer sheet. Your explanation of what each line does stays in Step 8.
 
 **Submit:**
 | Part | Where | What | Weeks |
