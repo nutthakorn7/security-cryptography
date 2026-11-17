@@ -44,7 +44,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 - Change one character → a **completely different** digest
 - Same input → **same** digest, every time
 
-<!-- Live demo: `echo -n password | sha256sum`, then change one letter and run again — the digest looks nothing alike. Thai: hash = แฮช / ลายนิ้วมือข้อมูล, digest = ค่าแฮช. Keep it to these four facts; no formal proofs. -->
+<!-- Live demo: `echo -n password | sha256sum`, then change one letter and run again — the digest looks nothing alike. Plain words for the class: a hash is a fingerprint of the data, and the digest is the fingerprint value. Keep it to these four facts; no formal proofs. -->
 
 ---
 
@@ -145,9 +145,9 @@ hash-crack
 - **Your form (40):** student ID ends **odd** → Conventional · **even** → AIR-Sec
 - Exact commands are in the worksheet — one known-good path, copy and run
 - **Answer sheet:** Classroom → Week 02 → open the file for your form, type in the grey boxes, then File → Download → PDF
-- Hand in `Wk02_<StudentID>.pdf` at `learn.zcr.ai/submit`
+- Hand in `Wk02_<StudentID>.pdf` at `learn.zcr.ai/submit` with your Week 2 submission code from your KMITL email, by **Sun 15 Nov, 23:59**
 
-<!-- Point at the worksheet's Task 0–4; they are the class. The shared demo flag is fine — no personal flag is needed. Start Docker early (it installs on first run); if the page 403s at first, wait for "Running on" in the logs. -->
+<!-- Point at the worksheet's Steps 1–11 (A1 = Steps 1–3, A2 = Steps 4–6, A3 = Steps 7–11); they are the class. The shared demo flag is fine — no personal flag is needed. Start Docker early (it installs on first run); if the page 403s at first, wait for "Running on" in the logs. -->
 
 ---
 
