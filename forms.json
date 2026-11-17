@@ -1,0 +1,11 @@
+{
+  "_comment": "Single source of truth for which form (40-mark part) a student does, by the last digit of the student ID. Edit ONLY this file when the rule changes, then run: python3 scripts/check_forms.py (it fails if any worksheet, slide, syllabus or submission text disagrees). The answer-sheet generators in instructor/tools read this file too.",
+  "forms": ["conventional", "air-sec"],
+  "labels": { "conventional": "Conventional", "air-sec": "AIR-Sec" },
+  "base_odd": "conventional",
+  "_base_odd": "Form done by an ODD last digit in a normal week; an EVEN digit does the other form (0 counts as even).",
+  "flip_from_week": 3,
+  "_flip_from_week": "From this week on, every ODD-numbered week swaps the two forms (3, 5, 7, ...). Earlier weeks and even-numbered weeks use base_odd.",
+  "no_form_weeks": [7, 8, 9],
+  "_no_form_weeks": "Weeks with no form split (review, midterm). Any mapping statement found in these weeks is reported."
+}

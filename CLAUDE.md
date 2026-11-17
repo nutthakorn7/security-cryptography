@@ -38,3 +38,12 @@ Lab requirements pin `>=` current versions on purpose (unlike the software-secur
 repo, nothing here is deliberately outdated). The one exception is `ecdsa` in
 `labs/week11-signatures-zkp`, which has an unfixable advisory (CVE-2024-23342) and
 is documented as an accepted risk in that lab's `requirements.txt` — leave it.
+
+## Which form a student does: one file, `forms.json`
+
+The odd/even last-digit rule (which of Conventional / AIR-Sec an odd digit does, and where it flips by week) is defined in
+`forms.json` and nowhere else. To change it, edit `forms.json`, then run
+`python3 scripts/check_forms.py` (add `instructor/classroom` to also scan the git-ignored Classroom texts). It fails if
+any worksheet, slide, `SUBMISSION.md`, `syllabus.md` or extra text states a different mapping. Tests:
+`python3 -m unittest discover -s scripts -p 'test_*.py'`. The answer-sheet generators in `instructor/tools` read the same
+file (`forms_rule.js`). Student-visible files (Drive answer sheets, posted Classroom text) still have to be re-issued by hand.
