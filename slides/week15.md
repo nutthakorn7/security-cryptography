@@ -5,201 +5,143 @@ paginate: true
 header: "Cryptography and Network Security · Week 15"
 ---
 
-<!-- Delivery: 100-minute lab-focused session. 10 quiz + 10 brief + 70 practice + 10 evidence/feedback. Full slides and questions are retained as preparation/extension material; individual slide minute estimates are pacing aids, not an additional lecture block. Everyone completes shared60 + assigned Conventional40 or AIR20/10/10. Viva is formative, no extra points. See the worksheet core/extension plan. -->
+<!-- Delivery: 100-minute lab session. 10 min Week 14 retrieval + 10 min brief + 60 min practice + 15 min feedback + 5 min evidence capture. Short talk, then the lab (lamport.py and exploit.py inside Docker). Everyone completes the common 60 plus the assigned Conventional 40 or AIR-Sec 20/10/10. The viva is formative, no extra points. -->
 
 # Week 15
-## Post-Quantum Cryptography (Lamport one-time signatures, key reuse)
+## Post-quantum cryptography — a one-time signature used twice
 Cryptography and Network Security · Nutthakorn Chalaemwongwan
 
-<!-- Hook: ask "if a large-scale quantum computer existed today, is a TLS session you sent an hour ago already broken?" Answer: only if someone recorded it — "harvest now, decrypt later." Today: why quantum breaks RSA/ECC but not AES/SHA, and a signature scheme so simple that its ENTIRE private key falls out of the math the moment you misuse it once. ~2 min. -->
+<!-- Hook: ask "if a large quantum computer existed today, is a TLS session you sent an hour ago already broken?" Answer: only if someone recorded it (harvest now, decrypt later). Bridge from Week 14: authentication proved who you talk to; a signature proves what was said and that it was not changed, and the maths behind today's signatures has a quantum shelf life. Today: why quantum breaks RSA/ECC but not AES/SHA, and a signature so simple that its whole private key falls out the moment you misuse it once. About 2 minutes. -->
 
 ---
 
 ## Today
 
-- The quantum threat: **Shor vs. Grover**
-- **Harvest now, decrypt later**
-- The four **PQC families** + NIST's **ML-KEM / ML-DSA**
-- Hash-based signatures: **Lamport OTS** — and its one-time-only rule
-- 🔓 Signature game: **Forge the Admin Signature** (key reuse → private-key recovery)
+- A **10-minute quiz** on Week 14 to start (one question at a time)
+- The quantum threat: **Shor** vs **Grover**, and **harvest now, decrypt later**
+- The four **PQC families**, and what ML-KEM and ML-DSA are for
+- **Lamport** one-time signatures — and the one-time-only rule
+- 🔓 **Lab:** sign twice, take the private key, forge the admin signature, then watch the fixed server refuse
 
-<!-- Roadmap, 1-2 min. Flag the lab: two identical Flask servers running the SAME Lamport signature scheme — one reuses its keypair, one doesn't. Students recover a full private key from two signatures against the vulnerable one, forge an admin signature, then prove the fix actually holds against the other. -->
-
----
-
-## Recap — Week 14
-
-- Authentication proved **who** you're talking to (passwords, MFA, sessions)
-- A **signature** proves **what was said** and that it wasn't tampered with — integrity + non-repudiation
-- This week: the primitive *behind* signatures is itself under threat — from quantum computers
-
-<!-- Bridge from W14. Ask: "week 14 verified identity at login — what verifies a message wasn't altered afterward?" -> digital signatures. Pivot: even signature schemes we trust today (RSA, ECDSA) have a quantum shelf life. That's the whole week. ~2 min. -->
+<!-- Roadmap. Say the spine line out loud: "textbook-secure primitive, real-system failure". Two identical servers run the same Lamport scheme: one reuses its key, one does not. Most of the class is the lab, not these slides. The scored Week 15 quiz opens in Week 16. -->
 
 ---
 
 ## Why quantum breaks (some) crypto
 
-- **Shor's algorithm** — solves factoring / discrete log efficiently → breaks **RSA and ECC outright**
-- **Grover's algorithm** — quadratic speedup on search → only **halves** symmetric/hash security
-- Grover's mitigation: **double the key/output length** (AES-256 stays ~AES-128-strength — still fine)
+- **Shor's algorithm** solves factoring and discrete log → breaks **RSA and elliptic curves** outright
+- **Grover's algorithm** is a square-root speed-up for search → only **halves** symmetric and hash security
+- Cheap fix for Grover: **double the key or output length** (AES-256 stays strong)
 
-<!-- The distinction students must nail. Ask: "if Grover roughly halves AES-256's effective security, is AES-256 still safe post-quantum?" (yes). Contrast RSA/ECC: no length increase saves them — Shor is a real break, not a dent. ~6 min. -->
+<!-- Worksheet Q1. The distinction students must get: Shor is a real break (no key length saves RSA/ECC), Grover is a dent. Ask: "if Grover roughly halves AES-256's strength, is AES-256 still safe after quantum?" (yes). About 5 minutes. -->
 
 ---
 
 ## Harvest now, decrypt later
 
-- Adversary **records ciphertext today**, decrypts it once a quantum computer exists
-- Makes PQC migration urgent **now** — even though no large quantum computer exists yet
-- Real today for anything with a **long confidentiality lifetime**: health records, state secrets, long-lived credentials
+- An attacker **records ciphertext today** and decrypts it once a quantum computer exists
+- That makes migration urgent **now**, even though no large quantum computer exists yet
+- Real today for data with a **long secrecy lifetime**: health records, state secrets, long-lived credentials
 
-<!-- The "why now" slide. Ask: "if your data must stay secret for 20+ years, and a quantum computer might exist in 15, when did you need to have already migrated?" (now). Companion hndl/ lab makes this concrete for key exchange; this week is the signature half of PQC. ~5 min. -->
+<!-- Worksheet Q2. The "why now" slide. Ask: "if your data must stay secret for 20 years and a quantum computer might exist in 15, when did you need to have migrated?" (already). The optional hndl/ companion lab makes this concrete for key exchange; this week's required lab is the signature half of PQC. About 4 minutes. -->
 
 ---
 
 ## The four PQC families
 
-- **Lattice-based** — NIST's **ML-KEM** (Kyber, a KEM) and **ML-DSA** (Dilithium, a signature)
-- **Hash-based** — Lamport, SPHINCS+, XMSS ← **this week**
-- **Code-based** — Classic McEliece (a code-based KEM candidate)
-- **Multivariate** — UOV (a signature research candidate, not a NIST FIPS standard); historical Rainbow was broken
-- NIST standards (2024): **FIPS 203** (ML-KEM) · **FIPS 204** (ML-DSA) · **FIPS 205** (SLH-DSA / SPHINCS+)
+- **Lattice-based** — **ML-KEM** (Kyber, a KEM) and **ML-DSA** (Dilithium, a signature)
+- **Hash-based** — Lamport, XMSS, SPHINCS+ ← **this week**
+- **Code-based** — Classic McEliece
+- **Multivariate** — UOV (a research candidate, not a NIST standard)
+- NIST 2024: **FIPS 203** (ML-KEM) · **FIPS 204** (ML-DSA) · **FIPS 205** (SLH-DSA / SPHINCS+)
 
-<!-- Name the four families; don't over-teach lattice math here. Distinguish KEM vs signature: ML-KEM secures key exchange (companion hndl/ lab), ML-DSA/SLH-DSA sign. Today builds intuition for hash-based signing via the simplest possible construction: Lamport. ~5 min. -->
+<!-- Worksheet Q4 and the optional Q5. Name the families; do not teach lattice maths. KEM vs signature: a KEM agrees a shared key (TLS handshake), a signature vouches for data or a certificate. Hash-based signatures rest only on a hash, which Grover only dents; Lamport (1979) is the ancestor of SPHINCS+. About 4 minutes. -->
 
 ---
 
-## Lamport one-time signatures — the construction
+## Lamport one-time signatures
 
-- Private key: **two random preimages per message bit** — `sk[i] = (a_i, b_i)`
-- Public key: **hashes of both** — `pk[i] = (H(a_i), H(b_i))`
-- To sign bit *i*: reveal `a_i` if that bit is 0, `b_i` if it's 1
-- This toy relies on hash preimage resistance **and one-time key use**; full hash-based schemes also specify the hash properties and key management they need
+- Private key: **two secret tokens per message bit**
+- Public key: the **hash** of every token
+- To sign bit *i*, reveal the token for that bit's value (0 or 1)
+- Anyone can check: **hash the token, compare with the public key**
+- The toy relies on hash preimage resistance **and** on using the key **once**
 
-<!-- Build this on the board for a tiny 4-bit example. Stress: textbook-secure, resting purely on a hash function, which Grover only dents. This is exactly why hash-based signatures are a PQC family. Lamport (1979) is the ancestor of SPHINCS+. ~7 min. -->
+<!-- Worksheet Step 1 (read). Build a 4-bit example on the board. In the lab a message is 32 bits written as 8 hex digits, signed directly with no pre-hash so every bit is controllable. Say "token" in class; the code and the key call it a preimage. About 5 minutes. -->
 
 ---
 
 ## What one signature reveals
 
-- Signing message `M` reveals **exactly one preimage per bit** — the one matching `M`'s bit value
-- The *other* preimage for each bit position stays secret
-- Lab check (bit 0, message `0x00000000`): `SHA256(sig[0]) == pk[0][0]`, but `SHA256(sig[0]) != pk[0][1]`
-- One signature ⇒ attacker learns **half** the private key — never enough to forge a *different* message
+- One signature reveals **exactly one token per bit** — the one matching the message
+- The **other** token for each bit stays secret
+- Lab check (bit 0, message `00000000`): the hash matches `pk[0][0]` but not `pk[0][1]`
+- One signature ⇒ **half** the key is known, which is not enough to forge a different message
 
-<!-- This is Worksheet Task 1 — do it live: POST /sign {"message_hex":"00000000"}, show sig[0] hashes to pk[0][0], not pk[0][1]. Ask: "is this scheme fine if you only EVER sign one message with this key?" (yes — hence "one-time"). ~6 min. -->
+<!-- Worksheet Steps 2 and 3, done live: docker compose exec vulnerable python lamport.py sign 00000000. Ask: "is this fine if the key only ever signs one message?" (yes, hence one-time). About 5 minutes. -->
 
 ---
 
 ## The break: sign twice and the key falls out
 
-- Sign `M = 0x00000000` **and** its bitwise complement `~M = 0xFFFFFFFF`
-- They differ in **every bit** → together the two signatures reveal **both preimages, every position**
-- That *is* the complete private key — no brute force, just algebra
-- **Key-state failure:** the one-time *signing* key is reused; CWE-323 is an encryption analogy, not an exact classification
+- Sign `00000000` **and** its exact opposite `ffffffff`
+- They differ in **every** bit → together they reveal **both** tokens for **all 32** positions
+- That is the **whole private key**: no brute force
+- Then build a signature on the admin message `0xA5A5C3C3`, which the server refused to sign
 
-<!-- The "aha" slide — the whole week's lesson in one line. Ask: "why the complement specifically, not any second message?" (guarantees every bit differs, so nothing is wasted — one signature per bit-value learned). This is exactly Worksheet Task 2. ~6 min. -->
-
-![Two zones, top to bottom. Top: the server holds one Lamport keypair — for a representative bit position, two locked secret preimages are each hashed into a published public-key pair, repeated identically for all thirty-two bit positions; the sign endpoint refuses only the one reserved target message directly. Middle: the same reused key answers two sign requests, message zero and its bitwise complement all-ones, revealing every zero-preimage and every one-preimage with nothing refused. Bottom: the attacker, now holding the complete private key, picks the matching preimage for each bit of the target message it was never allowed to sign, assembles a forged signature, and submits it to the admin endpoint, which accepts it because verification only checks the signature against the published public key, never who asked for it.](../labs/week15-pqc/img/lamport-key-reuse.svg)
+![Two zones, top to bottom. Top: the server holds one Lamport keypair; for each of the thirty-two bit positions two secret tokens are hashed into a published pair. Middle: the same reused key answers two sign requests, message zero and its bitwise complement all-ones, revealing every zero token and every one token. Bottom: the attacker, holding the complete private key, picks the matching token for each bit of the admin message it was never allowed to sign, assembles a forged signature, and submits it to the admin endpoint, which accepts it because verification only checks the signature against the public key.](img/lamport-key-reuse.svg)
 
 ```sim
 lamport-reuse
 ```
 
-<!-- Run this live right here, before the worked-example code walkthrough. Everything computed on the page is real: genuinely random 32-byte preimages, a real SHA-256 implemented in the sim's own JS (byte-identical to hashlib.sha256 — same verification method as the mac-extend sim from Week 3), and the exact sign/verify/one-time-guard logic from vulnerable_app.py and fixed_app.py. Nothing is scripted to a preset outcome. Preset 1's target is literally ADMIN_MESSAGE (0xA5A5C3C3) from the lab; presets 2 and 3 are the identical bug wearing a different label, which is the point — click "Run the whole attack" for the fast pass, or step through ①②③ to mirror Tasks 1-3 bit by bit. The bit-recovery grid is Verifier A's key only; Verifier B's card is a genuinely separate computation (an independent keypair, a refused second /sign), not a narrated assumption. ~5 min. -->
+<!-- Worksheet Steps 4, 5 and 6. The aha slide. Run the sim live here (it computes real SHA-256 and the same sign, verify and one-time logic as the two servers); then do the steps with lamport.py: sign ffffffff, both 0, forge. Ask: "why the opposite message, not any second message?" (every bit differs, so nothing is wasted). The server refuses to sign the admin message directly on both apps; the forgery is assembled offline. About 8 minutes. -->
 
 ---
 
-## Worked example: forging the admin signature
+## The fix: refuse the second signature
 
-```python
-# vulnerable_app.py — ONE Lamport keypair reused on every /sign call
-sig0 = sign(0x00000000)   # reveals the "bit=0" preimage for every position
-sig1 = sign(0xFFFFFFFF)   # reveals the "bit=1" preimage for every position
-# assemble ANY message OFFLINE now -- including 0xA5A5C3C3, the admin message
-forged = [sig0[i] if bit(admin_msg, i) == 0 else sig1[i] for i in range(32)]
-# POST /admin {forged}  ->  {"flag": FLAG_PQC}
-```
+- `fixed_app.py`: the key signs **once**; a second `/sign` → `403`
+- **No new maths**: only a usage rule (`_signed_message` remembers the first message)
+- `verify()` and `/admin` are unchanged; signature checking was never the flaw
+- The server refuses even a repeat of the **same** message; a real signer returns the stored signature for a retry, or uses a fresh key
 
-<!-- Walk exploit.py's recover_and_forge logic line by line. Point out /sign refuses the admin message directly (403) on BOTH apps -- that shared baseline is what makes this a genuine forgery and not a one-line curl shortcut. The forged signature is built entirely offline from the two collected signatures. ~6 min. -->
+<!-- Worksheet Steps 7 to 10. Run exploit.py ONCE: it repeats the vulnerable attack and then runs the identical attack on the fixed server (second sign refused, forgery rejected). Step 8: grep -n "_signed_message" fixed_app.py shows the guard; the same grep on vulnerable_app.py prints nothing. Ask: "why refuse even a duplicate of the same message?" (a trivial rule is easy to enforce correctly; an identical deterministic repeat reveals no new token, but the toy keeps it simple). A second run of exploit.py prints FAIL on the fixed server because its one signature is spent: restart the lab. About 6 minutes. -->
 
 ---
 
-## The fix — operational, not mathematical
+## Beyond "one signature ever"
 
-- `fixed_app.py`: the key signs **at most once**; any 2nd `/sign` call → `403`
-- No new math, no bigger keys — just **refuse reuse**
-- This demo's conservative rule is **one signing operation per key**; it refuses a 2nd request even for the same message
-- Re-signing the identical bits deterministically would reveal no new preimages, but a signer should return a stored signature for a retry or use a fresh key
-- `verify()` and `/admin` are unchanged; only `sign_endpoint` adds a one-use guard. Signature verification was never the flaw
+- **Stateful** (XMSS, LMS): a tree of one-time keys, and the signer **must track** which leaf was used
+- **Stateless** (SPHINCS+ / SLH-DSA, FIPS 205): a huge tree with pseudorandom key choice, so reuse is negligible
+- **Crypto-agility**: be able to swap algorithms without a rewrite (for example hybrid classical + ML-KEM)
 
-<!-- The punchline of the week. Ask: "why refuse even a duplicate of the exact same message, not just a different one?" (the rule must be trivial to enforce correctly -- no edge cases). Ties to Worksheet Q6 / Task 5b: "scheme being secure" vs. "scheme being used securely." ~6 min. -->
+<!-- Worksheet Step 10 and the optional Q6, Q7. Stateful schemes make state loss an operational risk: a VM snapshot rollback replays old state and reuses a key. Ask: "if ECC were broken tomorrow, how long would it take your system to switch algorithms?" That is your crypto-agility score. About 4 minutes. -->
 
 ---
 
-## Scaling past "one signature ever"
+## 🔓 Lab today — what to do
 
-- **Stateful** (XMSS, LMS) — a tree of one-time keys; must **track which leaf was used** — lose the state, reuse a key, break everything
-- **Stateless** (SPHINCS+ / SLH-DSA, FIPS 205) — huge tree + **pseudorandom key selection**; reuse becomes cryptographically negligible, no state to lose
-- Real deployed hash-based schemes are Lamport's exact discipline, engineered around
+| Server | Port | Second signature? |
+|---|---|---|
+| `vulnerable` | `:8100` | **allowed** (the bug) |
+| `fixed` | `:8101` | **refused** (`403`) |
 
-<!-- Answers Worksheet Task 5c -- how can SPHINCS+ be stateless yet dodge the reuse trap? Emphasize: statefulness is itself an operational risk (e.g. a VM snapshot rollback replaying old state = catastrophic key reuse). ~5 min. -->
+- **Everyone (common 60):** A1 one signature, half the key · A2 sign the opposite, recover the key, forge the admin signature · A3 the fixed server refuses, and how far the fix goes
+- **Your form (40):** student ID ends **odd** → AIR-Sec · **even** → Conventional
+- **Answer sheet:** Classroom → Week 15 → open the file for your form, type in the grey boxes, then File → Download → PDF
+- Hand in `Wk15_<StudentID>.pdf` at `learn.zcr.ai/submit` with the code from your KMITL email, by **Sun 14 Feb, 23:59**
+- Do the lab with the lab started **once**, in order. Type the `exploit.py` step only once. No Python needed on your computer: everything runs in Docker
 
----
-
-## 🔓 Signature game — Forge the Admin Signature
-
-- Two identical Flask targets, same Lamport scheme: `:8100` reuses its key, `:8101` allows only one signature
-- `POST /sign` two messages → recover the private key → forge `0xA5A5C3C3` → `POST /admin` → flag
-- Win condition: flag captured on `:8100` **and** the identical attack correctly *defeated* on `:8101`
-
-```bash
-docker compose up -d
-python exploit.py   # needs Python 3 + `requests` on the host
-                    # PASS on :8100 (flag captured), PASS on :8101 (attack defeated)
-```
-
-<!-- Explain before lab -- this isn't just "get the flag." The win condition requires proving the fix actually holds, mirroring a real bug-bounty proof-of-fix submission. ~3 min. -->
+<!-- Exact commands are in the worksheet and the answer sheet: copy and run. Start Docker early and wait for "Running on" 8100 and 8101 in the logs (Prep step 6). The commands are docker compose exec vulnerable python lamport.py ... on both Windows and Mac. If port 8100 is busy on a student's computer, Docker says "port is already allocated": close the other program. The optional hndl/ companion lab adds no points. -->
 
 ---
 
-## Crypto-agility — the real engineering lesson
+## Takeaway
 
-- Algorithms keep changing (MD5→SHA-2, RSA→PQC) — systems must **swap primitives without a rewrite**
-- Practical pattern: **hybrid classical + ML-KEM** channels (see companion `hndl/` lab) — safe even if one side is later broken
-- The Lamport lesson generalizes: **correct usage discipline** matters as much as the underlying math
+- **Shor** breaks RSA and elliptic curves; **Grover** only dents AES and SHA
+- A signature **and its opposite** hand over the whole toy private key
+- The fix is a **usage rule**, not a bigger algorithm: a secure scheme can still be used insecurely
+- Next week: the **capstone studio**, putting the term's primitives together
 
-<!-- Zoom out from the exploit to the industry takeaway. Ask: "if ECC were broken tomorrow, how long would it take your system to switch algorithms?" That answer IS your crypto-agility score. ~4 min. -->
-
----
-
-## Lab today
-
-**Shared practical/analysis core: 60 points for everyone.** Complete only your assigned **Conventional written 40** or **AIR-Sec Audit 20 + EiPE 10 + Prompt 10**. Each version totals 100; viva is formative. Full questions remain in the worksheet, with extensions outside the 100-minute class.
-
-
-> 📋 **Worksheet 15** — `labs/week15-pqc/worksheet.md` (Part 2 written + Part 3 hands-on) · kickoff: `docker compose up -d`
-
-- Recover the Lamport private key from two signatures, forge the admin signature, capture the flag
-- Confirm one-time enforcement defeats the identical attack on `:8101`
-- **Assigned AIR-Sec: Audit the AI** (a hashing-first Lamport signer that *still* reuses its key) **+ EiPE / Prompt Problem**
-
-<!-- The graded output. Point specifically at the Audit-the-AI snippet -- remind them hashing the message first does NOT fix key reuse, it only changes which bits leak, not whether reuse leaks. Point to exploit.py as the reference implementation. ~2 min. -->
-
----
-
-## Key takeaways
-
-- Shor breaks RSA/ECC outright; Grover only dents AES/SHA — mitigated by longer keys
-- Hash-based signatures need correct hash properties **and** sound one-time-key management
-- Signing a message and its **bitwise complement** with this toy key reveals the entire private key; arbitrary second messages may reveal only some additional preimages
-- The fix is a **usage rule**, not a bigger algorithm — "textbook-secure primitive, real-system failure"
-
-<!-- Recap, 4 lines, tie explicitly back to the course spine. Ask students to name the key-state error and explain why CWE-323 (encryption) is only analogous here. ~2 min. -->
-
----
-
-# Questions?
-Next week: Capstone studio — composing the term into CryptoVault
-
-<!-- Cliffhanger: Week 16 is the capstone studio where every primitive learned this term (KDF, AEAD, key exchange, signatures, TLS) gets composed into one system (CryptoVault) they design and build themselves -- the project itself kicked off back in Week 4. Remind them: crypto-agility from today's slide is exactly what the capstone will test. ~2 min. -->
+<!-- Land the spine: "textbook-secure primitive, real-system failure". Cold-call: "name the key-state mistake and say why refusing the second signature fixes it." CWE-323 (reuse in encryption) is only an analogy here. Remind them: Docker and laptop ready for next week too. -->

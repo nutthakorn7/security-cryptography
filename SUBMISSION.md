@@ -499,22 +499,22 @@ docker compose -f docker-compose.fixed.yml down
 
 [อ่านใบงาน W14](labs/week14-authentication/worksheet.md) · [README W14](labs/week14-authentication/README.md)
 
-**รันจาก repo root:**
+**รันจาก repo root:** ต้องมี Docker เท่านั้น ไม่ต้องเขียนโค้ด ทำต่อเนื่องกันได้โดยไม่ต้อง `down` คั่นกลาง (สองโหมดอยู่ใน project เดียวกัน ใช้ `down` ครั้งเดียวตอนจบ)
 
 ```bash
 cd labs/week14-authentication
-docker compose -f docker-compose.vulnerable.yml up --build --abort-on-container-exit
-# client จบแล้ว stack หยุด เก็บ log ก่อน down
-docker compose -f docker-compose.vulnerable.yml down
-
-docker compose -f docker-compose.fixed.yml up --build --abort-on-container-exit
-# เก็บผล LOGIN OK และ nonce/proof ก่อนตรวจ log
+docker compose -f docker-compose.vulnerable.yml build
+docker compose -f docker-compose.vulnerable.yml up -d --build
+docker compose -f docker-compose.vulnerable.yml logs server
+docker compose -f docker-compose.vulnerable.yml logs client
+docker compose -f docker-compose.fixed.yml up -d --build
 docker compose -f docker-compose.fixed.yml logs server
 docker compose -f docker-compose.fixed.yml logs client
+docker compose -f docker-compose.fixed.yml run --rm --entrypoint grep client -n "USERNAME," client.py
 docker compose -f docker-compose.fixed.yml down
 ```
 
-**ตรวจผลและส่งใน PDF:** vulnerable มี `SERVER SAW PASSWORD:` และ `LOGIN OK`; fixed มี `SERVER SAW: nonce=... proof=...` ใน server log และ `LOGIN OK` ใน client log พร้อมระบุว่าไม่พบ password และ `SERVER SAW PASSWORD` ใน server log ของรอบ fixed คำสั่งใช้ได้ทั้ง Mac Terminal และ Windows PowerShell อธิบายว่า password อยู่ฝั่งใด ข้อมูลใดเดินทางผ่าน network และใครเห็นอะไร
+**ตรวจผลและส่งใน PDF:** vulnerable มี `SERVER SAW PASSWORD:` และ `LOGIN OK`; fixed มี `SERVER SAW: nonce=... proof=...` ใน server log และ `LOGIN OK` ใน client log พร้อมระบุว่าไม่พบ password และ `SERVER SAW PASSWORD` ใน server log ของรอบ fixed และคัดลอกสองบรรทัดใน `client.py` ที่ต่างกัน (บรรทัดที่ส่ง password กับบรรทัดที่ส่ง nonce/proof) คำสั่งใช้ได้ทั้ง Mac Terminal และ Windows PowerShell อธิบายว่า password อยู่ฝั่งใด ข้อมูลใดเดินทางผ่าน network และใครเห็นอะไร
 
 โหมด fixed นี้แสดงเพียงว่า **ไม่ได้ส่ง password ตรง ๆ** ไม่ใช่ PAKE สมบูรณ์ และการไม่เห็น password ตัวอักษรใน log ไม่ได้พิสูจน์ว่าผู้ถือ transcript เดารหัสผ่านแบบ offline ไม่ได้ หลีกเลี่ยงการสรุปเกินขอบเขตของ demo บริการใช้ port `8080` ภายใน Docker ไม่มี host port
 
@@ -524,12 +524,15 @@ docker compose -f docker-compose.fixed.yml down
 
 [อ่านใบงาน W15](labs/week15-pqc/worksheet.md) · [README W15](labs/week15-pqc/README.md)
 
-**รันจาก repo root:**
+**รันจาก repo root:** ต้องมี Docker เท่านั้น ไม่ต้องใช้ Python หรือ curl บนเครื่อง คำสั่งทั้งหมดอยู่ในใบตอบของแต่ละฟอร์ม:
 
 ```bash
 cd labs/week15-pqc
 docker compose up -d
-python exploit.py
+docker compose exec vulnerable python lamport.py sign 00000000
+docker compose exec vulnerable python lamport.py both 0
+docker compose exec vulnerable python lamport.py forge
+docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py
 # เก็บผลและทำใบงานก่อนหยุด
 docker compose down
 ```

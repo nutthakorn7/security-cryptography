@@ -97,11 +97,12 @@ week teaches.
 ## Run it
 ```bash
 cd labs/week15-pqc
-docker compose up -d          # vulnerable_app.py on :8100, fixed_app.py on :8101
-python -m pip install requests # once, in your local Python environment
-python exploit.py             # PASS on :8100 (flag), PASS on :8101 (correctly defeated); exit 0
+docker compose up -d                                  # vulnerable_app.py on :8100, fixed_app.py on :8101
+docker compose exec vulnerable python lamport.py sign 00000000   # step-by-step helper: sign, both, forge
+docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py   # PASS on :8100 (flag), PASS on :8101 (correctly defeated); exit 0
+docker compose down
 ```
-On Windows, use `py` instead of `python`; on Mac, use `python3`. The downloaded student packet has no `instructor/seed_flags.py`: the default flag is a shared lab placeholder, and your own commands, observations and explanation provide attributable evidence. `LAMPORT_SEED` is only for controlled instructor reproduction. Reusing the same deterministic seed across restarts would reuse the Lamport key while resetting the one-use state, so it must not be used as a production or student security control.
+These commands run **inside the `vulnerable` container**, so you need no Python on your own computer and no `curl`. `lamport.py` (standard library only) has three subcommands: `sign <hex>` signs a message and checks bit 0, `both <bit>` shows both secret tokens of one key position after you signed `00000000` and `ffffffff`, and `forge` builds the admin signature and submits it. Type the `exploit.py` line only once per lab start: the fixed server can sign only once. The downloaded student packet has no `instructor/seed_flags.py`: the default flag is a shared lab placeholder, and your own commands, observations and explanation are the evidence.
 
 **Verified:** `docker compose up -d` followed by `python exploit.py` was run against live
 containers on this machine. Both PASS checks printed and the script exited `0`:
