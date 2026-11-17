@@ -19,7 +19,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
+| 0–10 | Week 11 retrieval quiz/review; recall previously taught digital signatures. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
 | 20–35 | A1: run the vulnerable Alice, record `TLS handshake succeeded WITHOUT verifying` and Eve's `MITM INTERCEPTED` line. |
 | 35–50 | A2: run the fixed Alice (`CERT VERIFICATION FAILED`, `intercepted NOTHING`); A3 step 7: read the correct lines in `alice.py`. |
