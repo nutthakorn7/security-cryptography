@@ -35,7 +35,7 @@ Cryptography and Network Security · Nutthakorn Chalaemwongwan
 | **Key** | The secret value that controls encryption and decryption |
 | **Kerckhoffs' principle** | The algorithm is public; **only the key is secret** |
 
-<!-- Thai glosses if useful: plaintext = ข้อความต้นฉบับ, ciphertext = ข้อความที่เข้ารหัสแล้ว, key = กุญแจ. Kerckhoffs answers Bingo #16 ("our algorithm is proprietary, so attackers have nothing to analyse"). -->
+<!-- Plain-word glosses if useful: plaintext = the readable message, ciphertext = the scrambled message, key = the secret that locks and unlocks it. Kerckhoffs answers Bingo #16 ("our algorithm is proprietary, so attackers have nothing to analyse"). -->
 
 ---
 
