@@ -19,7 +19,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 
 | Minutes | Activity |
 |---|---|
-| 0–10 | Retrieval quiz/review (Week 1: baseline diagnostic); recall previously taught material. |
+| 0–10 | Retrieval quiz on Week 2 (hash functions); recall previously taught material. |
 | 10–20 | Brief the mechanism, safety scope and expected evidence. |
 | 20–35 | A1: obtain an ordinary cookie, decode it, and see a hand-changed cookie refused. |
 | 35–60 | A2: run the supplied `exploit.py` inside the container, record the flag, and say in plain words what it started from. |
