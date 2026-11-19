@@ -52,7 +52,7 @@ approach as `software-security` — no full VM required.
 | 15 | Post-Quantum Cryptography | 🔑 "Forge the Admin Signature" |
 | 16 | Capstone studio (CryptoVault WIP) | 🏗️ Build & peer review |
 | **17** | **🔁 Reflection & Review (pre-final)** | 🏆 "Jeopardy: Champions Edition" |
-| **18–19** | **📝 Final** (Wk18 written · Wk19 team practical; 100 minutes each) | — |
+| **18–19** | **📝 Final** (Wk18 final written · Wk19 midterm make-up; 100 minutes each) | — |
 | **20** | **Feedback, reflection and project clarification** | Return results and discuss controls |
 
 Full details and the current 20-week schedule: [course-plan-19weeks.md](course-plan-19weeks.md).

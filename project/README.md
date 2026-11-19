@@ -69,7 +69,7 @@ the constraint is on the cryptographic composition, not the framework.
    Submit the final **video no longer than 5 minutes before Week 19**, with the build and report
    (put the video link, unlisted YouTube or Google Drive viewable by anyone with the link, in the report PDF);
    it is graded asynchronously using the existing project rubric. Any remaining clarification
-   uses **Week 20**. The **Week 19 100 minute session is reserved for the final practical** and
+   uses **Week 20**. The **Week 19 100 minute session is reserved for the midterm make-up exam** and
    contains no project Q&A. No particular class headcount is assumed.
 
 ## Suggested timeline

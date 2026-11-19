@@ -1,20 +1,12 @@
-# Lesson Plan — Week 19: Final team practical
+# Lesson Plan — Week 19: Make-up exam (midterm W8 + W9)
 
 **02005104 · Cryptography and Network Security · Year 4 · Semester 2 AY2026 · Lecture**
 
 **Contact time:100 minutes.**
 
-Teams of 3 normally, 2 where uneven; 80 task +20 administration minutes. Raw 100 scales to 15 course points. The final written 10 plus practical 15 remains 25. This slot has no project demos or Q&A. Project build/report and ≤5-minute video are submitted before Week 19 and graded separately within project 15%; clarification occurs in Weeks 16/20. Current instructor-held variants and marking, not public `exploit.py` alone, assess understanding. Teams download their issued packet and run the TLS target on their own machines; no instructor-hosted service is needed.
+The former Week 19 final team practical was cancelled (owner decision, 2026-11-18); its 15 course points moved to the W18 final written exam, which is now 25 points. This slot is a make-up sitting for the midterm: the W8 written exam (8 course points) and the W9 practical (12 course points), covering Weeks 1 to 6 only. It adds no new marks, no project demos and no Q&A. Project build/report and ≤5 minute video are graded separately within project 15%; clarification occurs in Weeks 16/20.
 
-## In-class run sheet
-
-| Minutes | Activity |
-|---|---|
-| 0–10 | Teams/identity, rules, issued local packet and freshness checks. Dependencies and Docker images are prepared before the sitting. |
-| 10–35 | Station 1: signature malleability and transaction-identity control (25 task minutes). |
-| 35–60 | Station 2: TLS client-context validation and positive/negative tests (25). |
-| 60–90 | Station 3: Lamport disclosure/forgery and single-use control (30). |
-| 90–100 | Upload one team evidence PDF with code/commands, test output and reasoning; collect the sitting. |
+Eligibility, the exact date and the split of the 100 minutes between the written and practical parts are set by the instructor and announced in Classroom. The make-up uses new instructor-held variants and keys, not the papers or per-student variants of the original sittings.
 
 ## Preparation, assessment and reflection
 

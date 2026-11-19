@@ -42,8 +42,8 @@ content at the next teaching session: W1 bank opens W2, W6 opens W7, W15 opens W
 | 15 | Fresh Lamport key; complementary signatures; forge; single-use control | Signature derivation and control rejection | 100 |
 | 16 | CryptoVault studio; every team demonstrates its sharing flow at peer review; scheduled clarification | WIP evidence, feedback and action list | 100 |
 | 17 | Review quiz; selected clues; bounded final rehearsal | Review and repair notes | 100 |
-| 18 | Written final: 90 writing + 10 administration | Individual script | 100 |
-| 19 | Team practical: 80 tasks + 20 administration | Team solution/evidence; no project Q&A | 100 |
+| 18 | Written final (25 course points): 90 writing + 10 administration | Individual script | 100 |
+| 19 | Make-up exam for midterm W8 + W9; no new marks, no project Q&A | Individual script / evidence PDF | 100 |
 | 20 | Returned work, feedback, project clarification and closure | Reflection/action list; no new grade category | 100 |
 
 LAB weeks 2/3/4/6/15 and HYBRID Week 11 may produce real flags. Weeks 5/12/13/14 produce
@@ -116,7 +116,7 @@ there is no full presentation to the whole class. Existing practice practical ch
 check understanding before the final assessment and add no marks. Team videos
 are **≤5 minutes**, submitted before Week 19; final report/build/video are graded using the
 project's existing 15%. Remaining clarification happens in Week 20. It never reduces the
-Week 19 timed practical.
+Week 19 make-up sitting.
 
 ### Week 20 — feedback and closure
 

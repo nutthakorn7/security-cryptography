@@ -41,7 +41,7 @@ institutionally confirmed mapping.
 |---|---:|---|---|
 | 12 worksheets, Weeks 1–6/10–15 | 30% | Individual; 2.5 course points each | CLO1–6 |
 | Midterm W8 written / W9 practical | 8% / 12% | Individual | CLO1–4,6 |
-| Final W18 written / W19 practical | 10% / 15% | Individual / team | CLO1–6 |
+| Final W18 written | 25% | Individual | CLO1–6 |
 | CryptoVault | 15% | Teams 3 normally,2 where needed | CLO1,3–6 |
 | Quizzes / participation | 10% | Individual and class participation | CLO1,2,4–6 |
 | **Total** | **100%** | | |
@@ -91,8 +91,8 @@ extension questions remain available for after-class work. Instructor plans name
 | 15 | PQC / one-time signatures | A forged toy Lamport signature and rejected second use of a fixed key |
 | 16 | CryptoVault studio | Build/self-audit feedback and action list |
 | 17 | Pre-final review | Quiz, selected mock and repair notes |
-| 18 | Final written | 20 MCQs in 90 writing minutes |
-| 19 | Final team practical | 80 minute team station evidence |
+| 18 | Final written | 20 MCQs in 90 writing minutes (25 course points) |
+| 19 | Make-up exam (midterm W8 + W9) | Covers W8 written and W9 practical only; no new marks |
 | 20 | Feedback / clarification / closure | Returned-work feedback and reflection |
 
 
