@@ -77,7 +77,7 @@ the assessed work. See [syllabus](syllabus.md) for the full 100% and ability mat
 |---|---|
 | 0–30 | Cumulative 25-point review quiz |
 | 30–40 | Four selected Jeopardy clues from taught material |
-| 40–80 | Two bounded mock checkpoints from the W19 signature/TLS/Lamport topics; use locally prepared targets |
+| 40–80 | Two bounded mock checkpoints from the Week 11, 12 and 15 labs (signature malleability, TLS validation, Lamport one-time signatures); use locally prepared targets |
 | 80–95 | Explain errors and verify a correction against the private exam evidence rules at a general level |
 | 95–100 | Save repair plan and confirm W18/W19 logistics |
 
