@@ -11,8 +11,8 @@ this repo mirrors `software-security`'s review-week structure.
    Wk2 hash, Wk3 MACs, Wk4 AES modes, Wk5 key exchange, Wk6 AEAD.
 2. **In class (100 min)** — cumulative review quiz (`../../quizzes/weekly/week17-review-quiz.md`)
    → **Security Jeopardy: Champions Edition** → **mock final CTF/practical** → debrief.
-3. **Prepare** — the **final is Weeks 18–19**: Wk18 written (cumulative, emphasis Wk10–16),
-   Wk19 team practical; submit the project video (at most 5 minutes), report and code before W19. Project clarification is in W16/W20.
+3. **Prepare** — the **final is the Week 18 written exam** (25 points; cumulative, emphasis Wk10–16).
+   Week 19 is only a make-up sitting for the midterm (W8 + W9), not a new assessment. Submit the project video (at most 5 minutes), report and code before W19. Project clarification is in W16/W20.
 
 **100-minute plan:** cumulative quiz 30 + four selected Jeopardy clues 10 + two bounded mock
 stations 40 (about 18 minutes each plus transition) + explanation/correction 15 + capture/revision actions 5. The complete bank below
@@ -59,8 +59,9 @@ table above:
 - **Format:** teams practise two bounded stations within the 40-minute review block. Students
   download the course packet and run the selected Compose targets on their own machines; no
   instructor-hosted service is required. Prepare images before the clock and start each
-  stateful target fresh. The W19 exam has three bounded signature/TLS/Lamport stations within
-  80 task minutes plus 20 minutes for briefing/submission. The broader topic pool below remains
+  stateful target fresh. Good checkpoints are signature malleability (W11), TLS client validation
+  (W12) and Lamport one-time signatures (W15); they also support the applied questions of the Week 18
+  written exam. The broader topic pool below remains
   optional preparation, **ungraded** (participation).
 - **Targets:** reuse this term's built labs — `labs/week10-hybrid-encryption` (audit-the-AI
   nonce-reuse), `labs/week11-signatures-zkp` (ECDSA malleability), `labs/week12-secure-transport`
@@ -79,7 +80,7 @@ The final is **cumulative** (Wk1–16) but **emphasizes Weeks 10–16**, matchin
 exam: cumulative, with emphasis on Weeks 10–16"*). Concretely:
 - Wk18 written exam has 14/20 questions (70%) from Wk10–16 and six (30%) from Wk1–6,
   one callback per week. Wk16 integration appears in applied questions rather than a separate category.
-- Wk19 practical uses bounded signature/TLS/Lamport stations. Earlier topics support reasoning and are assessed in the written paper; there is no extra first-half practical station beyond the 80-minute task plan.
+- There is no practical in the final: the Week 18 written exam is the whole final, and Week 19 is only the midterm make-up. Earlier topics support reasoning and are assessed in the written paper.
 
 ## Covers
 

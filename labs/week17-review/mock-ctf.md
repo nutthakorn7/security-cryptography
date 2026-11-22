@@ -16,11 +16,11 @@
 
 ## In-class selection and optional full bank
 
-The actual W19 assessment has bounded signature, TLS and Lamport stations (80 task minutes +
-20 brief/submission). In this review choose two checkpoints from those topics, with fresh state,
+The final is the Week 18 written exam; there is no practical in W19. In this review choose two
+checkpoints from the signature (W11), TLS (W12) and Lamport (W15) labs, with fresh state,
 and practise explaining controls. Students run the targets from their downloaded packet in local
 Docker; no instructor-hosted target is part of this rehearsal. The full topic bank below is
-retained for optional preparation, not a requirement to finish every target during W17 or W19.
+retained for optional preparation, not a requirement to finish every target during W17.
 
 ## Main round — post-midterm (Weeks 10–15)
 
@@ -35,7 +35,7 @@ retained for optional preparation, not a requirement to finish every target duri
 
 ## Optional callback practice — first-half primitives (Weeks 2–6)
 
-*Preparation choices, not additional W19 stations or marks. Earlier concepts remain relevant to the written exam. Each is a lab you already ran.*
+*Preparation choices, not additional stations or marks. Earlier concepts remain relevant to the written exam. Each is a lab you already ran.*
 
 | # | Challenge | Topic (analogous CWE) | Hint | Self-check |
 |---|-----------|-----------------------|------|-----------|
@@ -63,6 +63,6 @@ repeat labs — full solutions live in each lab directory; no separate spoiler-f
 
 ---
 
-> Review your weak spots, then it's the **Week 18 written exam** (cumulative, emphasis Wk10–16)
-> and the **Week 19 capstone practical**. See [`README.md`](README.md) for how this dry-run maps to
-> the real final.
+> Review your weak spots, then it's the **Week 18 written exam** (cumulative, emphasis Wk10–16;
+> the whole final). Week 19 is only the midterm make-up. See [`README.md`](README.md) for how this
+> dry-run maps to the final.
