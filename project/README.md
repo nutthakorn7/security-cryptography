@@ -76,7 +76,7 @@ the constraint is on the cryptographic composition, not the framework.
 
 | Milestone | Due |
 |---|---|
-| Team formed + design doc (KDF + AEAD-at-rest plan) | Week 4 |
+| Team formed + design doc (KDF + AEAD-at-rest plan) | Week 7 |
 | KDF + AEAD-at-rest working (local vault, no sharing yet) | Week 7 |
 | Sharing flow — key exchange/wrapping + signatures — draft | Week 11 |
 | TLS/transport wired in + self-audit drafted | Week 14 |
@@ -84,7 +84,7 @@ the constraint is on the cryptographic composition, not the framework.
 | Final build, report/self-audit and ≤5 minute demo video; optional crypto-agility note | Before Week 19 |
 | Remaining project clarification and feedback | Week 20 |
 
-The design doc is due early (Wk4) because every later milestone depends on the KDF/AEAD choices
+The design doc is due early (Wk7, with the first KDF/AEAD demonstration; it moved from Wk4 on 2026-11-22) because every later milestone depends on the KDF/AEAD choices
 made then; the sharing flow (key exchange + signatures) is scheduled for Wk11, right after
 signatures/ZKP (Wk11) and building on key exchange (Wk5) and hybrid encryption (Wk10); the
 optional crypto-agility note is scheduled after PQC (Wk15), landing before the final submission.

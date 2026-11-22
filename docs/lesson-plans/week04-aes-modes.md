@@ -10,7 +10,7 @@ See that an encrypted CBC token can be changed without the key and the server do
 
 Students pull the image before class; the script runs inside the container, so no host Python is needed (`docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py`; without the `-e` part it waits about a minute, then prints `FAIL: fixed app never came up`). The worksheet uses no byte offsets or hand XOR.
 
-Project: the CryptoVault team and design-plan milestone is not part of Week 4 (moved out on 2026-11-22; the new week is announced separately). Do not form teams or collect a design plan in this class.
+Project: the CryptoVault team and design-plan milestone is not part of Week 4 (moved out on 2026-11-22; it is now part of Week 7). Do not form teams or collect a design plan in this class.
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
 Students run the supplied helper (`exploit.py`) in worksheet step 5; no manual byte work is asked. Only

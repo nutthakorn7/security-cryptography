@@ -25,9 +25,9 @@ Cryptographic Storage Cheat Sheet · CWE-320 (Key Management Errors) · CWE-330
    has no separate code-fix/GitHub submission.
 
 5. **Project** — start thinking about your term project's trust boundaries now (see
-   `project/README.md`); Week 4 formally kicks the project off (team + design doc), but the
+   `project/README.md`); Week 7 formally kicks the project off (team + design doc), but the
    earlier you can name "what data crosses what boundary, encrypted with what," the better your
-   Week 4 design doc will be.
+   Week 7 design doc will be.
 
 ## Objectives
 

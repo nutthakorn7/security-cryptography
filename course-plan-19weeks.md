@@ -82,7 +82,7 @@ Technical 20 are distributed written 5/5 and practical 0/15. This keeps exam com
 and the approved ability totals consistent.
 
 Use teams of 3, with teams of 2 where needed to fit the class; the actual enrolment is not
-assumed. CryptoVault milestones: W4 design/team, W7 KDF+AEAD, W11 sharing, W14 transport/self-audit,
+assumed. CryptoVault milestones: W7 design/team + KDF+AEAD, W11 sharing, W14 transport/self-audit,
 W16 studio, video/report/code before W19, clarification in W16/W20. The midterm practical, the written
 exams and the W19 make-up are individual. See the project rubric for contribution
 scaling. The existing optional crypto-agility +5 bonus is capped at raw 100; HNDL adds no new
