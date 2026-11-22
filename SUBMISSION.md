@@ -576,17 +576,17 @@ docker compose down
 ## EXAMS
 
 Every exam session fits **100 minutes**. Written exams and the midterm practical are individual;
-the final practical is in teams of 3 (or 2 where needed).
+the W19 make-up sitting is individual too.
 
 | Exam | Covers | Time, weight and hand-in |
 |---|---|---|
 | W8 Midterm written | W1–6 | 90-minute paper + 10-minute administration; 8 course points; paper or instructor-assigned quiz |
 | W9 Midterm practical | W1–6 | 80-minute practical + 20-minute brief/submission; 12 course points; evidence PDF (evidence, payload and mitigation) through the submission platform |
-| W18 Final written | Cumulative, emphasis W10–16 | 90-minute paper + 10-minute administration; 10 course points; paper or instructor-assigned quiz |
-| W19 Team final practical | Cumulative, emphasis W10–16 | 80-minute practical + 20-minute brief/submission; 15 course points; evidence PDF through the submission platform |
+| W18 Final written | Cumulative, emphasis W10–16 | 90-minute paper + 10-minute administration; 25 course points; paper or instructor-assigned quiz |
+| W19 Make-up exam | Midterm W8 + W9 only | Make-up sitting for the midterm written (8 course points) and practical (12 course points); eligibility and format announced by the instructor; adds no new marks |
 
-Midterm totals 20 and final totals 25 course points. Project Q&A is in W16/W20; it does not share
-the W19 practical's 100 minutes.
+Midterm totals 20 and final totals 25 course points (all in the W18 written exam). Project Q&A is in W16/W20; it does not share
+the W19 make-up sitting.
 
 ## TERM PROJECT — CryptoVault
 
@@ -596,7 +596,7 @@ the W19 practical's 100 minutes.
 - Milestones: W4 team/design → W7 KDF+AEAD → W11 sharing → W14 transport/self-audit → W16 studio.
 - Submit the final report/code and a **video of at most 5 minutes before W19**. Put the video link
   (unlisted YouTube, or Google Drive viewable by anyone with the link) in the report PDF. Project clarification
-  takes place in W16/W20; no live project demonstration is added to the W19 exam.
+  takes place in W16/W20; no live project demonstration is added to the W19 make-up sitting.
 - The existing optional crypto-agility bonus is +5 raw points capped at 100. HNDL is optional and
   adds no new mandatory marks. See [project/README.md](project/README.md) for the full rubric.
 - Each member sends their own peer-contribution ratings as a **private comment** on the
@@ -607,7 +607,7 @@ the W19 practical's 100 minutes.
 ---
 
 ## Rules for every submission
-- **Name + Student ID** on every file; teamwork only where stated (worksheets/quizzes/written exams/midterm practical are individual; final practical is team work and CryptoVault is team-graded with peer-contribution scaling — see `project/README.md`).
+- **Name + Student ID** on every file; teamwork only where stated (worksheets/quizzes/written exams/midterm practical and the W19 make-up are individual; CryptoVault is team-graded with peer-contribution scaling — see `project/README.md`).
 - **AI-tool disclosure:** state how you used any AI tool (search, code, translate) — a section is built into the worksheet/report.
 - **Late:** −10% of the item's score for each day late (a part day counts as a day), down to 0 (see `syllabus.md`); submit what you have.
 
@@ -617,7 +617,7 @@ the W19 practical's 100 minutes.
 
 Submit your own evidence and reasoning. Discussing concepts and helping a classmate debug their
 own setup are allowed. Disclose AI assistance; do not submit another student's answers, code,
-screenshots or flags as your own. Team work is allowed only for the final practical and project.
+screenshots or flags as your own. Team work is allowed only for the project.
 
 Name and Student ID belong on every PDF. Include commands/results and enough context to reproduce
 the required task. Task-specific issued flags/parameters apply only when actually assigned;

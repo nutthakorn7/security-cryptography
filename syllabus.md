@@ -42,8 +42,8 @@ Week 12 includes a student-written `build_client_context()` and tests in both wo
 | 12 worksheets: Weeks 1–6 and 10–15 | 30% | Individual; each worksheet contributes 2.5 course points |
 | Midterm written, Week 8 | 8% | Individual; 90 minutes writing + 10 minutes administration |
 | Midterm practical, Week 9 | 12% | Individual; 80 minutes tasks + 20 minutes administration |
-| Final written, Week 18 | 10% | Individual; 90 minutes writing + 10 minutes administration |
-| Final practical, Week 19 | 15% | Team; 80 minutes tasks + 20 minutes administration |
+| Final written, Week 18 | 25% | Individual; 90 minutes writing + 10 minutes administration |
+| Make-up exam, Week 19 | 0% (no new marks) | Midterm W8 + W9 only; eligibility and format announced by the instructor |
 | CryptoVault project | 15% | Teams of 3 normally, 2 where needed; see project brief |
 | Quizzes and participation | 10% | Retrieval quizzes and class participation |
 | **Total** | **100%** | |
@@ -115,7 +115,7 @@ extension is approved. In-class quizzes have no late window; the existing lowest
 | 16 | CryptoVault studio, feedback and project clarification |
 | 17 | Review and bounded final rehearsal |
 | 18 | Final written |
-| 19 | Final team practical; no project Q&A in the timed CTF |
+| 19 | Make-up exam for the midterm; no project Q&A |
 | 20 | Feedback, returned work, project clarification and closure |
 
 Teams submit a **video no longer than five minutes before Week 19**, alongside the final build
