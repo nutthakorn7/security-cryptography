@@ -216,7 +216,7 @@ sig  = sign(sk, challenge, origin)        # bound to the site origin it was made
 - **Answer sheet:** Classroom → Week 14 → file for your form → type in the grey boxes → File → Download → PDF
 - Hand in `Wk14_<StudentID>.pdf` at `learn.zcr.ai/submit` by **Sun 7 Feb, 23:59**
 
-<!-- Exact commands are in the worksheet (11 steps). Start Docker early and run the build step before class. The password is a lab constant, the same for everyone; nonce and proof are random per run. Both modes share one project, so one down at the end (Step 11) removes everything. At the end of class the CryptoVault transport-security and self-audit review (Week 14 milestone) takes place; it is not part of the worksheet. Logic: the three steps check the slides. A1: the plain login puts the password in the server log. A2: the challenge-response login puts only a nonce and a proof there, and still gives LOGIN OK. A3: the request lines in client.py show why, and the limits show what the demo does not prove. -->
+<!-- Exact commands are in the worksheet (11 steps). Start Docker early and run the build step before class. The password is a lab constant, the same for everyone; nonce and proof are random per run. Both modes share one project, so one down at the end (Step 11) removes everything. Logic: the three steps check the slides. A1: the plain login puts the password in the server log. A2: the challenge-response login puts only a nonce and a proof there, and still gives LOGIN OK. A3: the request lines in client.py show why, and the limits show what the demo does not prove. -->
 
 ---
 
