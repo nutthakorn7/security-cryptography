@@ -12,7 +12,8 @@ Review Weeks 1–6. The full mock/Jeopardy banks are optional further practice; 
 |---|---|
 | 0–20 | Cumulative review quiz (6 questions, 8 points, KOSEN level). |
 | 20–30 | Choose a small set of Jeopardy clues based on prior errors. |
-| 30–70 | Attempt two selected mock checkpoints, one from Weeks 2–4 (hash, MAC, CBC) and one from Weeks 5–6 (key exchange, oracle, control), with the supplied scripts; targets prebuilt. |
+| 30–40 | Dry run of the Week 9 procedure with practice codes: hand out the practice variant file, every student runs it once, starts the labs and runs the checkpoint commands; fix every laptop, Docker and port problem now, not on exam day. The labs are the same ones the mock checkpoints use. |
+| 40–70 | Attempt two selected mock checkpoints (about 15 minutes each), one from Weeks 2–4 (hash, MAC, CBC) and one from Weeks 5–6 (key exchange, oracle, control), with the supplied scripts; targets prebuilt. |
 | 70–95 | Compare methods, repair one error and explain the control (about 10 minutes); teams form, hand in the CryptoVault design doc and demonstrate the KDF + AEAD-at-rest milestone to the instructor (about 15 minutes). |
 | 95–100 | Save a revision checklist and read exam timing/rules. |
 
