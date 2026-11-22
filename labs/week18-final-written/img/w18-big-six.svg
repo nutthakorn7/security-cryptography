@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 310" width="760" height="236" role="img" aria-label="Week 10: lock the key with RSA, lock the messages with AES-GCM, never repeat a nonce. Week 11: a valid signature has a twin, so the id comes from the message. Week 12: check the certificate chain and the name. Week 13: end-to-end means the server sees only ciphertext. Week 14: send a proof, not the password. Week 15: a one-time key signs once.">
+  <title>Weeks 10 to 15 in one line each</title>
+  <style>
+    .b  { fill: #fffdf9; stroke: #017BC4; stroke-width: 2 }
+    .bo { fill: #fff6f0; stroke: #E35205; stroke-width: 2 }
+    .bg { fill: #f3f4f6; stroke: #6b7280; stroke-width: 1.5 }
+    .bgr{ fill: #eef8f0; stroke: #2f855a; stroke-width: 2 }
+    .br { fill: #fdeeee; stroke: #c53030; stroke-width: 2 }
+    .t  { font: 700 18px system-ui, sans-serif; fill: #16191d; text-anchor: middle }
+    .ts { font: 500 14px system-ui, sans-serif; fill: #374151; text-anchor: middle }
+    .tm { font: 600 14px ui-monospace, Menlo, monospace; fill: #16191d; text-anchor: middle }
+    .tb { font: 700 16px system-ui, sans-serif; fill: #017BC4; text-anchor: middle }
+    .to { font: 700 16px system-ui, sans-serif; fill: #E35205; text-anchor: middle }
+    .tg { font: 700 16px system-ui, sans-serif; fill: #2f855a; text-anchor: middle }
+    .tr { font: 700 16px system-ui, sans-serif; fill: #c53030; text-anchor: middle }
+    .a  { stroke: #16191d; stroke-width: 1.8; fill: none; marker-end: url(#ar) }
+    .ao { stroke: #E35205; stroke-width: 2.2; fill: none; marker-end: url(#aro) }
+    .ab { stroke: #017BC4; stroke-width: 2.2; fill: none; marker-end: url(#arb) }
+    .ad { stroke: #E35205; stroke-width: 2.2; fill: none; stroke-dasharray: 6 5; marker-end: url(#aro) }
+    @media (prefers-color-scheme: dark) {
+      .b  { fill: #151a20; stroke: #4aa3dd } .bo { fill: #2a1c14; stroke: #ff7a3d }
+      .bg { fill: #22262b; stroke: #9aa3ad } .bgr { fill: #14251a; stroke: #5fbf8a } .br { fill: #2a1515; stroke: #f08080 }
+      .t, .tm { fill: #e6e8ea } .ts { fill: #b8c0c8 }
+      .tb { fill: #4aa3dd } .to { fill: #ff7a3d } .tg { fill: #5fbf8a } .tr { fill: #f08080 }
+      .a  { stroke: #c9ced3 } .ao, .ad { stroke: #ff7a3d } .ab { stroke: #4aa3dd }
+      [fill="#16191d"] { fill: #c9ced3 }
+    }
+  </style>
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#16191d"/></marker>
+    <marker id="aro" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#E35205"/></marker>
+    <marker id="arb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#017BC4"/></marker>
+  </defs>
+  <text class="t" x="500" y="28">The big six, one line each</text>
+  <rect class="b" x="40" y="55" width="300" height="100" rx="10"/>
+  <text class="tb" x="190.0" y="83">Week 10</text>
+  <text class="tm" x="190.0" y="109.0">hybrid</text>
+  <text class="ts" x="190.0" y="137">c1 xor c2 = m1 xor m2</text>
+  <rect class="b" x="350" y="55" width="300" height="100" rx="10"/>
+  <text class="tb" x="500.0" y="83">Week 11</text>
+  <text class="tm" x="500.0" y="109.0">signatures</text>
+  <text class="ts" x="500.0" y="137">txid = hash(pk, m)</text>
+  <rect class="b" x="660" y="55" width="300" height="100" rx="10"/>
+  <text class="tb" x="810.0" y="83">Week 12</text>
+  <text class="tm" x="810.0" y="109.0">TLS</text>
+  <text class="ts" x="810.0" y="137">chain(cert, ca) and name</text>
+  <rect class="b" x="40" y="165" width="300" height="100" rx="10"/>
+  <text class="tb" x="190.0" y="193">Week 13</text>
+  <text class="tm" x="190.0" y="219.0">end-to-end</text>
+  <text class="ts" x="190.0" y="247">server_sees = E(pk_B, m)</text>
+  <rect class="b" x="350" y="165" width="300" height="100" rx="10"/>
+  <text class="tb" x="500.0" y="193">Week 14</text>
+  <text class="tm" x="500.0" y="219.0">login</text>
+  <text class="ts" x="500.0" y="247">request = (nonce, proof)</text>
+  <rect class="b" x="660" y="165" width="300" height="100" rx="10"/>
+  <text class="tb" x="810.0" y="193">Week 15</text>
+  <text class="tm" x="810.0" y="219.0">quantum</text>
+  <text class="ts" x="810.0" y="247">one key, one signature</text>
+  <text class="ts" x="500" y="290">Week 16 is the integration: combine these in one design</text>
+</svg>
