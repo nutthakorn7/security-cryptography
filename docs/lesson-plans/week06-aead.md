@@ -10,7 +10,7 @@ See that an unauthenticated CBC server that never shows the plaintext still leak
 
 Students pull the image before class; the scripts run inside the container, so no host Python is needed (`docker compose exec vulnerable python ask.py vuln end`; `docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py`; without the `-e` part `exploit.py` waits about a minute, then prints `FAIL: fixed app never came up`). `ask.py` is a small helper added for this lab so students never type JSON. The worksheet uses no byte offsets or hand XOR.
 
-Project: no CryptoVault milestone this week; the KDF + AEAD-at-rest vault is due in Week 7.
+Project: no CryptoVault milestone this week; CryptoVault dates are announced separately (the milestone moved out of Week 4 on 2026-11-22).
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
 Students run the supplied helpers (`ask.py`, `exploit.py`) in worksheet steps 2, 5, 7 and 9; no manual byte work is asked. Only
