@@ -28,10 +28,10 @@ content at the next teaching session: W1 bank opens W2, W6 opens W7, W15 opens W
 | 1 | Environment check; threat model; choose primitives; test a changed attacker assumption; Snake Oil Bingo (AIR-Sec analyses its claims) | Diagram, assumptions and corrected design | 100 |
 | 2 | Weak-hash dictionary recovery; persistent-session login; KDF comparison | Recovery/session outputs and KDF limits | 100 |
 | 3 | Change a signed cookie by hand; supplied forgery script; HMAC rejection | Refused cookie, flag and before/after result | 100 |
-| 4 | Change an encrypted CBC token and see it accepted (guest → admin by supplied script); GCM rejection; form CryptoVault teams and review the design plan | Accepted/rejected tamper outputs and submitted design plan | 100 |
+| 4 | Change an encrypted CBC token and see it accepted (guest → admin by supplied script); GCM rejection | Accepted/rejected tamper outputs | 100 |
 | 5 | Unauthenticated DH MITM versus authenticated exchange | Interception and abort traces | 100 |
 | 6 | Ask the CBC server about changed messages (200 vs 403); supplied script reads the secret; GCM gives the same answer | Oracle answers, recovered secret and GCM control | 100 |
-| 7 | Review quiz; selected Jeopardy clues; two bounded mock checkpoints; CryptoVault KDF/AEAD milestone | Review answers, repair notes and milestone demonstration | 100 |
+| 7 | Review quiz; selected Jeopardy clues; two bounded mock checkpoints; CryptoVault teams, design plan and KDF/AEAD milestone | Review answers, repair notes and milestone demonstration | 100 |
 | 8 | Written midterm: 90 writing + 10 administration | Individual script | 100 |
 | 9 | Individual practical: 80 tasks + 20 administration | Method, result and control evidence | 100 |
 | 10 | Hybrid-encryption diagram, nonce counterexample and corrected design | Diagram, calculation/proof and limitations | 100 |
@@ -68,7 +68,7 @@ the assessed work. See [syllabus](syllabus.md) for the full 100% and ability mat
 | 0–20 | Cumulative review quiz (6 questions, 8 points) |
 | 20–35 | Selected Jeopardy clues targeting misconceptions |
 | 35–80 | Two selected mock checkpoints, with working targets already prepared |
-| 80–95 | Explain errors and verify a correction; teams demonstrate the CryptoVault KDF/AEAD milestone |
+| 80–95 | Explain errors and verify a correction; teams form, hand in the design plan and demonstrate the CryptoVault KDF/AEAD milestone |
 | 95–100 | Save repair plan and read exam logistics |
 
 ### Week 17 — pre-final review
