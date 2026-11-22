@@ -594,7 +594,7 @@ the W19 make-up sitting.
 - Use [project/REPORT-TEMPLATE.md](project/REPORT-TEMPLATE.md), export the report to PDF and submit
   through the course platform. Link the team's GitHub code, design and self-audit.
 - Milestones: W4 team/design → W7 KDF+AEAD → W11 sharing → W14 transport/self-audit → W16 studio.
-- Submit the final report/code and a **video of at most 5 minutes before W19**. Put the video link
+- Submit the final report/code and a **video of at most 5 minutes before W19** (Sunday 7 March 2027, 23:59 ICT; a project date that does not depend on the make-up sitting). Put the video link
   (unlisted YouTube, or Google Drive viewable by anyone with the link) in the report PDF. Project clarification
   takes place in W16/W20; no live project demonstration is added to the W19 make-up sitting.
 - The existing optional crypto-agility bonus is +5 raw points capped at 100. HNDL is optional and

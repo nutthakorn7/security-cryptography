@@ -118,7 +118,8 @@ extension is approved. In-class quizzes have no late window; the existing lowest
 | 19 | Make-up exam for the midterm; no project Q&A |
 | 20 | Feedback, returned work, project clarification and closure |
 
-Teams submit a **video no longer than five minutes before Week 19**, alongside the final build
+Teams submit a **video no longer than five minutes before Week 19** (Sunday 7 March 2027, 23:59 ICT; a project date
+that does not depend on the Week 19 make-up sitting), alongside the final build
 and report. Project clarification is scheduled in Weeks 16/20 and stays within the existing
 project rubric. Cryptocurrency/UTXO/BFT legacy bank items are not scored in this syllabus.
 
