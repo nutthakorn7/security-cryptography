@@ -200,4 +200,4 @@ txid = sha256(str(r) + str(s))    # twin ⇒ new id ⇒ paid twice
 txid = hash(pk, m)                # twin ⇒ refused (m holds a unique number)
 ```
 
-<!-- Land the spine: "a valid signature does not mean the same transaction". Cold-call: "what did the vulnerable bank use as the transaction id, and why did the twin get through?" Remind them the CryptoVault milestone is reviewed in the feedback block. Logic: valid and unique are different properties; a signature gives the first, so an id must come from something that is unique by design. Next: TLS puts signatures to work in certificates. -->
+<!-- Land the spine: "a valid signature does not mean the same transaction". Cold-call: "what did the vulnerable bank use as the transaction id, and why did the twin get through?" Logic: valid and unique are different properties; a signature gives the first, so an id must come from something that is unique by design. Next: TLS puts signatures to work in certificates. -->
