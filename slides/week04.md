@@ -139,6 +139,26 @@ changed c'  ⇒  t' ≠ tag(k, nonce, c')  ⇒  403
 
 ---
 
+## How a tag is made (a toy version)
+
+![Toy example with the secret s equal to 2. The sender works through the data 3, 1, 4: (0 plus 3) times 2 is 6, (6 plus 1) times 2 is 14, (14 plus 4) times 2 is 36, so the tag is 36. Eve changes the 3 into a 5. The receiver works through 5, 1, 4 the same way and gets 10, 22 and 52. The result 52 is not the tag 36 that came with the data, so the message is rejected. Eve does not know s, so she cannot tell which tag would match her changed data.](img/w4-tag-toy.svg)
+
+```
+tag = 0
+for d in data:  tag = (tag + d) * s      # s = the secret number
+(3, 1, 4)  with s = 2  ⇒  6 → 14 → 36   # tag = 36
+(5, 1, 4)  with s = 2  ⇒  10 → 22 → 52  # 52 ≠ 36 ⇒ reject
+```
+
+- Sender and receiver share a **secret number**; the tag **mixes every piece** of the data with it
+- The receiver **works it out again** from what arrived and compares
+- Change any piece → a different tag. Eve does not know the secret, so she cannot fix the tag
+- Toy only: real GCM makes its secret numbers **from the key**, uses 128-bit numbers and mixes in the nonce
+
+<!-- Student version: only the toy. Walk the numbers aloud: 3 → 6, 14, 36; then Eve changes the 3 into a 5 → 10, 22, 52. Ask: "Eve knows the rule but not s; can she say which tag fits 5, 1, 4?" (No: with s = 3 the original data would give 102, not 36, so the tag depends on the secret.) Logic: slide 9 said the server re-makes the tag and compares; this slide shows what "re-make" means, with numbers small enough to follow by hand; the next slide asks what must never repeat. INSTRUCTOR ONLY, not for the slide: the real recipe (NIST SP 800-38D §6.4, verified in code against AESGCM): H = E(k, 0); counter-mode encryption with E(k, nonce||2), E(k, nonce||3), ...; GHASH over the extra data, the ciphertext and a length block, Y = (Y xor X) * H in GF(2^128), the same "mix, then multiply by the secret" loop as the toy; tag = Y xor E(k, nonce||1). The last term is a one-time mask made from the nonce. If a nonce repeats, the mask repeats, and xor of two tags leaks an equation in H; that is the "tags can be forged" on the next slide. -->
+
+---
+
 ## One more rule: a nonce is used once
 
 ```
