@@ -12,7 +12,7 @@ Emphasize Weeks 10–15 and composition from earlier weeks. Full mock banks rema
 |---|---|
 | 0–30 | Cumulative 25-point review quiz (the student instrument specifies 30 minutes). |
 | 30–40 | Four selected Jeopardy clues: ECDSA malleability, certificate trust, Lamport state and a Week 5 authenticated-DH callback. |
-| 40–80 | Two bounded mock stations from the Week 19 signature/TLS/Lamport topics; allow about 18 minutes each plus transition. Prepare local state and dependencies before the clock. |
+| 40–80 | Two bounded mock stations from the Week 11, 12 and 15 labs (signature malleability, TLS validation, Lamport one-time signatures), as review for the Week 18 written exam; allow about 18 minutes each plus transition. Prepare local state and dependencies before the clock. |
 | 80–95 | Explain one failure, test a correction and compare the private-exam evidence requirements at a general level. |
 | 95–100 | Save revision actions and confirm written/practical/video logistics. |
 
