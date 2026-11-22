@@ -13,8 +13,8 @@ except a one-page cheat sheet; the teams' CryptoVault KDF + AEAD-at-rest demo is
    supplied scripts → explain one mistake and how to fix it.
 3. **Prepare** — Week 8 is a written exam and Week 9 is a hands-on practical. Both cover Weeks 1–6 only.
 
-**100-minute plan:** quiz 20 + selected Jeopardy clues 15 + two mock checkpoints 45 + explain a fix and
-CryptoVault demo 15 + save the cheat sheet and read the exam rules 5. The full board below is extra
+**100-minute plan:** quiz 20 + selected Jeopardy clues 10 + two mock checkpoints 40 + explain a fix, CryptoVault
+team, design doc and demo 25 + save the cheat sheet and read the exam rules 5. The full board below is extra
 practice: do not try every clue in class.
 
 ---
