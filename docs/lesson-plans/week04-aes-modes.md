@@ -10,7 +10,7 @@ See that an encrypted CBC token can be changed without the key and the server do
 
 Students pull the image before class; the script runs inside the container, so no host Python is needed (`docker compose exec -e FIXED_HOST=fixed vulnerable python exploit.py`; without the `-e` part it waits about a minute, then prints `FAIL: fixed app never came up`). The worksheet uses no byte offsets or hand XOR.
 
-Project: the Week 4 milestone forms the CryptoVault team and submits the design plan (KDF + AEAD-at-rest). Teams review the plan in class before submitting it; do not assume a design was submitted earlier.
+Project: the CryptoVault team and design-plan milestone is not part of Week 4 (moved out on 2026-11-22; the new week is announced separately). Do not form teams or collect a design plan in this class.
 
 Images, dependencies and long readings are preparation; confirm the environment before class.
 Students run the supplied helper (`exploit.py`) in worksheet step 5; no manual byte work is asked. Only
@@ -26,7 +26,7 @@ prepared trace/code example and documented follow-up, not a fabricated successfu
 | 20–35 | A1: log in, read `/whoami`, change one letter of the CBC token and see that the server still answers `guest`. |
 | 35–60 | A2: read the picture, run the supplied `exploit.py` inside the container, record `guest` becoming `admin` and the flag. |
 | 60–80 | A3: make the same one-letter change to the GCM token, see `invalid or tampered token`, compare the CBC and GCM code lines and explain why the tag check refuses it. |
-| 80–95 | Compare results/control and explain the confidentiality/integrity difference; teams confirm membership and review their CryptoVault design plan with instructor feedback before submitting it. |
+| 80–95 | Compare results/control and explain the confidentiality/integrity difference. |
 | 95–100 | Save evidence (answer-sheet boxes for steps 1–11) and note what is left; the PDF is due Sunday 29 Nov 2026 23:59 ICT. |
 
 **Core artifact:** A changed CBC token that the server accepts (`guest` → `admin`) and a changed GCM token that it refuses.
