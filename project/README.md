@@ -111,7 +111,7 @@ total cannot exceed 100 — it lets a team recover points lost elsewhere, but a 
 100-point rubric does not need it for full marks.
 
 **Deadline and late work:** the final build, report and video are due **Sunday 7 March 2027,
-23:59 ICT**, before the Week 19 class. Late work loses 10% of the project score for each day late
+23:59 ICT**, before the Week 19 class (a project date: it does not depend on the make-up sitting). Late work loses 10% of the project score for each day late
 (a part day counts as a day), down to 0; late uploads close Wednesday 17 March 2027, 23:59 ICT.
 
 ## Peer-contribution evaluation (individual fairness)
