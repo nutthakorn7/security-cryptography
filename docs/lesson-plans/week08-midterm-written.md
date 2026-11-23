@@ -4,7 +4,7 @@
 
 **Contact time:100 minutes.**
 
-Covers Weeks 1–6. Ten scored short/applied/design items replace the older longer instrument. Written raw 100 scales to 8 course points; W9 practical contributes 12, totaling 20. No weekly quiz or lab is added. The paper/key and item-level ability allocations remain instructor-held.
+Covers Weeks 1–6. Nine scored short/applied/design items (10 marks each) replace the older longer instrument. Written raw 90 scales to 8 course points (raw ÷ 90 × 8); W9 practical contributes 12, totaling 20. No weekly quiz or lab is added. The paper/key and item-level ability allocations remain instructor-held.
 
 ## In-class run sheet
 
