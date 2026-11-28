@@ -127,7 +127,7 @@ m  = dec(K1, c)                    # relay reads it
 c' = enc(K2, m)                    # relay sends it on to Bob
 ```
 
-<!-- Walk the picture: handshake one is Alice with relay, handshake two is relay with Bob. Relay needs BOTH because it must be a real DH partner to each side, otherwise it could not read and then re-send the message. The sim runs a real small DH handshake, not a script; the cipher, key mixing and tag in it are toy stand-ins (same simplification as the Week 3 sim). Run it live after this slide with the "has AUTH_KEY leaked to relay?" box UNCHECKED (this is the vulnerable story); tick it later, at the fix slide, to preview the second run. Logic (equation): relay is a real DH partner twice, so it holds K1 and K2 and can decrypt, read and re-encrypt. Next question: why does nobody notice? -->
+<!-- Walk the picture: handshake one is Alice with relay, handshake two is relay with Bob. Relay needs BOTH because it must be a real DH partner to each side, otherwise it could not read and then re-send the message. The sim runs a real small DH handshake, not a script; the cipher, key mixing and tag in it are toy stand-ins (same simplification as the Week 3 sim). Run it live after this slide with the "has AUTH_KEY leaked to relay?" box UNCHECKED. One run shows both results: Verifier A (plain DH, accepted) is the first lab run, and Verifier B (HMAC, rejected) is the second, so point back to Verifier B at the fix slide. Tick the box only to show what happens if AUTH_KEY leaks: Verifier B then accepts (worksheet step 12). Logic (equation): relay is a real DH partner twice, so it holds K1 and K2 and can decrypt, read and re-encrypt. Next question: why does nobody notice? -->
 
 ---
 
@@ -172,6 +172,7 @@ relay sends (R, t') without AUTH_KEY   ⇒   no match   ⇒   AUTH FAILED
 
 ```
 RELAY: (fixed mode) attempted DH substitution with Alice (posing as Bob)
+RELAY: (fixed mode) attempted DH substitution with Bob (posing as Alice)
 AUTH FAILED - ABORTING          (alice)
 AUTH FAILED - ABORTING          (bob)
 ```
